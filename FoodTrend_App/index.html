@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>FoodTrend - Creator Access</title>
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.json">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;800&display=swap" rel="stylesheet">
+<style>
+  /* --- VARIABLES --- */
+  :root { 
+    --neon: #FF4B1F; 
+    --border: rgba(0, 0, 0, 0.08); 
+    --bg: #ffffff; 
+    --bg-alt: #f9f9f9; 
+    --text-main: #1a1a1a;
+    --text-sub: #666666;
+  }
+  
+  body { 
+    font-family: 'Outfit', sans-serif; margin: 0; 
+    color: var(--text-main); 
+    background: var(--bg); overflow-x: hidden;
+  }
+
+  /* NAVBAR */
+  .navbar-glass {
+    position: fixed; top: 0; left: 0; width: 100%; padding: 15px 20px;
+    display: flex; justify-content: space-between; align-items: center; z-index: 100;
+    background: #ffffff; 
+    box-sizing: border-box; border-bottom: 1px solid var(--border);
+  }
+  .logo { font-weight: 800; font-size: 20px; letter-spacing: -1px; color: var(--neon); }
+  .nav-links { display: flex; gap: 15px; align-items: center; }
+  .nav-link { font-size: 13px; color: var(--text-main); font-weight: 600; text-decoration: none; }
+  .btn-login-nav { font-size: 12px; font-weight: 700; padding: 8px 16px; background: #111; color: white; border-radius: 20px; cursor: pointer; }
+
+  /* HERO */
+  .hero-section {
+    position: relative; height: 85vh; display: flex; align-items: center;
+    background: url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1920&auto=format&fit=crop') no-repeat center center;
+    background-size: cover;
+  }
+  .overlay-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to right, rgba(0,0,0,0.8), rgba(0,0,0,0.1)); }
+  
+  .hero-content { position: relative; z-index: 2; padding: 30px; max-width: 500px; margin-top: 60px; color: white; }
+  .hero-title { font-size: 48px; line-height: 1; font-weight: 800; margin-bottom: 15px; letter-spacing: -2px; }
+  .hero-sub { font-size: 18px; color: rgba(255,255,255,0.9); margin-bottom: 30px; line-height: 1.4; font-weight: 500; }
+
+  /* === ZIG-ZAG LAYOUT SYSTEM === */
+  .dd-section { padding: 80px 20px; border-bottom: 1px solid var(--border); background: var(--bg); }
+  .dd-section:nth-child(even) { background: var(--bg-alt); }
+
+  .dd-container {
+    display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 60px;
+    max-width: 1100px; margin: 0 auto;
+  }
+  
+  .dd-image-box img {
+    width: 100%; height: 400px; object-fit: cover; border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  }
+  
+  .dd-text-box h2 { font-size: 36px; margin: 0 0 15px 0; font-weight: 800; color: var(--text-main); line-height: 1.1; }
+  .dd-text-box p { font-size: 18px; color: var(--text-sub); margin-bottom: 30px; line-height: 1.5; }
+
+  /* ZIG-ZAG LOGIC (Desktop) */
+  @media (min-width: 769px) {
+    .dd-reverse .dd-text-box { order: 1; }
+    .dd-reverse .dd-image-box { order: 2; }
+    .dd-image-box { order: 1; }
+    .dd-text-box { order: 2; }
+  }
+
+  /* MOBILE LOGIC */
+  @media (max-width: 768px) {
+    .dd-container { grid-template-columns: 1fr; text-align: center; gap: 30px; }
+    .dd-image-box img { height: 250px; }
+    .dd-image-box { order: -1; }
+    .dd-text-box { order: 1; }
+    .hero-title { font-size: 36px; }
+  }
+
+  /* MONEY BAR */
+  .money-bar-container { background: white; border-radius: 12px; padding: 20px; margin-bottom: 25px; border: 1px solid #eee; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: left; }
+  .bar-track { background: #f0f0f0; height: 10px; border-radius: 5px; overflow: hidden; margin-top: 10px; }
+  .bar-fill { height: 100%; background: var(--neon); width: 0%; transition: width 2s ease-out; border-radius: 5px; }
+
+  /* FOOTER */
+  .footer { padding: 60px 20px; text-align: center; background: #fafafa; border-top: 1px solid #eee; }
+  .footer-links a { color: var(--text-sub); text-decoration: none; margin: 0 10px; font-size: 14px; }
+
+  /* BUTTONS */
+  .btn-primary {
+    background: var(--neon); color: white; border: none; padding: 15px 35px; 
+    border-radius: 99px; font-size: 16px; font-weight: 700; 
+    cursor: pointer; box-shadow: 0 8px 20px rgba(255, 75, 31, 0.25);
+    display: inline-block; transition: 0.2s;
+  }
+  .btn-primary:active { transform: scale(0.98); }
+
+  /* MODALS */
+  .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(5px); }
+  .modal-box { 
+    background: white; padding: 40px; border-radius: 24px; width: 85%; max-width: 400px; text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  }
+  
+  /* INPUT SECURITY WRAPPER */
+  .input-group { position: relative; margin-bottom: 15px; }
+  .input-icon { position: absolute; left: 15px; top: 15px; opacity: 0.4; pointer-events: none; }
+  .toggle-password { position: absolute; right: 15px; top: 15px; opacity: 0.4; cursor: pointer; font-size: 14px; font-weight: 600; }
+  
+  input { 
+    width: 100%; padding: 15px 15px 15px 45px; 
+    background: #f8f9fa; border: 1px solid #eee; 
+    border-radius: 12px; color: #333; box-sizing: border-box; font-size: 16px;
+    transition: 0.2s;
+  }
+  input:focus { border-color: var(--neon); outline: none; background: white; }
+
+  .security-badge { font-size: 10px; color: #999; margin-top: 15px; display: flex; align-items: center; justify-content: center; gap: 5px; }
+  
+  h2 { margin-top: 0; color: var(--text-main); margin-bottom: 5px; }
+  .modal-sub { font-size: 14px; color: #999; margin-bottom: 25px; }
+</style>
+</head>
+<body>
+
+  <div class="navbar-glass">
+    <div class="logo">FoodTrend</div>
+    <div class="nav-links">
+      <a href="#about" class="nav-link">About</a>
+      <a href="https://your-ghl-restaurant-link.com" class="nav-link" style="color:var(--neon);">For Restaurants</a>
+      <div class="btn-login-nav" onclick="document.getElementById('modal-login').style.display='flex'">Log In</div>
+    </div>
+  </div>
+
+  <div class="hero-section">
+    <div class="overlay-bg"></div>
+    <div class="hero-content">
+      <div class="hero-title">Eat Like Royalty.<br>Build Your Empire.</div>
+      <div class="hero-sub">The exclusive network where creators get free meals, master video skills, and unlock paid brand sponsorships.</div>
+      <div class="btn-primary" onclick="document.getElementById('modal-signup').style.display='flex'">Apply for Access</div>
+    </div>
+  </div>
+
+  <div class="dd-section">
+    <div class="dd-container">
+      <div class="dd-image-box"><img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=800&auto=format&fit=crop"></div>
+      <div class="dd-text-box">
+        <h2>Dine at the Hottest Spots for Free.</h2>
+        <p>Forget paying for content. Use your Creator Credits to access complimentary meals at the city's most viral restaurants, hidden gems, and 5-star experiences.</p>
+        <div class="btn-primary" onclick="document.getElementById('modal-signup').style.display='flex'">Start Eating</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dd-section">
+    <div class="dd-container dd-reverse">
+      <div class="dd-text-box">
+        <h2>Create Content That Stops the Scroll.</h2>
+        <p>We don't just feed you; we teach you. Access our Creator Academy to master food cinematography, lighting, and editing hooks that blow up on TikTok and Reels.</p>
+        <div class="btn-primary" onclick="document.getElementById('modal-signup').style.display='flex'">Level Up Skills</div>
+      </div>
+      <div class="dd-image-box"><img src="https://images.unsplash.com/photo-1512428559087-560fa5ce7d87?q=80&w=800&auto=format&fit=crop"></div>
+    </div>
+  </div>
+
+  <div class="dd-section">
+    <div class="dd-container">
+      <div class="dd-image-box"><img src="https://images.unsplash.com/photo-1579621970795-87facc2f976d?q=80&w=800&auto=format&fit=crop"></div>
+      <div class="dd-text-box">
+        <h2>Stop Spending. Start Saving.</h2>
+        <p>The average foodie spends hundreds a month on restaurants. FoodTrend members keep that cash in their pocket.</p>
+        <div class="money-bar-container">
+          <div style="display:flex; justify-content:space-between; font-size:14px; font-weight:700; margin-bottom:5px; color:#333;">
+            <span>Monthly Savings</span><span style="color:var(--neon);">$200+/mo</span>
+          </div>
+          <div class="bar-track"><div id="bar-anim" class="bar-fill"></div></div>
+          <div style="font-size:11px; color:#999; margin-top:8px;">*Based on just 2 gigs per week.</div>
+        </div>
+        <div class="btn-primary" onclick="document.getElementById('modal-signup').style.display='flex'">Calculate Savings</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dd-section">
+    <div class="dd-container dd-reverse">
+      <div class="dd-text-box">
+        <h2>Unlock Paid Brand Sponsorships.</h2>
+        <p>Once you prove your impact, you unlock paid gigs. Top creators are earning residuals promoting brands they love.</p>
+        <div class="btn-primary" onclick="document.getElementById('modal-signup').style.display='flex'">See Earnings</div>
+      </div>
+      <div class="dd-image-box"><img src="https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=800&auto=format&fit=crop"></div>
+    </div>
+  </div>
+
+  <div class="dd-section">
+    <div class="dd-container">
+      <div class="dd-image-box"><img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?q=80&w=800&auto=format&fit=crop"></div>
+      <div class="dd-text-box">
+        <h2>Join the Exclusive Network.</h2>
+        <p>FoodTrend isn't for everyone. It's for creators serious about food. Connect with a community of like-minded foodies.</p>
+        <div class="btn-primary" onclick="document.getElementById('modal-signup').style.display='flex'">Apply Now</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="about" class="footer">
+    <div class="logo" style="margin-bottom:20px;">FoodTrend</div>
+    <p style="color:#666; max-width:500px; margin:0 auto 30px auto;">Our mission is to empower local restaurants with authentic creator marketing.</p>
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="https://your-ghl-restaurant-link.com" style="color:var(--neon); font-weight:700;">Restaurant Sign Up</a>
+    </div>
+    <div style="margin-top:40px; font-size:12px; color:#999;">© 2026 FoodTrend Inc.</div>
+  </div>
+
+  <div id="modal-signup" class="modal">
+    <div class="modal-box">
+      <h2>Apply for Access</h2>
+      <div class="modal-sub">Create your secure creator account.</div>
+      
+      <div class="input-group">
+        <span class="input-icon">👤</span>
+        <input type="text" id="s-name" placeholder="Full Name">
+      </div>
+      
+      <div class="input-group">
+        <span class="input-icon">✉️</span>
+        <input type="email" id="s-email" placeholder="Email Address">
+      </div>
+      
+      <div class="input-group">
+        <span class="input-icon">🔒</span>
+        <input type="password" id="s-pass" placeholder="Create Password">
+        <span class="toggle-password" onclick="togglePass('s-pass')">Show</span>
+      </div>
+
+      <button onclick="handleSignup()" class="btn-primary" style="margin-top:10px; width:100%;">Submit Application</button>
+      
+      <div class="security-badge">
+        <span>🔒 256-bit SSL Encrypted</span>
+      </div>
+      
+      <div style="margin-top:20px; font-size:14px; opacity:0.6; cursor:pointer;" onclick="this.closest('.modal').style.display='none'">Close</div>
+    </div>
+  </div>
+
+  <div id="modal-login" class="modal">
+    <div class="modal-box">
+      <h2>Welcome Back</h2>
+      <div class="modal-sub">Enter your credentials to continue.</div>
+
+      <div class="input-group">
+        <span class="input-icon">✉️</span>
+        <input type="email" id="l-email" placeholder="Email">
+      </div>
+      
+      <div class="input-group">
+        <span class="input-icon">🔒</span>
+        <input type="password" id="l-pass" placeholder="Password">
+        <span class="toggle-password" onclick="togglePass('l-pass')">Show</span>
+      </div>
+
+      <button onclick="handleLogin()" class="btn-primary" style="margin-top:10px; width:100%;">Enter</button>
+      
+      <div class="security-badge">
+        <span>🔒 Secured by Supabase</span>
+      </div>
+      
+      <div style="margin-top:20px; font-size:14px; opacity:0.6; cursor:pointer;" onclick="this.closest('.modal').style.display='none'">Close</div>
+      <div id="l-msg" style="color:red; font-size:12px; margin-top:10px;"></div>
+    </div>
+  </div>
+
+  <script>
+    const sbUrl = 'https://vsgljspzmynbqfyuvyyl.supabase.co';
+    const sbKey = 'sb_publishable_eH52Wo-WDJ7WkasY4GejOw_b0xUYZ-_';
+    const db = supabase.createClient(sbUrl, sbKey);
+
+    window.onload = function() {
+      setTimeout(() => { document.getElementById('bar-anim').style.width = '85%'; }, 500);
+    };
+
+    function togglePass(id) {
+      const input = document.getElementById(id);
+      if (input.type === "password") { input.type = "text"; } 
+      else { input.type = "password"; }
+    }
+
+    async function handleSignup() {
+      const email = document.getElementById('s-email').value;
+      const password = document.getElementById('s-pass').value;
+      const name = document.getElementById('s-name').value;
+      const { data, error } = await db.auth.signUp({ email, password, options: { data: { full_name: name } } });
+      if (!error) window.location.href = 'gigs.html';
+    }
+
+    async function handleLogin() {
+      const email = document.getElementById('l-email').value;
+      const password = document.getElementById('l-pass').value;
+      const { data, error } = await db.auth.signInWithPassword({ email, password });
+      if (error) document.getElementById('l-msg').innerText = error.message;
+      else window.location.href = 'gigs.html';
+    }
+  </script>
+</body>
+</html>
