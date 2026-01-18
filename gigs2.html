@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Find Gigs - FoodTrend</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.json">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root { --neon: #FF4B1F; --bg: #ffffff; --text: #1a1a1a; --border: #eee; --gray: #666; }
+  
+  body { 
+    font-family: 'Outfit', sans-serif; margin: 0; padding-bottom: 90px; color: var(--text);
+    background-color: var(--bg);
+  }
+
+  /* --- THE MAP BACKGROUND ENGINE --- */
+  .map-layer {
+    position: fixed; top: 0; left: 0; width: 100%; height: 75vh; /* Covers top 3/4 of screen */
+    /* Real City Map Image */
+    background: url('https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=1000&auto=format&fit=crop') no-repeat center top;
+    background-size: cover;
+    z-index: -2;
+    filter: grayscale(100%) opacity(0.6); /* Subtle grey map look */
+  }
+
+  /* THE "CASCADE TO WHITE" FADE */
+  .fade-layer {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+    /* Gradient starts transparent, goes to white at 60% down */
+    background: linear-gradient(to bottom, 
+      rgba(255,255,255,0.2) 0%, 
+      rgba(255,255,255,0.8) 40%, 
+      #ffffff 65%
+    );
+    z-index: -1; pointer-events: none;
+  }
+
+  /* FLOATING GREEN PINS (With Shadows) */
+  .map-pin {
+    position: fixed; width: 32px; height: 32px; 
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232ecc71'%3E%3Cpath d='M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z'/%3E%3C/svg%3E");
+    z-index: 0; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+    animation: float 3s infinite ease-in-out;
+  }
+  @keyframes float { 0% { transform: translateY(0); } 50% { transform: translateY(-8px); } 100% { transform: translateY(0); } }
+
+  /* HEADER (Neon Orange) */
+  .app-header { 
+    background: var(--neon); padding: 15px 20px; position: sticky; top: 0; z-index: 50; 
+    display: flex; justify-content: space-between; align-items: center; color: white;
+    box-shadow: 0 4px 15px rgba(255, 75, 31, 0.3);
+  }
+  .menu-btn { font-size: 24px; cursor: pointer; color: white; }
+  .logo { font-weight: 800; font-size: 20px; color: white; letter-spacing: -1px; }
+  .user-badge { font-size: 12px; font-weight: 600; background: rgba(255,255,255,0.2); color: white; padding: 5px 12px; border-radius: 20px; }
+
+  /* SEARCH SECTION */
+  .search-section { padding: 10px 20px; background: var(--neon); position: sticky; top: 60px; z-index: 40; padding-bottom: 20px; border-radius: 0 0 20px 20px; }
+  .search-wrapper { display: flex; gap: 10px; }
+  .search-input { 
+    width: 100%; background: white; border: none; padding: 12px 15px 12px 40px; 
+    border-radius: 12px; font-size: 14px; color: #333; outline: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23FF4B1F' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: 12px center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  }
+
+  /* MENU & NAV */
+  .side-menu { position: fixed; top: 0; left: -280px; width: 280px; height: 100%; background: white; z-index: 1000; transition: 0.3s ease; box-shadow: 4px 0 20px rgba(0,0,0,0.1); padding-top: 20px; color: var(--text); }
+  .side-menu.open { left: 0; }
+  .menu-header { padding: 0 25px 20px 25px; font-size: 20px; font-weight: 800; color: var(--neon); border-bottom: 1px solid var(--border); }
+  .menu-link { display: block; padding: 15px 25px; font-weight: 600; color: var(--text); border-bottom: 1px solid var(--border); font-size: 15px; }
+  .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 900; backdrop-filter: blur(2px); }
+  .overlay.open { display: block; }
+
+  /* GIG LIST */
+  .container { padding: 20px; max-width: 600px; margin: 0 auto; min-height: 80vh; position: relative; z-index: 1; }
+  
+  /* GLASS CARDS - Adjusted for contrast against map */
+  .gig-item { 
+    background: rgba(255, 255, 255, 0.9); /* High opacity to read text over map */
+    border: 1px solid rgba(255, 75, 31, 0.1); 
+    border-radius: 16px; padding: 12px; margin-bottom: 12px; 
+    display: flex; align-items: center; gap: 15px; 
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    backdrop-filter: blur(5px);
+    transition: transform 0.1s; text-decoration: none; color: var(--text);
+  }
+  .gig-item:active { transform: scale(0.98); background: white; }
+  
+  .gig-thumb { width: 65px; height: 65px; border-radius: 12px; object-fit: cover; background: rgba(255,255,255,0.5); flex-shrink: 0; }
+  .gig-content { flex: 1; min-width: 0; }
+  .gig-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px; }
+  .gig-name { font-size: 16px; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px; }
+  .gig-rating { font-size: 12px; font-weight: 600; color: var(--neon); display: flex; align-items: center; gap: 3px; }
+  .gig-address { font-size: 12px; color: var(--gray); margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 500; }
+  .offer-badge { font-size: 11px; color: white; background: var(--neon); padding: 4px 10px; border-radius: 20px; font-weight: 600; display: inline-block; box-shadow: 0 2px 5px rgba(255, 75, 31, 0.3); }
+
+  /* BOTTOM NAV */
+  .bottom-nav { 
+    position: fixed; bottom: 0; left: 0; width: 100%; 
+    background: var(--neon); 
+    padding: 12px 0; display: flex; justify-content: space-around; z-index: 100; 
+    box-shadow: 0 -4px 15px rgba(255, 75, 31, 0.3);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .nav-item { text-align: center; color: rgba(255,255,255,0.6); text-decoration: none; font-size: 10px; font-weight: 500; width: 20%; }
+  .nav-item.active { color: white; }
+  .nav-icon { font-size: 24px; display: block; margin-bottom: 2px; }
+</style>
+</head>
+<body>
+
+  <div class="map-layer"></div>
+  <div class="fade-layer"></div>
+
+  <div class="map-pin" style="top: 180px; left: 15%;"></div>
+  <div class="map-pin" style="top: 240px; right: 20%; animation-delay: 1s;"></div>
+  <div class="map-pin" style="top: 140px; left: 65%; animation-delay: 2s;"></div>
+
+  <div class="app-header">
+    <div class="menu-btn" onclick="toggleMenu()">☰</div>
+    <div class="logo">FoodTrend</div>
+    <div class="user-badge">Creator</div>
+  </div>
+
+  <div class="search-section">
+    <div class="search-wrapper">
+      <input type="text" id="searchInput" class="search-input" placeholder="Search restaurant or dish..." onkeyup="filterGigs()">
+    </div>
+  </div>
+
+  <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+  <div class="side-menu" id="side-menu">
+    <div class="menu-header">Menu</div>
+    <a href="profile.html" class="menu-link">👤 My Profile</a>
+    <a href="referrals.html" class="menu-link">💸 Refer & Earn</a>
+    <a href="academy.html" class="menu-link">🎓 Academy</a>
+    <a href="shop.html" class="menu-link">🛍️ Shop</a>
+    <a onclick="logout()" class="menu-link" style="color:red; cursor:pointer;">🚪 Log Out</a>
+  </div>
+
+  <div class="container" id="gigs-container">
+    <div style="text-align:center; padding-top:40px; color:#666; font-size:14px; font-weight:500;">
+      Scanning map for tasty gigs...
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <a href="gigs.html" class="nav-item active"><span class="nav-icon">🔍</span>Gigs</a>
+    <a href="schedule.html" class="nav-item"><span class="nav-icon">📅</span>Plan</a>
+    <a href="upload.html" class="nav-item"><span class="nav-icon">📸</span>Post</a>
+    <a href="shop.html" class="nav-item"><span class="nav-icon">🛍️</span>Shop</a>
+    <a href="profile.html" class="nav-item"><span class="nav-icon">👤</span>You</a>
+  </div>
+
+  <script>
+    const sbUrl = 'https://vsgljspzmynbqfyuvyyl.supabase.co';
+    const sbKey = 'sb_publishable_eH52Wo-WDJ7WkasY4GejOw_b0xUYZ-_';
+    const db = supabase.createClient(sbUrl, sbKey);
+    let allGigs = [];
+
+    function toggleMenu() { document.getElementById('side-menu').classList.toggle('open'); document.getElementById('overlay').classList.toggle('open'); }
+    async function logout() { await db.auth.signOut(); window.location.href='index.html'; }
+
+    function getFreeItem(name) {
+      const lower = name.toLowerCase();
+      if(lower.includes('burger')) return '🍔 Free Smashburger';
+      if(lower.includes('pizza')) return '🍕 Free Large Pepperoni';
+      if(lower.includes('sushi')) return '🍣 Free Spicy Tuna Roll';
+      if(lower.includes('taco')) return '🌮 Free Taco Trio';
+      if(lower.includes('coffee')) return '☕ Free Cold Brew';
+      if(lower.includes('bakery')) return '🥐 Free Pastry Box';
+      return '🍽️ Free Signature Entree';
+    }
+
+    function getRating() { return (Math.random() * (5.0 - 4.5) + 4.5).toFixed(1); }
+
+    async function loadGigs() {
+      const { data: restaurants } = await db.from('restaurants').select('*');
+      if(restaurants && restaurants.length > 0) {
+        allGigs = restaurants.map(r => ({ ...r, free_item: getFreeItem(r.name), rating: getRating() }));
+        renderGigs(allGigs);
+      } else {
+        document.getElementById('gigs-container').innerHTML = '<div style="text-align:center; padding:20px; color:#666;">No gigs found.</div>';
+      }
+    }
+
+    function renderGigs(list) {
+      const container = document.getElementById('gigs-container');
+      container.innerHTML = '';
+      if(list.length === 0) { container.innerHTML = '<div style="text-align:center; padding:40px; color:#666;">No matches found.</div>'; return; }
+      list.forEach(gig => {
+        container.innerHTML += `
+          <a href="${gig.booking_link || '#'}" class="gig-item">
+            <img src="${gig.image_url}" class="gig-thumb" onerror="this.src='https://via.placeholder.com/80'">
+            <div class="gig-content">
+              <div class="gig-header">
+                <div class="gig-name">${gig.name}</div>
+                <div class="gig-rating">★ ${gig.rating}</div>
+              </div>
+              <div class="gig-address">${gig.address}</div>
+              <div class="offer-badge">${gig.free_item}</div>
+            </div>
+          </a>
+        `;
+      });
+    }
+
+    function filterGigs() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      const filtered = allGigs.filter(gig => gig.name.toLowerCase().includes(query) || gig.address.toLowerCase().includes(query) || gig.free_item.toLowerCase().includes(query));
+      renderGigs(filtered);
+    }
+    loadGigs();
+  </script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Academy - FoodTrend</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --primary: #ff4b1f; --bg: #f8f9fa; }
+  body { background: var(--bg); font-family: 'Poppins', sans-serif; margin: 0; padding-bottom: 90px; }
+  a { text-decoration: none; color: inherit; }
+
+  /* HEADER */
+  .header { background: white; padding: 15px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 50; }
+  .menu-btn { font-size: 24px; cursor: pointer; }
+  .logo { height: 35px; }
+
+  /* HERO */
+  .academy-hero {
+    background: #2d3436; color: white; padding: 40px 20px; text-align: center;
+  }
+  .hero-title { font-size: 24px; font-weight: 700; margin-bottom: 5px; }
+  .hero-sub { opacity: 0.7; font-size: 14px; }
+
+  /* VIDEO LIST */
+  .container { padding: 20px; max-width: 600px; margin: 0 auto; }
+  .video-card { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
+  
+  /* VIDEO EMBED */
+  .video-frame { position: relative; padding-bottom: 56.25%; /* 16:9 Aspect Ratio */ height: 0; overflow: hidden; background: #000; }
+  .video-frame iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+
+  .card-content { padding: 15px; }
+  .tag { background: #e0fbf4; color: #00b894; font-size: 10px; padding: 4px 8px; border-radius: 4px; font-weight: 700; text-transform: uppercase; }
+  .v-title { font-weight: 700; font-size: 16px; margin: 8px 0; color: #333; }
+  .v-desc { font-size: 12px; color: #999; line-height: 1.5; }
+
+  /* MENU & NAV (Standard) */
+  .side-menu { position: fixed; top: 0; left: -280px; width: 280px; height: 100%; background: white; z-index: 200; transition: 0.3s; padding-top: 20px; box-shadow: 4px 0 15px rgba(0,0,0,0.1); }
+  .side-menu.open { left: 0; }
+  .menu-link { display: block; padding: 15px 20px; border-bottom: 1px solid #eee; font-weight: 500; }
+  .overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:150; }
+  .overlay.open { display:block; }
+  .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: white; padding: 12px 0; border-top: 1px solid #eee; display: flex; justify-content: space-around; z-index: 100; }
+  .nav-item { text-align: center; color: #b2bec3; font-size: 10px; font-weight: 500; width: 25%; }
+  .nav-item.active { color: var(--primary); }
+  .nav-icon { font-size: 22px; display: block; margin-bottom: 4px; }
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="menu-btn" onclick="toggleMenu()">☰</div>
+    <img src="https://via.placeholder.com/150x50?text=FoodTrend" class="logo">
+    <div style="width:24px;"></div>
+  </div>
+
+  <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+  <div class="side-menu" id="side-menu">
+    <div style="padding:0 20px 20px 20px; font-size:18px; font-weight:700; color:var(--primary);">Menu</div>
+    <a href="profile.html" class="menu-link">👤 My Profile</a>
+    <a href="referrals.html" class="menu-link">💸 Refer & Earn</a>
+    <a href="academy.html" class="menu-link">🎓 Academy</a>
+    <a href="shop.html" class="menu-link">🛍️ Shop</a>
+    <a onclick="logout()" class="menu-link" style="color:red;">🚪 Log Out</a>
+  </div>
+
+  <div class="academy-hero">
+    <div class="hero-title">Creator Academy</div>
+    <div class="hero-sub">Level up your content game.</div>
+  </div>
+
+  <div class="container">
+    
+    <div class="video-card">
+      <div class="video-frame">
+        <iframe src="https://www.youtube.com/embed/ScMzIvxBSi4" allowfullscreen></iframe>
+      </div>
+      <div class="card-content">
+        <span class="tag">Basics</span>
+        <div class="v-title">How to Film Food (Vertical Video)</div>
+        <div class="v-desc">Learn the angles that make food look delicious. Perfect for TikTok and Reels.</div>
+      </div>
+    </div>
+
+    <div class="video-card">
+      <div class="video-frame">
+        <iframe src="https://www.youtube.com/embed/V7z7BAZdt2M" allowfullscreen></iframe>
+      </div>
+      <div class="card-content">
+        <span class="tag">Lighting</span>
+        <div class="v-title">Restaurant Lighting 101</div>
+        <div class="v-desc">How to handle dark restaurants and use your phone's exposure lock.</div>
+      </div>
+    </div>
+
+    <div class="video-card">
+      <div class="video-frame">
+        <iframe src="https://www.youtube.com/embed/uKy7hU49n9c" allowfullscreen></iframe>
+      </div>
+      <div class="card-content">
+        <span class="tag">Editing</span>
+        <div class="v-title">Fast Editing Tricks</div>
+        <div class="v-desc">Speed up your workflow and edit a review in under 10 minutes.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottom-nav">
+    <a href="gigs.html" class="nav-item"><span class="nav-icon">🔍</span>Find Gigs</a>
+    <a href="schedule.html" class="nav-item"><span class="nav-icon">📅</span>Schedule</a>
+    <a href="checkin.html" class="nav-item"><span class="nav-icon">📍</span>Check In</a>
+    <a href="upload.html" class="nav-item"><span class="nav-icon">📸</span>Upload</a>
+  </div>
+
+  <script>
+    const db = supabase.createClient('https://vsgljspzmynbqfyuvyyl.supabase.co', 'sb_publishable_eH52Wo-WDJ7WkasY4GejOw_b0xUYZ-_');
+    function toggleMenu() { document.getElementById('side-menu').classList.toggle('open'); document.getElementById('overlay').classList.toggle('open'); }
+    async function logout() { await db.auth.signOut(); window.location.href='index.html'; }
+  </script>
+</body>
+</html>
