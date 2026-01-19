@@ -551,8 +551,6 @@
     }
 
     async function handleSignup() {
-      // DEBUG: Force feedback
-      console.log("Signup initiated");
 
       const email = document.getElementById('s-email').value;
       const password = document.getElementById('s-pass').value;
@@ -581,10 +579,7 @@
           options: { data: { full_name: name } }
         });
 
-        if (error) {
-          alert("Signup Error: " + error.message); // VISIBLE ERROR
-          throw error;
-        }
+        if (error) throw error;
 
         // 2. Trigger Make.com Webhook
         try {
@@ -598,14 +593,12 @@
         }
 
         // 3. Redirect
-        // alert("Success! Redirecting...");
         window.location.href = 'gigs.html';
 
       } catch (err) {
         // Handle Error
         console.error(err);
         msg.innerText = err.message || "An error occurred during signup.";
-        alert("Error: " + (err.message || "Unknown error"));
         btn.innerHTML = 'Submit Application';
         btn.disabled = false;
         btn.style.opacity = '1';
