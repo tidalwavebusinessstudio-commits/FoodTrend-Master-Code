@@ -1,156 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Refer & Earn - FoodTrend</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root { --primary: #ff4b1f; --bg: #f8f9fa; }
-  body { background: var(--bg); font-family: 'Poppins', sans-serif; margin: 0; padding-bottom: 90px; }
-  a { text-decoration: none; color: inherit; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Refer & Earn - FoodTrend</title>
 
-  /* HEADER */
-  .header { background: white; padding: 15px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 50; }
-  .menu-btn { font-size: 24px; cursor: pointer; }
-  .logo { height: 35px; }
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-  /* HERO SECTION */
-  .referral-hero {
-    background: linear-gradient(135deg, #ff4b1f, #ff9068);
-    color: white; padding: 40px 20px 80px 20px; text-align: center; border-radius: 0 0 30px 30px;
-  }
-  .money-icon { font-size: 50px; margin-bottom: 10px; display: block; animation: float 3s ease-in-out infinite; }
-  @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
-
-  /* CARD */
-  .card-container { padding: 0 20px; margin-top: -60px; }
-  .card { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; }
-
-  /* QR CODE BOX */
-  .qr-box { 
-    background: white; padding: 15px; border-radius: 12px; 
-    border: 2px solid #eee; display: inline-block; margin-bottom: 20px;
-  }
-  .qr-img { width: 160px; height: 160px; display: block; }
-
-  /* COPY LINK BOX */
-  .link-box { 
-    background: #f0f0f0; border: 2px dashed #ccc; border-radius: 12px; 
-    padding: 15px; margin: 20px 0; font-family: monospace; font-size: 14px; 
-    word-break: break-all; color: #555; cursor: pointer; position: relative;
-  }
-  .link-box:active { background: #e0e0e0; }
-  .copy-label { font-size: 10px; color: var(--primary); font-weight: 700; text-transform: uppercase; margin-top: 5px; display: block; }
-
-  /* TIERS */
-  .tier-list { text-align: left; margin-top: 30px; }
-  .tier-item { display: flex; gap: 15px; margin-bottom: 20px; }
-  .tier-icon { width: 40px; height: 40px; background: #e0fbf4; color: #00b894; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; }
-  .tier-info h4 { margin: 0 0 5px 0; font-size: 15px; }
-  .tier-info p { margin: 0; font-size: 13px; color: #999; line-height: 1.4; }
-
-  /* MENU & NAV (Standard) */
-  .side-menu { position: fixed; top: 0; left: -280px; width: 280px; height: 100%; background: white; z-index: 200; transition: 0.3s; padding-top: 20px; box-shadow: 4px 0 15px rgba(0,0,0,0.1); }
-  .side-menu.open { left: 0; }
-  .menu-link { display: block; padding: 15px 20px; border-bottom: 1px solid #eee; font-weight: 500; }
-  .overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:150; }
-  .overlay.open { display:block; }
-  .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: white; padding: 12px 0; border-top: 1px solid #eee; display: flex; justify-content: space-around; z-index: 100; }
-  .nav-item { text-align: center; color: #b2bec3; font-size: 10px; font-weight: 500; width: 25%; }
-  .nav-item.active { color: var(--primary); }
-  .nav-icon { font-size: 22px; display: block; margin-bottom: 4px; }
-</style>
+  <!-- Core Engine -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
 
-  <div class="header">
-    <div class="menu-btn" onclick="toggleMenu()">☰</div>
-    <img src="https://via.placeholder.com/150x50?text=FoodTrend" class="logo">
-    <div style="width:24px;"></div>
-  </div>
+  <!-- Background Engine -->
+  <div class="map-bg"></div>
 
-  <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
-  <div class="side-menu" id="side-menu">
-    <div style="padding:0 20px 20px 20px; font-size:18px; font-weight:700; color:var(--primary);">Menu</div>
-    <a href="profile.html" class="menu-link">👤 My Profile</a>
-    <a href="referrals.html" class="menu-link">💸 Refer & Earn</a>
-    <a href="academy.html" class="menu-link">🎓 Academy</a>
-    <a href="shop.html" class="menu-link">🛍️ Shop</a>
-    <a onclick="logout()" class="menu-link" style="color:red;">🚪 Log Out</a>
-  </div>
+  <!-- Sticky Header -->
+  <header class="app-header glass">
+    <div class="logo">
+      <i class="ph-fill ph-currency-dollar text-primary"></i>
+      Refer
+    </div>
+    <div class="user-avatar-btn" onclick="toggleMenu()">
+      <i class="ph ph-list text-white" style="font-size: 20px;"></i>
+    </div>
+  </header>
 
-  <div class="referral-hero">
-    <span class="money-icon">💸</span>
-    <h1 style="margin:0; font-size:24px;">Invite Restaurants</h1>
-    <p style="margin:5px 0 0 0; opacity:0.9;">Build your residual income.</p>
-  </div>
+  <!-- Side Menu Overlay -->
+  <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
+  <nav class="side-menu glass" id="sideMenu">
+    <div style="margin-bottom: 30px; font-weight:800; font-size:24px;">Menu</div>
+    <a href="profile.html" class="menu-link"><i class="ph ph-user-circle"></i> My Profile</a>
+    <a href="referrals.html" class="menu-link"><i class="ph ph-currency-dollar"></i> Refer & Earn</a>
+    <a href="academy.html" class="menu-link"><i class="ph ph-graduation-cap"></i> Academy</a>
+    <a href="shop.html" class="menu-link"><i class="ph ph-storefront"></i> Shop</a>
+    <div style="margin-top: auto; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">
+      <a onclick="logout()" class="menu-link" style="color: #ff4444;"><i class="ph ph-sign-out"></i> Log Out</a>
+    </div>
+  </nav>
 
-  <div class="card-container">
-    <div class="card">
-      <div style="font-weight:700; margin-bottom:15px; font-size:14px; color:#555;">SCAN TO SIGN UP</div>
-      
-      <div class="qr-box">
-        <img id="qr-img" src="" class="qr-img">
+  <!-- Main Content -->
+  <main class="content-container">
+    <div class="hero-box glass"
+      style="border-radius: 20px; background: linear-gradient(135deg, rgba(255,48,8,0.2), rgba(0,0,0,0));">
+      <span style="font-size: 50px; display: block; margin-bottom: 10px;">💸</span>
+      <h1>Invite Restaurants</h1>
+      <p style="color:white; opacity:0.9;">Build your residual income.</p>
+    </div>
+
+    <div class="glass" style="padding: 25px; border-radius: 20px; text-align: center; margin-bottom: 20px;">
+      <div style="font-weight:700; margin-bottom:15px; font-size:14px; color:var(--text-gray);">SCAN TO SIGN UP</div>
+
+      <div style="background: white; padding: 15px; border-radius: 12px; display: inline-block; margin-bottom: 20px;">
+        <img id="qr-img" src="" style="width: 160px; height: 160px; display: block;">
       </div>
 
-      <div class="link-box" onclick="copyLink()">
-        <span id="ref-link">Loading...</span>
-        <span class="copy-label">Tap to Copy Link</span>
+      <div onclick="copyLink()"
+        style="background: rgba(255,255,255,0.1); border: 2px dashed rgba(255,255,255,0.2); border-radius: 12px; padding: 15px; cursor: pointer; position: relative;">
+        <span id="ref-link"
+          style="font-family: monospace; font-size: 14px; word-break: break-all; color: var(--text-white);">Loading...</span>
+        <span
+          style="font-size: 10px; color: var(--primary); font-weight: 700; text-transform: uppercase; margin-top: 5px; display: block;">Tap
+          to Copy Link</span>
       </div>
 
-      <div class="tier-list">
-        <div class="tier-item">
-          <div class="tier-icon">1</div>
-          <div class="tier-info">
-            <h4>$250 / Month</h4>
-            <p>For the first 3 months, you earn $250 per month for every restaurant that signs up using your code.</p>
+      <!-- Tiers -->
+      <div style="text-align: left; margin-top: 30px;">
+        <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+          <div
+            style="width: 40px; height: 40px; background: #e0fbf4; color: #00b894; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0;">
+            1</div>
+          <div>
+            <h4 style="margin: 0 0 5px 0; font-size: 15px;">$250 / Month</h4>
+            <p style="margin: 0; font-size: 13px; color: var(--text-gray); line-height: 1.4;">For the first 3 months,
+              you earn $250 per month for every restaurant that signs up using your code.</p>
           </div>
         </div>
-        
-        <div class="tier-item">
-          <div class="tier-icon" style="background:#fff3cd; color:#ffc107;">2</div>
-          <div class="tier-info">
-            <h4>$50 / Month</h4>
-            <p>After the first 3 months, you continue to earn $50/mo residual income for the remainder of the year.</p>
+
+        <div style="display: flex; gap: 15px;">
+          <div
+            style="width: 40px; height: 40px; background: #fff3cd; color: #ffc107; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0;">
+            2</div>
+          <div>
+            <h4 style="margin: 0 0 5px 0; font-size: 15px;">$50 / Month</h4>
+            <p style="margin: 0; font-size: 13px; color: var(--text-gray); line-height: 1.4;">After the first 3 months,
+              you continue to earn $50/mo residual income for the remainder of the year.</p>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </main>
 
-  <div class="bottom-nav">
-    <a href="gigs.html" class="nav-item"><span class="nav-icon">🔍</span>Find Gigs</a>
-    <a href="schedule.html" class="nav-item"><span class="nav-icon">📅</span>Schedule</a>
-    <a href="checkin.html" class="nav-item"><span class="nav-icon">📍</span>Check In</a>
-    <a href="upload.html" class="nav-item"><span class="nav-icon">📸</span>Upload</a>
-  </div>
+  <!-- Bottom Nav -->
+  <nav class="bottom-nav glass">
+    <a href="gigs.html" class="nav-item"><i class="ph ph-magnifying-glass"></i> Gigs</a>
+    <a href="schedule.html" class="nav-item"><i class="ph ph-calendar-blank"></i> Plan</a>
+    <a href="upload.html" class="nav-item"><i class="ph ph-plus-circle"></i> Post</a>
+    <a href="profile.html" class="nav-item"><i class="ph ph-user"></i> You</a>
+  </nav>
 
   <script>
-    // PRE-FILLED KEYS
     const sbUrl = 'https://vsgljspzmynbqfyuvyyl.supabase.co';
     const sbKey = 'sb_publishable_eH52Wo-WDJ7WkasY4GejOw_b0xUYZ-_';
     const db = supabase.createClient(sbUrl, sbKey);
-    
-    function toggleMenu() { document.getElementById('side-menu').classList.toggle('open'); document.getElementById('overlay').classList.toggle('open'); }
-    async function logout() { await db.auth.signOut(); window.location.href='index.html'; }
 
-    // GENERATE LINK & QR
+    function toggleMenu() {
+      document.getElementById('sideMenu').classList.toggle('open');
+      document.getElementById('menuOverlay').classList.toggle('open');
+    }
+
+    async function logout() { await db.auth.signOut(); window.location.href = 'index.html'; }
+
     async function loadLink() {
       const { data: { session } } = await db.auth.getSession();
-      if(session) {
-        // 1. Get User ID
-        const userId = session.user.id.slice(0, 8); 
-        
-        // 2. Create the Destination URL (This should eventually be your GHL Funnel Link)
-        // For now, we point it to a "Demo" page, but you will change this to your GHL Funnel later.
+      if (session) {
+        const userId = session.user.id.slice(0, 8);
         const funnelLink = `https://your-ghl-funnel.com/restaurant-offer?ref=${userId}`;
-        
-        // 3. Update Text
+
         document.getElementById('ref-link').innerText = funnelLink;
-        
-        // 4. Update QR Code
         const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(funnelLink)}`;
         document.getElementById('qr-img').src = qrUrl;
 
@@ -168,4 +140,5 @@
     loadLink();
   </script>
 </body>
+
 </html>

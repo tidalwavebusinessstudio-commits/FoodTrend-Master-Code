@@ -7,77 +7,23 @@
   <title>FoodTrend - Creator Access</title>
 
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="manifest" href="manifest.json">
 
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+  <!-- Core Engine -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+
   <style>
-    /* --- VARIABLES --- */
-    :root {
-      --neon: #FF4B1F;
-      --border: rgba(0, 0, 0, 0.08);
-      --bg: #ffffff;
-      --bg-alt: #f9f9f9;
-      --text-main: #1a1a1a;
-      --text-sub: #666666;
-    }
-
+    /* Landing Specific Overrides */
     body {
-      font-family: 'Outfit', sans-serif;
-      margin: 0;
-      color: var(--text-main);
-      background: var(--bg);
-      overflow-x: hidden;
+      padding-bottom: 0;
     }
 
-    /* NAVBAR */
-    .navbar-glass {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      padding: 15px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 100;
-      background: #ffffff;
-      box-sizing: border-box;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .logo {
-      font-weight: 800;
-      font-size: 20px;
-      letter-spacing: -1px;
-      color: var(--neon);
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 15px;
-      align-items: center;
-    }
-
-    .nav-link {
-      font-size: 13px;
-      color: var(--text-main);
-      font-weight: 600;
-      text-decoration: none;
-    }
-
-    .btn-login-nav {
-      font-size: 12px;
-      font-weight: 700;
-      padding: 8px 16px;
-      background: #111;
-      color: white;
-      border-radius: 20px;
-      cursor: pointer;
-    }
-
-    /* HERO */
     .hero-section {
       position: relative;
       height: 85vh;
@@ -93,43 +39,58 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.1));
+      background: linear-gradient(to right, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.3));
     }
 
     .hero-content {
       position: relative;
       z-index: 2;
       padding: 30px;
-      max-width: 500px;
+      max-width: 600px;
       margin-top: 60px;
-      color: white;
     }
 
     .hero-title {
-      font-size: 48px;
+      font-size: 56px;
       line-height: 1;
       font-weight: 800;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
       letter-spacing: -2px;
+      color: white;
     }
 
     .hero-sub {
+      font-size: 20px;
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 40px;
+      line-height: 1.5;
+      font-weight: 400;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 16px 40px;
+      border-radius: 99px;
       font-size: 18px;
-      color: rgba(255, 255, 255, 0.9);
-      margin-bottom: 30px;
-      line-height: 1.4;
-      font-weight: 500;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 8px 30px rgba(255, 48, 8, 0.4);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: 0.2s;
+      text-decoration: none;
     }
 
-    /* === ZIG-ZAG LAYOUT SYSTEM === */
-    .dd-section {
-      padding: 80px 20px;
-      border-bottom: 1px solid var(--border);
-      background: var(--bg);
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      background: var(--primary-hover);
     }
 
-    .dd-section:nth-child(even) {
-      background: var(--bg-alt);
+    .btn-primary:active {
+      transform: scale(0.98);
     }
 
     .dd-container {
@@ -137,8 +98,23 @@
       grid-template-columns: 1fr 1fr;
       align-items: center;
       gap: 60px;
-      max-width: 1100px;
+      max-width: 1200px;
       margin: 0 auto;
+    }
+
+    .dd-text-box h2 {
+      font-size: 40px;
+      margin: 0 0 20px 0;
+      font-weight: 800;
+      color: white;
+      line-height: 1.1;
+    }
+
+    .dd-text-box p {
+      font-size: 18px;
+      color: var(--text-gray);
+      margin-bottom: 30px;
+      line-height: 1.6;
     }
 
     .dd-image-box img {
@@ -146,243 +122,70 @@
       height: 400px;
       object-fit: cover;
       border-radius: 24px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--glass-border);
     }
 
-    .dd-text-box h2 {
-      font-size: 36px;
-      margin: 0 0 15px 0;
-      font-weight: 800;
-      color: var(--text-main);
-      line-height: 1.1;
-    }
+    @media (max-width: 768px) {
+      .dd-container {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 40px;
+      }
 
-    .dd-text-box p {
-      font-size: 18px;
-      color: var(--text-sub);
-      margin-bottom: 30px;
-      line-height: 1.5;
-    }
+      .hero-title {
+        font-size: 42px;
+      }
 
-    /* ZIG-ZAG LOGIC (Desktop) */
-    @media (min-width: 769px) {
+      .dd-text-box h2 {
+        font-size: 32px;
+      }
+
       .dd-reverse .dd-text-box {
         order: 1;
       }
 
       .dd-reverse .dd-image-box {
-        order: 2;
-      }
-
-      .dd-image-box {
-        order: 1;
-      }
-
-      .dd-text-box {
-        order: 2;
-      }
-    }
-
-    /* MOBILE LOGIC */
-    @media (max-width: 768px) {
-      .dd-container {
-        grid-template-columns: 1fr;
-        text-align: center;
-        gap: 30px;
-      }
-
-      .dd-image-box img {
-        height: 250px;
-      }
-
-      .dd-image-box {
         order: -1;
       }
-
-      .dd-text-box {
-        order: 1;
-      }
-
-      .hero-title {
-        font-size: 36px;
-      }
-    }
-
-    /* MONEY BAR */
-    .money-bar-container {
-      background: white;
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 25px;
-      border: 1px solid #eee;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-      text-align: left;
-    }
-
-    .bar-track {
-      background: #f0f0f0;
-      height: 10px;
-      border-radius: 5px;
-      overflow: hidden;
-      margin-top: 10px;
-    }
-
-    .bar-fill {
-      height: 100%;
-      background: var(--neon);
-      width: 0%;
-      transition: width 2s ease-out;
-      border-radius: 5px;
-    }
-
-    /* FOOTER */
-    .footer {
-      padding: 60px 20px;
-      text-align: center;
-      background: #fafafa;
-      border-top: 1px solid #eee;
-    }
-
-    .footer-links a {
-      color: var(--text-sub);
-      text-decoration: none;
-      margin: 0 10px;
-      font-size: 14px;
-    }
-
-    /* BUTTONS */
-    .btn-primary {
-      background: var(--neon);
-      color: white;
-      border: none;
-      padding: 15px 35px;
-      border-radius: 99px;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 8px 20px rgba(255, 75, 31, 0.25);
-      display: inline-block;
-      transition: 0.2s;
-    }
-
-    .btn-primary:active {
-      transform: scale(0.98);
-    }
-
-    /* MODALS */
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      backdrop-filter: blur(5px);
-    }
-
-    .modal-box {
-      background: white;
-      padding: 40px;
-      border-radius: 24px;
-      width: 85%;
-      max-width: 400px;
-      text-align: center;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-    }
-
-    /* INPUT SECURITY WRAPPER */
-    .input-group {
-      position: relative;
-      margin-bottom: 15px;
-    }
-
-    .input-icon {
-      position: absolute;
-      left: 15px;
-      top: 15px;
-      opacity: 0.4;
-      pointer-events: none;
-    }
-
-    .toggle-password {
-      position: absolute;
-      right: 15px;
-      top: 15px;
-      opacity: 0.4;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    input {
-      width: 100%;
-      padding: 15px 15px 15px 45px;
-      background: #f8f9fa;
-      border: 1px solid #eee;
-      border-radius: 12px;
-      color: #333;
-      box-sizing: border-box;
-      font-size: 16px;
-      transition: 0.2s;
-    }
-
-    input:focus {
-      border-color: var(--neon);
-      outline: none;
-      background: white;
-    }
-
-    .security-badge {
-      font-size: 10px;
-      color: #999;
-      margin-top: 15px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 5px;
-    }
-
-    h2 {
-      margin-top: 0;
-      color: var(--text-main);
-      margin-bottom: 5px;
-    }
-
-    .modal-sub {
-      font-size: 14px;
-      color: #999;
-      margin-bottom: 25px;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="navbar-glass">
-    <div class="logo">FoodTrend</div>
-    <div class="nav-links">
-      <a href="#about" class="nav-link">About</a>
-      <a href="https://your-ghl-restaurant-link.com" class="nav-link" style="color:var(--neon);">For Restaurants</a>
-      <div class="btn-login-nav" onclick="document.getElementById('modal-login').style.display='flex'">Log In</div>
+  <!-- Navbar -->
+  <div class="app-header glass" style="position: fixed; width: 100%;">
+    <div class="logo">
+      <i class="ph-fill ph-fire text-primary"></i>
+      FoodTrend
     </div>
-  </div>
-
-  <div class="hero-section">
-    <div class="overlay-bg"></div>
-    <div class="hero-content">
-      <div class="hero-title">Eat Like Royalty.<br>Build Your Empire.</div>
-      <div class="hero-sub">The exclusive network where creators get free meals, master video skills, and unlock paid
-        brand sponsorships.</div>
-      <div class="btn-primary" onclick="document.getElementById('modal-signup').style.display='flex'">Apply for Access
+    <div style="display: flex; gap: 20px; align-items: center;">
+      <a href="https://your-ghl-restaurant-link.com" class="text-gray"
+        style="text-decoration:none; font-size:14px; font-weight:600; display:none; @media(min-width:600px){display:block;}">For
+        Restaurants</a>
+      <div onclick="document.getElementById('modal-login').classList.add('active')"
+        style="font-size: 14px; font-weight: 700; padding: 10px 20px; background: rgba(255,255,255,0.1); border-radius: 20px; cursor: pointer; color: white; border: 1px solid var(--glass-border);">
+        Log In
       </div>
     </div>
   </div>
 
-  <div class="dd-section">
+  <!-- Hero -->
+  <div class="hero-section">
+    <div class="overlay-bg"></div>
+    <div class="hero-content">
+      <div class="hero-title">Eat Like Royalty.<br><span class="text-primary">Build Your Empire.</span></div>
+      <div class="hero-sub">The exclusive network where creators get free meals, master video skills, and unlock paid
+        brand sponsorships.</div>
+      <div class="btn-primary" onclick="document.getElementById('modal-signup').classList.add('active')">
+        Apply for Access <i class="ph-bold ph-arrow-right"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 1 -->
+  <div class="landing-section">
     <div class="dd-container">
       <div class="dd-image-box"><img
           src="https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=800&auto=format&fit=crop"></div>
@@ -390,27 +193,29 @@
         <h2>Dine at the Hottest Spots for Free.</h2>
         <p>Forget paying for content. Use your Creator Credits to access complimentary meals at the city's most viral
           restaurants, hidden gems, and 5-star experiences.</p>
-        <div class="btn-primary" onclick="document.getElementById('modal-signup').style.display='flex'">Start Eating
+        <div class="btn-primary" onclick="document.getElementById('modal-signup').classList.add('active')">Start Eating
         </div>
       </div>
     </div>
   </div>
 
-  <div class="dd-section">
+  <!-- Section 2 -->
+  <div class="landing-section" style="background: rgba(255,255,255,0.02);">
     <div class="dd-container dd-reverse">
       <div class="dd-text-box">
         <h2>Create Content That Stops the Scroll.</h2>
         <p>We don't just feed you; we teach you. Access our Creator Academy to master food cinematography, lighting, and
           editing hooks that blow up on TikTok and Reels.</p>
-        <div class="btn-primary" onclick="document.getElementById('modal-signup').style.display='flex'">Level Up Skills
-        </div>
+        <div class="btn-primary" onclick="document.getElementById('modal-signup').classList.add('active')">Level Up
+          Skills</div>
       </div>
       <div class="dd-image-box"><img
           src="https://images.unsplash.com/photo-1512428559087-560fa5ce7d87?q=80&w=800&auto=format&fit=crop"></div>
     </div>
   </div>
 
-  <div class="dd-section">
+  <!-- Section 3 -->
+  <div class="landing-section">
     <div class="dd-container">
       <div class="dd-image-box"><img
           src="https://images.unsplash.com/photo-1579621970795-87facc2f976d?q=80&w=800&auto=format&fit=crop"></div>
@@ -418,29 +223,34 @@
         <h2>Stop Spending. Start Saving.</h2>
         <p>The average foodie spends hundreds a month on restaurants. FoodTrend members keep that cash in their pocket.
         </p>
-        <div class="money-bar-container">
-          <div
-            style="display:flex; justify-content:space-between; font-size:14px; font-weight:700; margin-bottom:5px; color:#333;">
-            <span>Monthly Savings</span><span style="color:var(--neon);">$200+/mo</span>
+
+        <!-- Money Bar -->
+        <div class="glass" style="padding: 20px; border-radius: 16px; margin-bottom: 30px;">
+          <div style="display:flex; justify-content:space-between; font-weight:700; margin-bottom:10px;">
+            <span>Monthly Savings</span> <span class="text-primary">$200+/mo</span>
           </div>
-          <div class="bar-track">
-            <div id="bar-anim" class="bar-fill"></div>
+          <div style="height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow:hidden;">
+            <div id="bar-anim"
+              style="height:100%; width:0%; background: var(--primary); border-radius: 4px; transition: width 2s ease;">
+            </div>
           </div>
-          <div style="font-size:11px; color:#999; margin-top:8px;">*Based on just 2 gigs per week.</div>
+          <div style="font-size: 11px; color: var(--text-gray); margin-top: 10px;">*Based on just 2 gigs per week.</div>
         </div>
-        <div class="btn-primary" onclick="document.getElementById('modal-signup').style.display='flex'">Calculate
+
+        <div class="btn-primary" onclick="document.getElementById('modal-signup').classList.add('active')">Calculate
           Savings</div>
       </div>
     </div>
   </div>
 
-  <div class="dd-section">
+  <!-- Section 4 -->
+  <div class="landing-section" style="background: rgba(255,255,255,0.02);">
     <div class="dd-container dd-reverse">
       <div class="dd-text-box">
         <h2>Unlock Paid Brand Sponsorships.</h2>
         <p>Once you prove your impact, you unlock paid gigs. Top creators are earning residuals promoting brands they
           love.</p>
-        <div class="btn-primary" onclick="document.getElementById('modal-signup').style.display='flex'">See Earnings
+        <div class="btn-primary" onclick="document.getElementById('modal-signup').classList.add('active')">See Earnings
         </div>
       </div>
       <div class="dd-image-box"><img
@@ -448,90 +258,85 @@
     </div>
   </div>
 
-  <div class="dd-section">
-    <div class="dd-container">
-      <div class="dd-image-box"><img
-          src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?q=80&w=800&auto=format&fit=crop"></div>
-      <div class="dd-text-box">
-        <h2>Join the Exclusive Network.</h2>
-        <p>FoodTrend isn't for everyone. It's for creators serious about food. Connect with a community of like-minded
-          foodies.</p>
-        <div class="btn-primary" onclick="document.getElementById('modal-signup').style.display='flex'">Apply Now</div>
+  <!-- Footer -->
+  <div style="padding: 80px 20px; text-align: center; border-top: 1px solid var(--glass-border);">
+    <div class="logo" style="justify-content: center; margin-bottom: 20px;">
+      <i class="ph-fill ph-fire text-primary"></i> FoodTrend
+    </div>
+    <p class="text-gray" style="max-width: 500px; margin: 0 auto 40px auto;">Our mission is to empower local restaurants
+      with authentic creator marketing.</p>
+    <div style="display: flex; gap: 20px; justify-content: center; font-size: 14px;">
+      <a href="#" class="text-gray" style="text-decoration:none;">Privacy Policy</a>
+      <a href="#" class="text-gray" style="text-decoration:none;">Terms of Service</a>
+      <a href="https://your-ghl-restaurant-link.com" class="text-primary"
+        style="text-decoration:none; font-weight:700;">Restaurant Sign Up</a>
+    </div>
+    <div style="margin-top: 40px; font-size: 12px; color: #555;">© 2026 FoodTrend Inc.</div>
+  </div>
+
+  <!-- Signup Modal -->
+  <div id="modal-signup" class="modal-overlay">
+    <div class="modal-content glass">
+      <button class="close-modal" onclick="this.closest('.modal-overlay').classList.remove('active')"><i
+          class="ph ph-x"></i></button>
+      <div style="text-align:center;">
+        <h2>Apply for Access</h2>
+        <p class="text-gray" style="margin-bottom: 20px;">Create your secure creator account.</p>
+
+        <div style="text-align:left; display:flex; flex-direction:column; gap:15px;">
+          <div class="glass" style="display:flex; align-items:center; padding: 0 15px; border-radius:12px;">
+            <i class="ph ph-user text-gray"></i>
+            <input type="text" id="s-name" placeholder="Full Name" class="search-input" style="padding: 15px;">
+          </div>
+
+          <div class="glass" style="display:flex; align-items:center; padding: 0 15px; border-radius:12px;">
+            <i class="ph ph-envelope text-gray"></i>
+            <input type="email" id="s-email" placeholder="Email Address" class="search-input" style="padding: 15px;">
+          </div>
+
+          <div class="glass" style="display:flex; align-items:center; padding: 0 15px; border-radius:12px;">
+            <i class="ph ph-lock text-gray"></i>
+            <input type="password" id="s-pass" placeholder="Create Password" class="search-input"
+              style="padding: 15px;">
+          </div>
+        </div>
+
+        <button id="btn-signup" onclick="handleSignup()" class="btn-primary"
+          style="margin-top: 25px; width: 100%; justify-content: center;">Submit Application</button>
+        <div id="s-msg" style="color: #ff4444; font-size: 12px; margin-top: 10px;"></div>
+
+        <div style="margin-top: 20px; font-size: 11px; color: var(--text-gray);">
+          <i class="ph-fill ph-lock-key"></i> 256-bit SSL Encrypted
+        </div>
       </div>
     </div>
   </div>
 
-  <div id="about" class="footer">
-    <div class="logo" style="margin-bottom:20px;">FoodTrend</div>
-    <p style="color:#666; max-width:500px; margin:0 auto 30px auto;">Our mission is to empower local restaurants with
-      authentic creator marketing.</p>
-    <div class="footer-links">
-      <a href="#">Privacy Policy</a>
-      <a href="#">Terms of Service</a>
-      <a href="https://your-ghl-restaurant-link.com" style="color:var(--neon); font-weight:700;">Restaurant Sign Up</a>
-    </div>
-    <div style="margin-top:40px; font-size:12px; color:#999;">© 2026 FoodTrend Inc.</div>
-  </div>
+  <!-- Login Modal -->
+  <div id="modal-login" class="modal-overlay">
+    <div class="modal-content glass" style="min-height: auto;">
+      <button class="close-modal" onclick="this.closest('.modal-overlay').classList.remove('active')"><i
+          class="ph ph-x"></i></button>
+      <div style="text-align:center;">
+        <h2>Welcome Back</h2>
+        <p class="text-gray" style="margin-bottom: 20px;">Enter your credentials to continue.</p>
 
-  <div id="modal-signup" class="modal">
-    <div class="modal-box">
-      <h2>Apply for Access</h2>
-      <div class="modal-sub">Create your secure creator account.</div>
+        <div style="text-align:left; display:flex; flex-direction:column; gap:15px;">
+          <div class="glass" style="display:flex; align-items:center; padding: 0 15px; border-radius:12px;">
+            <i class="ph ph-envelope text-gray"></i>
+            <input type="email" id="l-email" placeholder="Email" class="search-input" style="padding: 15px;">
+          </div>
 
-      <div class="input-group">
-        <span class="input-icon">👤</span>
-        <input type="text" id="s-name" placeholder="Full Name">
+          <div class="glass" style="display:flex; align-items:center; padding: 0 15px; border-radius:12px;">
+            <i class="ph ph-lock text-gray"></i>
+            <input type="password" id="l-pass" placeholder="Password" class="search-input" style="padding: 15px;">
+          </div>
+        </div>
+
+        <button onclick="handleLogin()" class="btn-primary"
+          style="margin-top: 25px; width: 100%; justify-content: center;">Enter</button>
+        <div id="l-msg" style="color: #ff4444; font-size: 12px; margin-top: 10px;"></div>
       </div>
-
-      <div class="input-group">
-        <span class="input-icon">✉️</span>
-        <input type="email" id="s-email" placeholder="Email Address">
-      </div>
-
-      <div class="input-group">
-        <span class="input-icon">🔒</span>
-        <input type="password" id="s-pass" placeholder="Create Password">
-        <span class="toggle-password" onclick="togglePass('s-pass')">Show</span>
-      </div>
-
-      <button id="btn-signup" onclick="handleSignup()" class="btn-primary" style="margin-top:10px; width:100%;">Submit
-        Application</button>
-      <div id="s-msg" style="color:red; font-size:12px; margin-top:10px;"></div>
-
-      <div class="security-badge">
-        <span>🔒 256-bit SSL Encrypted</span>
-      </div>
-
-      <div style="margin-top:20px; font-size:14px; opacity:0.6; cursor:pointer;"
-        onclick="this.closest('.modal').style.display='none'">Close</div>
-    </div>
-  </div>
-
-  <div id="modal-login" class="modal">
-    <div class="modal-box">
-      <h2>Welcome Back</h2>
-      <div class="modal-sub">Enter your credentials to continue.</div>
-
-      <div class="input-group">
-        <span class="input-icon">✉️</span>
-        <input type="email" id="l-email" placeholder="Email">
-      </div>
-
-      <div class="input-group">
-        <span class="input-icon">🔒</span>
-        <input type="password" id="l-pass" placeholder="Password">
-        <span class="toggle-password" onclick="togglePass('l-pass')">Show</span>
-      </div>
-
-      <button onclick="handleLogin()" class="btn-primary" style="margin-top:10px; width:100%;">Enter</button>
-
-      <div class="security-badge">
-        <span>🔒 Secured by Supabase</span>
-      </div>
-
-      <div style="margin-top:20px; font-size:14px; opacity:0.6; cursor:pointer;"
-        onclick="this.closest('.modal').style.display='none'">Close</div>
-      <div id="l-msg" style="color:red; font-size:12px; margin-top:10px;"></div>
     </div>
   </div>
 
@@ -544,14 +349,7 @@
       setTimeout(() => { document.getElementById('bar-anim').style.width = '85%'; }, 500);
     };
 
-    function togglePass(id) {
-      const input = document.getElementById(id);
-      if (input.type === "password") { input.type = "text"; }
-      else { input.type = "password"; }
-    }
-
     async function handleSignup() {
-
       const email = document.getElementById('s-email').value;
       const password = document.getElementById('s-pass').value;
       const name = document.getElementById('s-name').value;
@@ -559,20 +357,19 @@
       const msg = document.getElementById('s-msg');
 
       if (!email || !password) {
-        alert("Please enter both email and password.");
+        msg.innerText = "Please enter both email and password.";
         return;
       }
 
-      // Reset state
       msg.innerText = '';
-      btn.innerHTML = 'Processing...';
+      btn.innerHTML = '<i class="ph ph-spinner-gap" style="animation:spin 1s linear infinite"></i> Processing...';
       btn.disabled = true;
       btn.style.opacity = '0.7';
 
       try {
-        if (!db) throw new Error("Database connection failed (db is undefined)");
+        if (!db) throw new Error("Database connection failed");
 
-        // 1. Attempt Supabase Signup
+        // 1. Supabase Signup
         const { data, error } = await db.auth.signUp({
           email,
           password,
@@ -581,7 +378,7 @@
 
         if (error) throw error;
 
-        // 2. Trigger Make.com Webhook
+        // 2. Make.com Webhook
         try {
           await fetch('https://hook.us2.make.com/la03ir2xcyt8ny7nyo9em8btj6cvc2d4', {
             method: 'POST',
@@ -592,11 +389,9 @@
           console.error('Webhook failed:', webhookError);
         }
 
-        // 3. Redirect
         window.location.href = 'gigs.html';
 
       } catch (err) {
-        // Handle Error
         console.error(err);
         msg.innerText = err.message || "An error occurred during signup.";
         btn.innerHTML = 'Submit Application';

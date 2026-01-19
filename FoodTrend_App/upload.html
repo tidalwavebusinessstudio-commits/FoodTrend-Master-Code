@@ -1,102 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Upload - FoodTrend</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root { --primary: #ff4b1f; --bg: #f8f9fa; }
-  body { background: var(--bg); font-family: 'Poppins', sans-serif; margin: 0; padding-bottom: 90px; }
-  a { text-decoration: none; color: inherit; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Upload - FoodTrend</title>
 
-  .header { background: white; padding: 15px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-  .menu-btn { font-size: 24px; cursor: pointer; }
-  .logo { height: 35px; }
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-  /* UPLOAD UI */
-  .container { padding: 40px 20px; max-width: 500px; margin: 0 auto; }
-  .card { background: white; padding: 30px; border-radius: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-  .btn-select { background: #f0f0f0; border: 2px dashed #ccc; padding: 20px; width: 100%; border-radius: 12px; cursor: pointer; font-weight: 600; margin-bottom: 20px; display: block; box-sizing: border-box; }
-  .btn-submit { background: var(--primary); color: white; border: none; padding: 15px; width: 100%; border-radius: 99px; font-weight: 700; cursor: pointer; display: none; }
-  
-  /* MENU (Standard) */
-  .side-menu { position: fixed; top: 0; left: -280px; width: 280px; height: 100%; background: white; z-index: 200; transition: 0.3s; padding-top: 20px; box-shadow: 4px 0 15px rgba(0,0,0,0.1); }
-  .side-menu.open { left: 0; }
-  .menu-link { display: block; padding: 15px 20px; border-bottom: 1px solid #eee; font-weight: 500; }
-  .overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:150; }
-  .overlay.open { display:block; }
-
-  /* BOTTOM NAV */
-  .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: white; padding: 12px 0; border-top: 1px solid #eee; display: flex; justify-content: space-around; z-index: 100; }
-  .nav-item { text-align: center; color: #b2bec3; font-size: 10px; font-weight: 500; width: 25%; }
-  .nav-item.active { color: var(--primary); }
-  .nav-icon { font-size: 22px; display: block; margin-bottom: 4px; }
-</style>
+  <!-- Core Engine -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
 
-  <div class="header">
-    <div class="menu-btn" onclick="toggleMenu()">☰</div>
-    <img src="https://via.placeholder.com/150x50?text=FoodTrend" class="logo">
-    <div style="width:24px;"></div>
-  </div>
+  <!-- Background Engine -->
+  <div class="map-bg"></div>
 
-  <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
-  <div class="side-menu" id="side-menu">
-    <div style="padding:0 20px 20px 20px; font-size:18px; font-weight:700; color:var(--primary);">Menu</div>
-    <a href="profile.html" class="menu-link">👤 My Profile</a>
-    <a href="referrals.html" class="menu-link">💸 Refer & Earn</a>
-    <a href="academy.html" class="menu-link">🎓 Academy</a>
-    <a href="shop.html" class="menu-link">🛍️ Shop</a>
-    <a onclick="logout()" class="menu-link" style="color:red;">🚪 Log Out</a>
-  </div>
-
-  <div class="container">
-    <div class="card">
-      <h2>Upload Content</h2>
-      <p style="color:#999; font-size:14px; margin-bottom:20px;">Select your video to complete the gig.</p>
-      
-      <button class="btn-select" id="btn-select" onclick="document.getElementById('file-in').click()">Choose Video</button>
-      <input type="file" id="file-in" style="display:none;" accept="video/*" onchange="fileChosen()">
-      
-      <button id="btn-submit" class="btn-submit" onclick="upload()">Submit for Review</button>
-      <div id="status" style="margin-top:15px; font-size:13px; color:#999;"></div>
+  <!-- Sticky Header -->
+  <header class="app-header glass">
+    <div class="logo">
+      <i class="ph-fill ph-camera text-primary"></i>
+      Upload
     </div>
-  </div>
+    <div class="user-avatar-btn" onclick="toggleMenu()">
+      <i class="ph ph-list text-white" style="font-size: 20px;"></i>
+    </div>
+  </header>
 
-  <div class="bottom-nav">
-    <a href="gigs.html" class="nav-item"><span class="nav-icon">🔍</span>Find Gigs</a>
-    <a href="schedule.html" class="nav-item"><span class="nav-icon">📅</span>Schedule</a>
-    <a href="checkin.html" class="nav-item"><span class="nav-icon">📍</span>Check In</a>
-    <a href="upload.html" class="nav-item active"><span class="nav-icon">📸</span>Upload</a>
-  </div>
+  <!-- Side Menu Overlay -->
+  <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
+  <nav class="side-menu glass" id="sideMenu">
+    <div style="margin-bottom: 30px; font-weight:800; font-size:24px;">Menu</div>
+    <a href="profile.html" class="menu-link"><i class="ph ph-user-circle"></i> My Profile</a>
+    <a href="referrals.html" class="menu-link"><i class="ph ph-currency-dollar"></i> Refer & Earn</a>
+    <a href="academy.html" class="menu-link"><i class="ph ph-graduation-cap"></i> Academy</a>
+    <a href="shop.html" class="menu-link"><i class="ph ph-storefront"></i> Shop</a>
+    <div style="margin-top: auto; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">
+      <a onclick="logout()" class="menu-link" style="color: #ff4444;"><i class="ph ph-sign-out"></i> Log Out</a>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="content-container">
+    <div class="glass" style="padding: 30px; border-radius: 24px; text-align: center;">
+      <i class="ph-fill ph-cloud-arrow-up text-primary" style="font-size: 48px; margin-bottom: 15px;"></i>
+      <h2 style="margin: 0 0 10px 0;">Upload Content</h2>
+      <p class="text-gray" style="font-size: 14px; margin-bottom: 30px;">
+        Select your video to complete the gig verification.
+      </p>
+
+      <button id="btn-select" onclick="document.getElementById('file-in').click()"
+        style="background: rgba(255,255,255,0.05); border: 2px dashed rgba(255,255,255,0.2); padding: 30px; width: 100%; border-radius: 16px; color: white; cursor: pointer; transition: all 0.2s;">
+        <i class="ph ph-file-video" style="font-size: 24px; display: block; margin: 0 auto 10px auto;"></i>
+        Choose Video
+      </button>
+
+      <input type="file" id="file-in" style="display:none;" accept="video/*" onchange="fileChosen()">
+
+      <button id="btn-submit" onclick="upload()"
+        style="background: var(--primary); color: white; border: none; padding: 15px; width: 100%; border-radius: 99px; font-weight: 700; cursor: pointer; margin-top: 20px; font-size: 16px; display: none; box-shadow: 0 4px 15px rgba(255, 48, 8, 0.4);">
+        Submit for Review
+      </button>
+
+      <div id="status" style="margin-top: 15px; font-size: 13px; color: var(--text-gray);"></div>
+    </div>
+  </main>
+
+  <!-- Bottom Nav -->
+  <nav class="bottom-nav glass">
+    <a href="gigs.html" class="nav-item"><i class="ph ph-magnifying-glass"></i> Gigs</a>
+    <a href="schedule.html" class="nav-item"><i class="ph ph-calendar-blank"></i> Plan</a>
+    <a href="upload.html" class="nav-item active"><i class="ph-fill ph-plus-circle"></i> Post</a>
+    <a href="profile.html" class="nav-item"><i class="ph ph-user"></i> You</a>
+  </nav>
 
   <script>
-    const db = supabase.createClient('https://vsgljspzmynbqfyuvyyl.supabase.co', 'sb_publishable_eH52Wo-WDJ7WkasY4GejOw_b0xUYZ-_');
-    
-    function toggleMenu() { document.getElementById('side-menu').classList.toggle('open'); document.getElementById('overlay').classList.toggle('open'); }
-    async function logout() { await db.auth.signOut(); window.location.href='index.html'; }
+    const sbUrl = 'https://vsgljspzmynbqfyuvyyl.supabase.co';
+    const sbKey = 'sb_publishable_eH52Wo-WDJ7WkasY4GejOw_b0xUYZ-_';
+    const db = supabase.createClient(sbUrl, sbKey);
+
+    function toggleMenu() {
+      document.getElementById('sideMenu').classList.toggle('open');
+      document.getElementById('menuOverlay').classList.toggle('open');
+    }
+
+    async function logout() { await db.auth.signOut(); window.location.href = 'index.html'; }
 
     function fileChosen() {
       const file = document.getElementById('file-in').files[0];
-      if(file) {
-        document.getElementById('btn-select').innerText = "Selected: " + file.name;
+      if (file) {
+        document.getElementById('btn-select').style.borderColor = 'var(--primary)';
+        document.getElementById('btn-select').innerHTML = `<i class="ph-fill ph-check-circle text-primary" style="font-size:24px; display:block; margin:0 auto 10px auto;"></i> ${file.name}`;
         document.getElementById('btn-submit').style.display = "block";
       }
     }
 
     async function upload() {
       const file = document.getElementById('file-in').files[0];
-      if(!file) return;
+      if (!file) return;
 
       document.getElementById('status').innerText = "Uploading... please wait.";
       const { data: { user } } = await db.auth.getUser();
-      
-      if(!user) { alert('Please log in.'); return; }
 
-      // Fake upload simulation for UX (since bucket setup might vary)
+      if (!user) { alert('Please log in.'); return; }
+
+      // Fake upload simulation
       setTimeout(() => {
         alert("Success! Your video is under review.");
         window.location.href = 'profile.html';
@@ -104,4 +116,5 @@
     }
   </script>
 </body>
+
 </html>

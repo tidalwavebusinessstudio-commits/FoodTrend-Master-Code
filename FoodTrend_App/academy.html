@@ -1,124 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Academy - FoodTrend</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root { --primary: #ff4b1f; --bg: #f8f9fa; }
-  body { background: var(--bg); font-family: 'Poppins', sans-serif; margin: 0; padding-bottom: 90px; }
-  a { text-decoration: none; color: inherit; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Academy - FoodTrend</title>
 
-  /* HEADER */
-  .header { background: white; padding: 15px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 50; }
-  .menu-btn { font-size: 24px; cursor: pointer; }
-  .logo { height: 35px; }
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-  /* HERO */
-  .academy-hero {
-    background: #2d3436; color: white; padding: 40px 20px; text-align: center;
-  }
-  .hero-title { font-size: 24px; font-weight: 700; margin-bottom: 5px; }
-  .hero-sub { opacity: 0.7; font-size: 14px; }
-
-  /* VIDEO LIST */
-  .container { padding: 20px; max-width: 600px; margin: 0 auto; }
-  .video-card { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
-  
-  /* VIDEO EMBED */
-  .video-frame { position: relative; padding-bottom: 56.25%; /* 16:9 Aspect Ratio */ height: 0; overflow: hidden; background: #000; }
-  .video-frame iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
-
-  .card-content { padding: 15px; }
-  .tag { background: #e0fbf4; color: #00b894; font-size: 10px; padding: 4px 8px; border-radius: 4px; font-weight: 700; text-transform: uppercase; }
-  .v-title { font-weight: 700; font-size: 16px; margin: 8px 0; color: #333; }
-  .v-desc { font-size: 12px; color: #999; line-height: 1.5; }
-
-  /* MENU & NAV (Standard) */
-  .side-menu { position: fixed; top: 0; left: -280px; width: 280px; height: 100%; background: white; z-index: 200; transition: 0.3s; padding-top: 20px; box-shadow: 4px 0 15px rgba(0,0,0,0.1); }
-  .side-menu.open { left: 0; }
-  .menu-link { display: block; padding: 15px 20px; border-bottom: 1px solid #eee; font-weight: 500; }
-  .overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:150; }
-  .overlay.open { display:block; }
-  .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: white; padding: 12px 0; border-top: 1px solid #eee; display: flex; justify-content: space-around; z-index: 100; }
-  .nav-item { text-align: center; color: #b2bec3; font-size: 10px; font-weight: 500; width: 25%; }
-  .nav-item.active { color: var(--primary); }
-  .nav-icon { font-size: 22px; display: block; margin-bottom: 4px; }
-</style>
+  <!-- Core Engine -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
 
-  <div class="header">
-    <div class="menu-btn" onclick="toggleMenu()">☰</div>
-    <img src="https://via.placeholder.com/150x50?text=FoodTrend" class="logo">
-    <div style="width:24px;"></div>
-  </div>
+  <!-- Background Engine -->
+  <div class="map-bg"></div>
 
-  <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
-  <div class="side-menu" id="side-menu">
-    <div style="padding:0 20px 20px 20px; font-size:18px; font-weight:700; color:var(--primary);">Menu</div>
-    <a href="profile.html" class="menu-link">👤 My Profile</a>
-    <a href="referrals.html" class="menu-link">💸 Refer & Earn</a>
-    <a href="academy.html" class="menu-link">🎓 Academy</a>
-    <a href="shop.html" class="menu-link">🛍️ Shop</a>
-    <a onclick="logout()" class="menu-link" style="color:red;">🚪 Log Out</a>
-  </div>
+  <!-- Sticky Header -->
+  <header class="app-header glass">
+    <div class="logo">
+      <i class="ph-fill ph-graduation-cap text-primary"></i>
+      Academy
+    </div>
+    <div class="user-avatar-btn" onclick="toggleMenu()">
+      <i class="ph ph-list text-white" style="font-size: 20px;"></i>
+    </div>
+  </header>
 
-  <div class="academy-hero">
-    <div class="hero-title">Creator Academy</div>
-    <div class="hero-sub">Level up your content game.</div>
-  </div>
+  <!-- Side Menu Overlay -->
+  <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
+  <nav class="side-menu glass" id="sideMenu">
+    <div style="margin-bottom: 30px; font-weight:800; font-size:24px;">Menu</div>
+    <a href="profile.html" class="menu-link"><i class="ph ph-user-circle"></i> My Profile</a>
+    <a href="referrals.html" class="menu-link"><i class="ph ph-currency-dollar"></i> Refer & Earn</a>
+    <a href="academy.html" class="menu-link"><i class="ph ph-graduation-cap"></i> Academy</a>
+    <a href="shop.html" class="menu-link"><i class="ph ph-storefront"></i> Shop</a>
+    <div style="margin-top: auto; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">
+      <a onclick="logout()" class="menu-link" style="color: #ff4444;"><i class="ph ph-sign-out"></i> Log Out</a>
+    </div>
+  </nav>
 
-  <div class="container">
-    
-    <div class="video-card">
-      <div class="video-frame">
-        <iframe src="https://www.youtube.com/embed/ScMzIvxBSi4" allowfullscreen></iframe>
-      </div>
-      <div class="card-content">
-        <span class="tag">Basics</span>
-        <div class="v-title">How to Film Food (Vertical Video)</div>
-        <div class="v-desc">Learn the angles that make food look delicious. Perfect for TikTok and Reels.</div>
-      </div>
+  <!-- Main Content -->
+  <main class="content-container">
+    <div class="hero-box glass" style="border-radius:20px;">
+      <h1>Creator Academy</h1>
+      <p>Level up your content game.</p>
     </div>
 
-    <div class="video-card">
-      <div class="video-frame">
-        <iframe src="https://www.youtube.com/embed/V7z7BAZdt2M" allowfullscreen></iframe>
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+      <!-- Video 1 -->
+      <div class="glass" style="border-radius: 16px; overflow: hidden; padding:0;">
+        <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: black;">
+          <iframe src="https://www.youtube.com/embed/ScMzIvxBSi4" allowfullscreen
+            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"></iframe>
+        </div>
+        <div style="padding: 15px;">
+          <span
+            style="background: rgba(0, 184, 148, 0.2); color: #00b894; font-size: 10px; padding: 4px 8px; border-radius: 4px; font-weight: 700; text-transform: uppercase;">Basics</span>
+          <div style="font-weight: 700; font-size: 16px; margin: 8px 0;">How to Film Food (Vertical Video)</div>
+          <div style="font-size: 12px; color: var(--text-gray); line-height: 1.5;">Learn the angles that make food look
+            delicious. Perfect for TikTok and Reels.</div>
+        </div>
       </div>
-      <div class="card-content">
-        <span class="tag">Lighting</span>
-        <div class="v-title">Restaurant Lighting 101</div>
-        <div class="v-desc">How to handle dark restaurants and use your phone's exposure lock.</div>
+
+      <!-- Video 2 -->
+      <div class="glass" style="border-radius: 16px; overflow: hidden; padding:0;">
+        <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: black;">
+          <iframe src="https://www.youtube.com/embed/V7z7BAZdt2M" allowfullscreen
+            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"></iframe>
+        </div>
+        <div style="padding: 15px;">
+          <span
+            style="background: rgba(253, 203, 110, 0.2); color: #fdcb6e; font-size: 10px; padding: 4px 8px; border-radius: 4px; font-weight: 700; text-transform: uppercase;">Lighting</span>
+          <div style="font-weight: 700; font-size: 16px; margin: 8px 0;">Restaurant Lighting 101</div>
+          <div style="font-size: 12px; color: var(--text-gray); line-height: 1.5;">How to handle dark restaurants and
+            use your phone's exposure lock.</div>
+        </div>
+      </div>
+
+      <!-- Video 3 -->
+      <div class="glass" style="border-radius: 16px; overflow: hidden; padding:0;">
+        <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: black;">
+          <iframe src="https://www.youtube.com/embed/uKy7hU49n9c" allowfullscreen
+            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"></iframe>
+        </div>
+        <div style="padding: 15px;">
+          <span
+            style="background: rgba(116, 185, 255, 0.2); color: #74b9ff; font-size: 10px; padding: 4px 8px; border-radius: 4px; font-weight: 700; text-transform: uppercase;">Editing</span>
+          <div style="font-weight: 700; font-size: 16px; margin: 8px 0;">Fast Editing Tricks</div>
+          <div style="font-size: 12px; color: var(--text-gray); line-height: 1.5;">Speed up your workflow and edit a
+            review in under 10 minutes.</div>
+        </div>
       </div>
     </div>
+  </main>
 
-    <div class="video-card">
-      <div class="video-frame">
-        <iframe src="https://www.youtube.com/embed/uKy7hU49n9c" allowfullscreen></iframe>
-      </div>
-      <div class="card-content">
-        <span class="tag">Editing</span>
-        <div class="v-title">Fast Editing Tricks</div>
-        <div class="v-desc">Speed up your workflow and edit a review in under 10 minutes.</div>
-      </div>
-    </div>
-
-  </div>
-
-  <div class="bottom-nav">
-    <a href="gigs.html" class="nav-item"><span class="nav-icon">🔍</span>Find Gigs</a>
-    <a href="schedule.html" class="nav-item"><span class="nav-icon">📅</span>Schedule</a>
-    <a href="checkin.html" class="nav-item"><span class="nav-icon">📍</span>Check In</a>
-    <a href="upload.html" class="nav-item"><span class="nav-icon">📸</span>Upload</a>
-  </div>
+  <!-- Bottom Nav -->
+  <nav class="bottom-nav glass">
+    <a href="gigs.html" class="nav-item"><i class="ph ph-magnifying-glass"></i> Gigs</a>
+    <a href="schedule.html" class="nav-item"><i class="ph ph-calendar-blank"></i> Plan</a>
+    <a href="upload.html" class="nav-item"><i class="ph ph-plus-circle"></i> Post</a>
+    <a href="profile.html" class="nav-item"><i class="ph ph-user"></i> You</a>
+  </nav>
 
   <script>
-    const db = supabase.createClient('https://vsgljspzmynbqfyuvyyl.supabase.co', 'sb_publishable_eH52Wo-WDJ7WkasY4GejOw_b0xUYZ-_');
-    function toggleMenu() { document.getElementById('side-menu').classList.toggle('open'); document.getElementById('overlay').classList.toggle('open'); }
-    async function logout() { await db.auth.signOut(); window.location.href='index.html'; }
+    const sbUrl = 'https://vsgljspzmynbqfyuvyyl.supabase.co';
+    const sbKey = 'sb_publishable_eH52Wo-WDJ7WkasY4GejOw_b0xUYZ-_';
+    const db = supabase.createClient(sbUrl, sbKey);
+
+    function toggleMenu() {
+      document.getElementById('sideMenu').classList.toggle('open');
+      document.getElementById('menuOverlay').classList.toggle('open');
+    }
+
+    async function logout() { await db.auth.signOut(); window.location.href = 'index.html'; }
   </script>
 </body>
+
 </html>
