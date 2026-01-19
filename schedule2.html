@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>My Schedule - FoodTrend</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root { --neon: #FF4B1F; --bg: #ffffff; --text: #1a1a1a; }
+  body { font-family: 'Outfit', sans-serif; margin: 0; padding-bottom: 90px; color: var(--text); background: var(--bg); overflow: hidden; }
+  
+  /* NEON MAP THEME */
+  .map-layer { position: fixed; top: 0; left: 0; width: 100%; height: 75vh; background: url('https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=1000') no-repeat center top; background-size: cover; z-index: -2; filter: grayscale(100%) opacity(0.6); }
+  .fade-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: linear-gradient(to bottom, rgba(255,255,255,0.2) 0%, #ffffff 65%); z-index: -1; }
+
+  /* HEADER & NAV */
+  .app-header { background: var(--neon); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; color: white; box-shadow: 0 4px 15px rgba(255,75,31,0.3); z-index: 50; position: sticky; top: 0; }
+  .menu-btn { font-size: 24px; cursor: pointer; }
+  .logo { font-weight: 800; font-size: 20px; letter-spacing: -1px; }
+  
+  /* CALENDAR CONTAINER */
+  .calendar-wrapper {
+    position: relative; width: 100%; height: calc(100vh - 140px);
+    background: rgba(255, 255, 255, 0.95); margin-top: 0;
+    border-top: 1px solid rgba(255, 75, 31, 0.1);
+  }
+  iframe { width: 100%; height: 100%; border: none; }
+
+  /* NAV BAR */
+  .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--neon); padding: 12px 0; display: flex; justify-content: space-around; z-index: 100; box-shadow: 0 -4px 15px rgba(255,75,31,0.3); padding-bottom: env(safe-area-inset-bottom); }
+  .nav-item { text-align: center; color: rgba(255,255,255,0.6); font-size: 10px; width: 20%; text-decoration: none; }
+  .nav-item.active { color: white; }
+  .nav-icon { font-size: 24px; display: block; margin-bottom: 2px; }
+  
+  /* MENU */
+  .side-menu { position: fixed; top: 0; left: -280px; width: 280px; height: 100%; background: white; z-index: 1000; transition: 0.3s; padding-top: 20px; box-shadow: 4px 0 20px rgba(0,0,0,0.1); }
+  .side-menu.open { left: 0; }
+  .menu-link { display: block; padding: 15px 25px; border-bottom: 1px solid #eee; text-decoration: none; color: #333; font-weight: 600; }
+  .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 900; }
+  .overlay.open { display: block; }
+</style>
+</head>
+<body>
+
+  <div class="map-layer"></div><div class="fade-layer"></div>
+  
+  <div class="app-header">
+    <div class="menu-btn" onclick="toggleMenu()">☰</div>
+    <div class="logo">FoodTrend</div>
+    <div style="width:24px;"></div>
+  </div>
+
+  <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+  <div class="side-menu" id="side-menu">
+    <div style="padding:0 25px 20px; color:var(--neon); font-weight:800; font-size:20px;">Menu</div>
+    <a href="profile.html" class="menu-link">👤 My Profile</a>
+    <a href="referrals.html" class="menu-link">💸 Refer & Earn</a>
+    <a href="academy.html" class="menu-link">🎓 Academy</a>
+    <a href="shop.html" class="menu-link">🛍️ Shop</a>
+    <a onclick="logout()" class="menu-link" style="color:red; cursor:pointer;">🚪 Log Out</a>
+  </div>
+
+  <div class="calendar-wrapper">
+    <iframe id="ghl-calendar" src=""></iframe>
+  </div>
+
+  <div class="bottom-nav">
+    <a href="gigs.html" class="nav-item"><span class="nav-icon">🔍</span>Gigs</a>
+    <a href="schedule.html" class="nav-item active"><span class="nav-icon">📅</span>Plan</a>
+    <a href="upload.html" class="nav-item"><span class="nav-icon">📸</span>Post</a>
+    <a href="shop.html" class="nav-item"><span class="nav-icon">🛍️</span>Shop</a>
+    <a href="profile.html" class="nav-item"><span class="nav-icon">👤</span>You</a>
+  </div>
+
+  <script>
+    const sbUrl = 'https://vsgljspzmynbqfyuvyyl.supabase.co';
+    const sbKey = 'sb_publishable_eH52Wo-WDJ7WkasY4GejOw_b0xUYZ-_';
+    const db = supabase.createClient(sbUrl, sbKey);
+
+    function toggleMenu() { document.getElementById('side-menu').classList.toggle('open'); document.getElementById('overlay').classList.toggle('open'); }
+    async function logout() { await db.auth.signOut(); window.location.href='index.html'; }
+
+    // --- THE MAGIC SYNC LOGIC ---
+    async function loadCalendar() {
+      const { data: { session } } = await db.auth.getSession();
+      if(!session) { window.location.href='index.html'; return; }
+
+      const userEmail = session.user.email;
+      const userName = session.user.user_metadata.full_name || "Creator";
+
+      // 1. THIS IS THE KEY: Use the 'Booking Widget' link, NOT the portal link.
+      // 2. We dynamically inject the email so GHL knows it's them.
+      // REPLACE THE URL BELOW with your actual GHL "Calendar Embed Link" (Not Portal Link)
+      const ghlCalendarBaseUrl = "https://api.leadconnectorhq.com/widget/booking/YOUR_CALENDAR_ID"; 
+      
+      // Construct the personalized URL
+      const personalizedUrl = `${ghlCalendarBaseUrl}?email=${encodeURIComponent(userEmail)}&name=${encodeURIComponent(userName)}`;
+      
+      document.getElementById('ghl-calendar').src = personalizedUrl;
+    }
+    
+    loadCalendar();
+  </script>
+</body>
+</html>
