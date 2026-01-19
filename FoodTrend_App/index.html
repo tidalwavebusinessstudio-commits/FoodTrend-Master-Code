@@ -551,11 +551,19 @@
     }
 
     async function handleSignup() {
+      // DEBUG: Force feedback
+      console.log("Signup initiated");
+
       const email = document.getElementById('s-email').value;
       const password = document.getElementById('s-pass').value;
       const name = document.getElementById('s-name').value;
       const btn = document.getElementById('btn-signup');
       const msg = document.getElementById('s-msg');
+
+      if (!email || !password) {
+        alert("Please enter both email and password.");
+        return;
+      }
 
       // Reset state
       msg.innerText = '';
@@ -564,6 +572,8 @@
       btn.style.opacity = '0.7';
 
       try {
+        if (!db) throw new Error("Database connection failed (db is undefined)");
+
         // 1. Attempt Supabase Signup
         const { data, error } = await db.auth.signUp({
           email,
@@ -572,15 +582,11 @@
         });
 
         if (error) {
+          alert("Signup Error: " + error.message); // VISIBLE ERROR
           throw error;
         }
 
         // 2. Trigger Make.com Webhook
-        // Using no-cors mode since webhooks often don't set CORS headers for browsers, 
-        // effectively making it a fire-and-forget from the browser's perspective if we can't read response.
-        // However, for critical data, we usually want to await. 
-        // Make.com webhooks usually accept requests. 
-        // If 'no-cors' is used, we can't check status. Let's try standard fetch first.
         try {
           await fetch('https://hook.us2.make.com/la03ir2xcyt8ny7nyo9em8btj6cvc2d4', {
             method: 'POST',
@@ -589,17 +595,17 @@
           });
         } catch (webhookError) {
           console.error('Webhook failed:', webhookError);
-          // We usually proceed even if webhook fails, or show a warning. 
-          // For now, we proceed to ensure user gets to the app.
         }
 
         // 3. Redirect
+        // alert("Success! Redirecting...");
         window.location.href = 'gigs.html';
 
       } catch (err) {
         // Handle Error
         console.error(err);
         msg.innerText = err.message || "An error occurred during signup.";
+        alert("Error: " + (err.message || "Unknown error"));
         btn.innerHTML = 'Submit Application';
         btn.disabled = false;
         btn.style.opacity = '1';
