@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>FoodTrend | Intel</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .trend-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .trend-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+
+        .trend-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .trend-img {
+            height: 160px;
+            background: #222;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .trend-content {
+            padding: 20px;
+        }
+
+        .tag {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--accent-primary);
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar" id="sidebar">
+            <div class="logo">FoodTrend</div>
+            <nav>
+                <a href="dashboard.html" class="nav-item"><span class="nav-icon">📊</span> Overview</a>
+                <a href="gigs.html" class="nav-item"><span class="nav-icon">🔥</span> Gigs</a>
+                <a href="calendar.html" class="nav-item"><span class="nav-icon">📅</span> Calendar</a>
+                <a href="announcements.html" class="nav-item"><span class="nav-icon">📢</span> Announcements</a>
+                <a href="feedback.html" class="nav-item"><span class="nav-icon">⭐</span> Reputation</a>
+                <a href="trends.html" class="nav-item active"><span class="nav-icon">📈</span> Intel Feed</a>
+                <div style="margin: 20px 0; border-top: 1px solid rgba(255,255,255,0.1);"></div>
+                <a href="integrations.html" class="nav-item"><span class="nav-icon">🔌</span> Integrations</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header style="margin-bottom: 30px; display: flex; justify-content: space-between;">
+                <div>
+                    <h2>Industry Intelligence</h2>
+                    <p class="text-secondary">Curated trends to help you grow.</p>
+                </div>
+                <div>
+                    <select style="padding: 10px; width: 200px;">
+                        <option>All Topics</option>
+                        <option>Marketing</option>
+                        <option>Operations</option>
+                    </select>
+                </div>
+            </header>
+
+            <div class="trend-grid">
+
+                <!-- Article 1 -->
+                <div class="trend-card">
+                    <div class="trend-img"
+                        style="background-image: url('https://images.unsplash.com/photo-1552566626-52f8b828add9?auto=format&fit=crop&w=600');">
+                    </div>
+                    <div class="trend-content">
+                        <div class="tag">Marketing</div>
+                        <h3 style="margin: 10px 0; font-size: 1.2rem;">How to Capitalize on "Girl Dinner" Trends</h3>
+                        <p class="text-muted" style="font-size: 0.9rem;">The latest TikTok viral sound is an opportunity
+                            for small plates menus.</p>
+                        <a href="#" class="btn btn-outline" style="margin-top: 15px; width: 100%;">Read Article</a>
+                    </div>
+                </div>
+
+                <!-- Article 2 -->
+                <div class="trend-card">
+                    <div class="trend-img"
+                        style="background-image: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=600');">
+                    </div>
+                    <div class="trend-content">
+                        <div class="tag">Local SEO</div>
+                        <h3 style="margin: 10px 0; font-size: 1.2rem;">Ranking #1 on Google Maps in 2026</h3>
+                        <p class="text-muted" style="font-size: 0.9rem;">Why recent reviews matter more than quantity.
+                        </p>
+                        <a href="#" class="btn btn-outline" style="margin-top: 15px; width: 100%;">Read Article</a>
+                    </div>
+                </div>
+
+                <!-- Article 3 -->
+                <div class="trend-card">
+                    <div class="trend-img"
+                        style="background-image: url('https://images.unsplash.com/photo-1563461660996-681a195943f5?auto=format&fit=crop&w=600');">
+                    </div>
+                    <div class="trend-content">
+                        <div class="tag">Platform Tips</div>
+                        <h3 style="margin: 10px 0; font-size: 1.2rem;">Optimizing your "Gig" for Conversions</h3>
+                        <p class="text-muted" style="font-size: 0.9rem;">Data shows that offering a drink add-on
+                            increases uptake by 20%.</p>
+                        <a href="#" class="btn btn-outline" style="margin-top: 15px; width: 100%;">Read Article</a>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>

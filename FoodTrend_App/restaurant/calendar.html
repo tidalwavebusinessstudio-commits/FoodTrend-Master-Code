@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodTrend | Calendar</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .day-col {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+            min-height: 400px;
+            padding: 10px;
+        }
+
+        .day-header {
+            text-align: center;
+            margin-bottom: 15px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .time-slot {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            padding: 10px;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .time-slot:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .slot-booked {
+            border-left: 3px solid var(--accent-primary);
+            background: rgba(255, 193, 7, 0.1);
+        }
+
+        .slot-open {
+            border-left: 3px solid var(--success);
+            opacity: 0.7;
+            border-style: dashed;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="dashboard-container">
+        <aside class="sidebar" id="sidebar">
+            <div class="logo">FoodTrend</div>
+            <nav>
+                <a href="dashboard.html" class="nav-item">
+                    <span class="nav-icon">📊</span> Overview
+                </a>
+                <a href="gigs.html" class="nav-item">
+                    <span class="nav-icon">🔥</span> Gigs & Manager
+                </a>
+                <a href="calendar.html" class="nav-item active">
+                    <span class="nav-icon">📅</span> Calendar
+                </a>
+                <a href="announcements.html" class="nav-item">
+                    <span class="nav-icon">📢</span> Announcements
+                </a>
+                <a href="feedback.html" class="nav-item">
+                    <span class="nav-icon">⭐</span> Reputation
+                </a>
+                <a href="trends.html" class="nav-item">
+                    <span class="nav-icon">📈</span> Intel Feed
+                </a>
+                <div style="margin: 20px 0; border-top: 1px solid rgba(255,255,255,0.1);"></div>
+                <a href="integrations.html" class="nav-item">
+                    <span class="nav-icon">🔌</span> Integrations
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2>Booking Management</h2>
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn btn-outline">Sync to GHL</button>
+                    <button class="btn btn-primary">+ Add Manual Slot</button>
+                </div>
+            </header>
+
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h3 class="text-accent">February 19 - 25, 2026</h3>
+                    <div>
+                        <span style="margin-right: 15px; font-size: 0.9rem;">🟢 Open</span>
+                        <span style="font-size: 0.9rem;">🟡 Booked</span>
+                    </div>
+                </div>
+
+                <div class="calendar-grid">
+                    <!-- Mon -->
+                    <div class="day-col">
+                        <div class="day-header">Mon 19</div>
+                        <div class="time-slot slot-open">17:00 (2/2 Open)</div>
+                        <div class="time-slot slot-open">19:00 (2/2 Open)</div>
+                    </div>
+
+                    <!-- Tue -->
+                    <div class="day-col">
+                        <div class="day-header">Tue 20</div>
+                        <div class="time-slot slot-booked" onclick="viewBooking('MikeEats')">
+                            18:00
+                            <div style="font-size: 0.8rem; margin-top: 4px;">@MikeEats</div>
+                        </div>
+                        <div class="time-slot slot-open">20:00 (1/2 Open)</div>
+                    </div>
+
+                    <!-- Wed -->
+                    <div class="day-col">
+                        <div class="day-header">Wed 21</div>
+                        <div class="time-slot slot-booked" onclick="viewBooking('SarahFoodie')">
+                            17:30
+                            <div style="font-size: 0.8rem; margin-top: 4px;">@SarahFoodie</div>
+                        </div>
+                    </div>
+
+                    <!-- Thu -->
+                    <div class="day-col">
+                        <div class="day-header">Thu 22</div>
+                    </div>
+                    <!-- Fri -->
+                    <div class="day-col">
+                        <div class="day-header">Fri 23</div>
+                    </div>
+                    <!-- Sat -->
+                    <div class="day-col">
+                        <div class="day-header">Sat 24</div>
+                    </div>
+                    <!-- Sun -->
+                    <div class="day-col">
+                        <div class="day-header">Sun 25</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="calendar.js"></script>
+</body>
+
+</html>

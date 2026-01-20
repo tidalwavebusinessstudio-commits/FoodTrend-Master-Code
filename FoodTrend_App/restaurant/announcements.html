@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>FoodTrend | Announcements</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar" id="sidebar">
+            <div class="logo">FoodTrend</div>
+            <nav>
+                <a href="dashboard.html" class="nav-item"><span class="nav-icon">📊</span> Overview</a>
+                <a href="gigs.html" class="nav-item"><span class="nav-icon">🔥</span> Gigs</a>
+                <a href="calendar.html" class="nav-item"><span class="nav-icon">📅</span> Calendar</a>
+                <a href="announcements.html" class="nav-item active"><span class="nav-icon">📢</span> Announcements</a>
+                <a href="feedback.html" class="nav-item"><span class="nav-icon">⭐</span> Reputation</a>
+                <a href="trends.html" class="nav-item"><span class="nav-icon">📈</span> Intel Feed</a>
+                <div style="margin: 20px 0; border-top: 1px solid rgba(255,255,255,0.1);"></div>
+                <a href="integrations.html" class="nav-item"><span class="nav-icon">🔌</span> Integrations</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header style="margin-bottom: 30px;">
+                <h2>Influencer Updates</h2>
+                <p class="text-secondary">Keep your local creator network engaged.</p>
+            </header>
+
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;">
+
+                <!-- Composer -->
+                <div class="card">
+                    <h3 style="margin-bottom: 20px;">Support Request / Announcement</h3>
+                    <form onsubmit="event.preventDefault(); alert('Sent to 45 creators!');">
+                        <label class="text-muted" style="font-size: 0.9rem;">Title</label>
+                        <input type="text" placeholder="e.g. New Summer Menu Tasting!" style="margin-bottom: 15px;">
+
+                        <label class="text-muted" style="font-size: 0.9rem;">Message</label>
+                        <textarea rows="5" placeholder="Write your update..." style="margin-bottom: 15px;"></textarea>
+
+                        <label class="text-muted" style="font-size: 0.9rem;">Target Audience</label>
+                        <select style="margin-bottom: 20px;">
+                            <option value="ALL">All Local Creators (Radius 10mi)</option>
+                            <option value="BOOKED">Previously Booked Only</option>
+                        </select>
+
+                        <button class="btn btn-primary">Send Blast</button>
+                    </form>
+                </div>
+
+                <!-- History -->
+                <div class="card">
+                    <h3 style="margin-bottom: 20px;">History</h3>
+                    <div class="activity-item">
+                        <div>
+                            <div style="font-weight: 600;">Holiday Special Access</div>
+                            <div class="text-muted" style="font-size: 0.8rem;">Sent Dec 20 • 140 Recipients</div>
+                            <div class="text-success" style="font-size: 0.8rem;">45% Open Rate</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div>
+                            <div style="font-weight: 600;">We are closed for Reno</div>
+                            <div class="text-muted" style="font-size: 0.8rem;">Sent Nov 1 • 200 Recipients</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>

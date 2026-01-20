@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodTrend | See Your Potential</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .range-slider {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+            margin: 15px 0;
+        }
+
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .stat-box {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: var(--radius-md);
+            padding: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .step-container {
+            display: none;
+        }
+
+        .step-container.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="glass-panel" style="position: fixed; top: 0; width: 100%; z-index: 100; padding: 20px 0;">
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+            <a href="index.html"
+                style="font-family: 'Outfit'; font-size: 1.5rem; font-weight: 800; color: var(--text-primary);">FoodTrend</a>
+        </div>
+    </nav>
+
+    <div class="landing-hero" style="min-height: 100vh; padding-top: 120px; overflow-y: auto;">
+        <div class="container" style="max-width: 800px;">
+
+            <!-- Progress Bar -->
+            <div style="display: flex; gap: 10px; margin-bottom: 40px;">
+                <div id="progress-1"
+                    style="height: 4px; flex: 1; background: var(--accent-primary); border-radius: 2px;"></div>
+                <div id="progress-2"
+                    style="height: 4px; flex: 1; background: rgba(255,255,255,0.1); border-radius: 2px;"></div>
+                <div id="progress-3"
+                    style="height: 4px; flex: 1; background: rgba(255,255,255,0.1); border-radius: 2px;"></div>
+            </div>
+
+            <!-- Step 1: Basic Info -->
+            <div id="step-1" class="step-container active card">
+                <h2 style="margin-bottom: 10px;">First, tell us about your restaurant.</h2>
+                <p class="text-secondary" style="margin-bottom: 30px;">We check if your area has enough active creators.
+                </p>
+
+                <form onsubmit="event.preventDefault(); nextStep(2);">
+                    <div style="margin-bottom: 20px; text-align: left;">
+                        <label class="text-muted"
+                            style="font-size: 0.9rem; display: block; margin-bottom: 8px;">Restaurant Name</label>
+                        <input type="text" required placeholder="e.g. Burger Bar Downtown">
+                    </div>
+
+                    <div style="margin-bottom: 20px; text-align: left;">
+                        <label class="text-muted" style="font-size: 0.9rem; display: block; margin-bottom: 8px;">Cuisine
+                            Type</label>
+                        <select required>
+                            <option value="">Select Cuisine...</option>
+                            <option value="american">American / Burgers</option>
+                            <option value="italian">Italian / Pizza</option>
+                            <option value="asian">Asian Fusion / Sushi</option>
+                            <option value="mexican">Mexican / Tacos</option>
+                            <option value="cafe">Cafe / Brunch</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div style="margin-bottom: 30px; text-align: left;">
+                        <label class="text-muted" style="font-size: 0.9rem; display: block; margin-bottom: 8px;">Zip
+                            Code</label>
+                        <input type="text" required placeholder="To check creator density..." pattern="[0-9]*">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Analyze Availability</button>
+                </form>
+            </div>
+
+            <!-- Step 2: ROI Calculator -->
+            <div id="step-2" class="step-container card">
+                <h2 style="margin-bottom: 10px;">Your Potential Reach</h2>
+                <p class="text-secondary" style="margin-bottom: 30px;">Adjust the sliders to see what automated
+                    marketing looks like for you.</p>
+
+                <!-- Sliders -->
+                <div style="text-align: left; margin-bottom: 40px;">
+
+                    <div style="margin-bottom: 25px;">
+                        <div style="display: flex; justify-content: space-between;">
+                            <label class="text-primary font-weight-bold">Creator Videos per Month</label>
+                            <span id="video-count-val" class="text-accent">60</span>
+                        </div>
+                        <input type="range" min="10" max="200" value="60" class="range-slider" id="video-slider">
+                        <p class="text-muted" style="font-size: 0.85rem;">How many micro-influencers visit per month.
+                        </p>
+                    </div>
+
+                    <div style="margin-bottom: 25px;">
+                        <div style="display: flex; justify-content: space-between;">
+                            <label class="text-primary font-weight-bold">Avg. Views per Video</label>
+                            <span id="views-val" class="text-accent">1,500</span>
+                        </div>
+                        <input type="range" min="500" max="5000" step="100" value="1500" class="range-slider"
+                            id="views-slider">
+                        <p class="text-muted" style="font-size: 0.85rem;">Conservative estimate for local accounts.</p>
+                    </div>
+
+                </div>
+
+                <!-- Projections Grid -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px;">
+                    <div class="stat-box">
+                        <div class="text-muted" style="font-size: 0.9rem;">Monthly Impressions</div>
+                        <div id="total-views" class="text-accent" style="font-size: 1.5rem; font-weight: 700;">90,000
+                        </div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="text-muted" style="font-size: 0.9rem;">Est. Media Value</div>
+                        <div id="media-value" class="text-success"
+                            style="font-size: 1.5rem; font-weight: 700; color: var(--success);">$1,800</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="text-muted" style="font-size: 0.9rem;">Content Pieces</div>
+                        <div id="content-pieces" class="text-primary" style="font-size: 1.5rem; font-weight: 700;">60
+                        </div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="text-muted" style="font-size: 0.9rem;">Google Reviews</div>
+                        <div id="google-reviews" class="text-warning"
+                            style="font-size: 1.5rem; font-weight: 700; color: var(--warning);">~12</div>
+                    </div>
+                </div>
+
+                <button onclick="nextStep(3)" class="btn btn-primary" style="width: 100%;">See Pricing Plans</button>
+            </div>
+
+            <!-- Step 3: Pricing Tiers -->
+            <div id="step-3" class="step-container card"
+                style="text-align: center; max-width: 1000px; margin: 0 auto; background: transparent; border: none; box-shadow: none;">
+                <h2 class="text-success" style="margin-bottom: 5px;">You qualify!</h2>
+                <p class="text-secondary" style="margin-bottom: 30px;">Choose a plan to activate your influencer stream.
+                </p>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+
+                    <!-- Momentum -->
+                    <div class="glass-panel" style="padding: 30px; border: 1px solid rgba(255,255,255,0.1);">
+                        <h3 class="text-muted" style="font-size: 1.4rem;">Momentum</h3>
+                        <div style="font-size: 2rem; font-weight: 700; margin: 15px 0;">$799<span
+                                style="font-size: 1rem; color: var(--text-muted);">/mo</span></div>
+                        <p class="text-muted" style="font-size: 0.9rem; margin-bottom: 20px;">For smaller local spots.
+                        </p>
+                        <ul
+                            style="text-align: left; list-style: none; margin-bottom: 20px; font-size: 0.9rem; color: var(--text-secondary);">
+                            <li style="margin-bottom: 8px;">✅ Up to 60 Creator Visits</li>
+                            <li style="margin-bottom: 8px;">✅ Basic Reputation Mgmt</li>
+                            <li style="margin-bottom: 8px;">✅ Email Support</li>
+                        </ul>
+                        <a href="onboarding.html?plan=momentum" class="btn btn-outline" style="width: 100%;">Select</a>
+                    </div>
+
+                    <!-- Velocity (Featured) -->
+                    <div class="glass-panel"
+                        style="padding: 30px; border: 2px solid var(--accent-primary); transform: scale(1.05); position: relative; z-index: 10;">
+                        <div
+                            style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--accent-primary); color: #000; padding: 4px 12px; border-radius: 12px; font-size: 0.8rem; font-weight: 700;">
+                            MOST POPULAR</div>
+                        <h3 class="text-accent" style="font-size: 1.4rem;">Velocity</h3>
+                        <div style="font-size: 2.2rem; font-weight: 700; margin: 15px 0;">$1,299<span
+                                style="font-size: 1rem; color: var(--text-muted);">/mo</span></div>
+                        <p class="text-muted" style="font-size: 0.9rem; margin-bottom: 20px;">For growing restaurants.
+                        </p>
+                        <ul
+                            style="text-align: left; list-style: none; margin-bottom: 20px; font-size: 0.9rem; color: var(--text-secondary);">
+                            <li style="margin-bottom: 8px;">✅ <b>Up to 150</b> Creator Visits</li>
+                            <li style="margin-bottom: 8px;">✅ <b>Global</b> App Visibility</li>
+                            <li style="margin-bottom: 8px;">✅ Upsell Engine</li>
+                            <li style="margin-bottom: 8px;">✅ Priority Support</li>
+                        </ul>
+                        <a href="onboarding.html?plan=velocity" class="btn btn-primary" style="width: 100%;">Select
+                            Velocity</a>
+                    </div>
+
+                    <!-- Dominance -->
+                    <div class="glass-panel" style="padding: 30px; border: 1px solid rgba(255,255,255,0.1);">
+                        <h3 class="text-warning" style="font-size: 1.4rem;">Dominance</h3>
+                        <div style="font-size: 2rem; font-weight: 700; margin: 15px 0;">$2,499<span
+                                style="font-size: 1rem; color: var(--text-muted);">/mo</span></div>
+                        <p class="text-muted" style="font-size: 0.9rem; margin-bottom: 20px;">For hospitality groups.
+                        </p>
+                        <ul
+                            style="text-align: left; list-style: none; margin-bottom: 20px; font-size: 0.9rem; color: var(--text-secondary);">
+                            <li style="margin-bottom: 8px;">✅ <b>Unlimited</b> Creator Visits</li>
+                            <li style="margin-bottom: 8px;">✅ Multi-Location Support</li>
+                            <li style="margin-bottom: 8px;">✅ Dedicated Account Mgr</li>
+                            <li style="margin-bottom: 8px;">✅ AI Content Analysis</li>
+                        </ul>
+                        <a href="onboarding.html?plan=dominance" class="btn btn-outline" style="width: 100%;">Select</a>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="qualify.js"></script>
+</body>
+
+</html>

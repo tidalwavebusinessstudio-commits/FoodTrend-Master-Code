@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>FoodTrend | Reputation</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar" id="sidebar">
+            <div class="logo">FoodTrend</div>
+            <nav>
+                <a href="dashboard.html" class="nav-item"><span class="nav-icon">📊</span> Overview</a>
+                <a href="gigs.html" class="nav-item"><span class="nav-icon">🔥</span> Gigs</a>
+                <a href="calendar.html" class="nav-item"><span class="nav-icon">📅</span> Calendar</a>
+                <a href="announcements.html" class="nav-item"><span class="nav-icon">📢</span> Announcements</a>
+                <a href="feedback.html" class="nav-item active"><span class="nav-icon">⭐</span> Reputation</a>
+                <a href="trends.html" class="nav-item"><span class="nav-icon">📈</span> Intel Feed</a>
+                <div style="margin: 20px 0; border-top: 1px solid rgba(255,255,255,0.1);"></div>
+                <a href="integrations.html" class="nav-item"><span class="nav-icon">🔌</span> Integrations</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header style="margin-bottom: 30px;">
+                <h2>Reputation Inbox</h2>
+                <p class="text-secondary">Internal feedback from creators. Only 4+ star ratings are sent to Google.</p>
+            </header>
+
+            <div class="card">
+                <h3 style="margin-bottom: 20px;">Recent Feedback</h3>
+
+                <!-- Feedback Item -->
+                <div
+                    style="padding: 20px; background: rgba(255,255,255,0.03); border-radius: 8px; margin-bottom: 15px;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <span style="font-size: 1.2rem;">😡</span>
+                            <span class="text-danger" style="font-weight: 700;">2/5 Stars</span>
+                            <span class="text-muted">@AngryEater • 2 days ago</span>
+                        </div>
+                        <span class="status-badge"
+                            style="background: rgba(244, 67, 54, 0.1); color: var(--danger);">Private</span>
+                    </div>
+                    <p style="margin: 10px 0; color: var(--text-primary);">
+                        "The food was cold and the server was rude when I asked for water. Not posting this on TikTok."
+                    </p>
+                    <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px; margin-top: 10px;">
+                        <button class="btn btn-outline" style="font-size: 0.8rem; padding: 6px 12px;">Reply
+                            Privately</button>
+                        <button class="btn btn-outline"
+                            style="font-size: 0.8rem; padding: 6px 12px; margin-left: 10px;">Mark Resolved</button>
+                    </div>
+                </div>
+
+                <!-- Feedback Item -->
+                <div
+                    style="padding: 20px; background: rgba(255,255,255,0.03); border-radius: 8px; margin-bottom: 15px;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <span style="font-size: 1.2rem;">🤩</span>
+                            <span class="text-success" style="font-weight: 700;">5/5 Stars</span>
+                            <span class="text-muted">@HappyChef • 5 hours ago</span>
+                        </div>
+                        <span class="status-badge status-active">Redirected to Google</span>
+                    </div>
+                    <p style="margin: 10px 0; color: var(--text-primary);">
+                        "Amazing vibes! The burger was juicy. Posted a reel already."
+                    </p>
+                </div>
+
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>

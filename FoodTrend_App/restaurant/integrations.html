@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>FoodTrend | Integrations</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar" id="sidebar">
+            <div class="logo">FoodTrend</div>
+            <nav>
+                <a href="dashboard.html" class="nav-item"><span class="nav-icon">📊</span> Overview</a>
+                <a href="gigs.html" class="nav-item"><span class="nav-icon">🔥</span> Gigs</a>
+                <a href="calendar.html" class="nav-item"><span class="nav-icon">📅</span> Calendar</a>
+                <a href="announcements.html" class="nav-item"><span class="nav-icon">📢</span> Announcements</a>
+                <a href="feedback.html" class="nav-item"><span class="nav-icon">⭐</span> Reputation</a>
+                <a href="trends.html" class="nav-item"><span class="nav-icon">📈</span> Intel Feed</a>
+                <div style="margin: 20px 0; border-top: 1px solid rgba(255,255,255,0.1);"></div>
+                <a href="integrations.html" class="nav-item active"><span class="nav-icon">🔌</span> Integrations</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header style="margin-bottom: 30px;">
+                <h2>System Status</h2>
+                <p class="text-secondary">Manage your connections to external tools.</p>
+            </header>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+
+                <!-- GoHighLevel -->
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: start;">
+                        <h3 style="margin: 0;">GoHighLevel</h3>
+                        <span class="status-badge status-active">Connected</span>
+                    </div>
+                    <p class="text-muted" style="margin: 15px 0;">Syncs leads, bookings, and review requests.</p>
+                    <div style="font-size: 0.8rem; color: var(--text-secondary);">Last Sync: 2 mins ago</div>
+                    <button class="btn btn-outline" style="margin-top: 15px; width: 100%;">Configure</button>
+                </div>
+
+                <!-- Make.com -->
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: start;">
+                        <h3 style="margin: 0;">Make / Zapier</h3>
+                        <span class="status-badge status-active">Listening</span>
+                    </div>
+                    <p class="text-muted" style="margin: 15px 0;">Automated workflows for email alerts.</p>
+                    <div style="font-size: 0.8rem; color: var(--text-secondary);">Webhooks Active</div>
+                    <button class="btn btn-outline" style="margin-top: 15px; width: 100%;">Manage Webhooks</button>
+                </div>
+
+                <!-- Supabase -->
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: start;">
+                        <h3 style="margin: 0;">Supabase DB</h3>
+                        <span class="status-badge status-active">Online</span>
+                    </div>
+                    <p class="text-muted" style="margin: 15px 0;">Real-time data storage for gigs.</p>
+                    <div style="font-size: 0.8rem; color: var(--text-secondary);">Latency: 45ms</div>
+                    <button class="btn btn-outline" style="margin-top: 15px; width: 100%;">View logs</button>
+                </div>
+
+                <!-- Google My Business -->
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: start;">
+                        <h3 style="margin: 0;">Google Maps</h3>
+                        <span class="status-badge status-active">Verified</span>
+                    </div>
+                    <p class="text-muted" style="margin: 15px 0;">Review redirection target.</p>
+                    <div style="font-size: 0.8rem; color: var(--text-secondary);">Burger Bar Downtown</div>
+                    <button class="btn btn-outline" style="margin-top: 15px; width: 100%;">Edit Link</button>
+                </div>
+
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>
