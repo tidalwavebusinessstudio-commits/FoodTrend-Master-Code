@@ -9,10 +9,10 @@
 
 :root {
     /* Brand Colors */
-    --brand-primary: #EB1700;
-    /* DoorDash Red */
-    --brand-primary-hover: #C41300;
-    --brand-glow: rgba(235, 23, 0, 0.4);
+    --brand-primary: #FF3008;
+    /* Updated DoorDash Red */
+    --brand-primary-hover: #D62806;
+    --brand-glow: rgba(255, 48, 8, 0.4);
 
     /* Backgrounds - Deep Void */
     --bg-page: #030712;
@@ -200,16 +200,26 @@ a {
 
 /* --- FUNNEL ANIMATIONS --- */
 
-/* Scroll Trigger helper (class to be added via JS) */
+/* Scroll Trigger helper */
 .reveal {
     opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.8s ease-out;
+    filter: blur(10px);
+    transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform, opacity;
+}
+
+.reveal-left {
+    transform: translateX(-100px);
+}
+
+.reveal-right {
+    transform: translateX(100px);
 }
 
 .reveal.active {
     opacity: 1;
-    transform: translateY(0);
+    filter: blur(0);
+    transform: translateX(0);
 }
 
 /* Ripple Animation */
@@ -299,9 +309,12 @@ a {
 .blade-section {
     position: relative;
     display: flex;
-    min-height: 85vh;
+    min-height: 45vh;
+    /* 50% Thinner as requested */
     overflow: hidden;
     align-items: center;
+    margin: -2px 0;
+    /* Tight stack to avoid gaps */
 }
 
 /* Full background image layer */
@@ -314,27 +327,34 @@ a {
     z-index: 1;
     background-size: cover;
     background-position: center;
+    transition: transform 0.8s ease;
+}
+
+.blade-section:hover .blade-image {
+    transform: scale(1.05);
+    /* Sexy hover effect */
 }
 
 /* Glass overlay with diagonal cut */
 .blade-glass {
     position: relative;
     z-index: 10;
-    width: 55%;
-    min-height: 85vh;
-    /* MUCH DARKER glass for contrast */
-    background: rgba(0, 0, 0, 0.85);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border-right: 1px solid rgba(255, 48, 8, 0.3);
-    box-shadow: 20px 0 50px rgba(0, 0, 0, 0.7), inset 0 0 80px rgba(255, 48, 8, 0.1);
-    clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
+    width: 48%;
+    /* More narrow for sexiness */
+    min-height: 45vh;
+    background: rgba(0, 0, 0, 0.88);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border-right: 1px solid rgba(255, 48, 8, 0.2);
+    box-shadow: 20px 0 60px rgba(0, 0, 0, 0.8);
+    clip-path: polygon(0 0, 100% 0, 80% 100%, 0% 100%);
+    /* Sharper angle */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding: 80px 60px;
+    padding: 60px 80px;
 }
 
 /* Reverse blade (glass on right) */
@@ -344,10 +364,10 @@ a {
 
 .blade-section.reverse .blade-glass {
     border-right: none;
-    border-left: 1px solid rgba(255, 48, 8, 0.3);
-    box-shadow: -20px 0 50px rgba(0, 0, 0, 0.7), inset 0 0 80px rgba(255, 48, 8, 0.1);
-    clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%);
-    padding: 80px 60px;
+    border-left: 1px solid rgba(255, 48, 8, 0.2);
+    box-shadow: -20px 0 60px rgba(0, 0, 0, 0.8);
+    clip-path: polygon(20% 0, 100% 0, 100% 100%, 0% 100%);
+    /* Sharper angle */
 }
 
 /* Rectangular break sections */
