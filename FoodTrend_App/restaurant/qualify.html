@@ -13,84 +13,44 @@
         rel="stylesheet">
 
     <link rel="stylesheet" href="styles.css">
-    <style>
-        .range-slider {
-            width: 100%;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 3px;
-            outline: none;
-            -webkit-appearance: none;
-            margin: 15px 0;
-        }
-
-        .range-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 20px;
-            height: 20px;
-            background: var(--accent-primary);
-            border-radius: 50%;
-            cursor: pointer;
-            box-shadow: 0 0 10px var(--accent-glow);
-        }
-
-        .stat-box {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: var(--radius-md);
-            padding: 15px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .step-container {
-            display: none;
-        }
-
-        .step-container.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-    </style>
 </head>
 
 <body>
 
-    <nav class="glass-panel" style="position: fixed; top: 0; width: 100%; z-index: 100; padding: 20px 0;">
-        <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
-            <a href="index.html"
-                style="font-family: 'Outfit'; font-size: 1.5rem; font-weight: 800; color: var(--text-primary);">FoodTrend</a>
+    <!-- GLASSMORPHIC NAVIGATION -->
+    <nav class="glass-nav">
+        <div class="nav-container">
+            <!-- Logo -->
+            <a href="index.html" class="nav-logo">
+                Food<span>Trend</span>
+            </a>
         </div>
     </nav>
 
-    <div class="landing-hero" style="min-height: 100vh; padding-top: 120px; overflow-y: auto;">
+    <div class="landing-hero">
         <div class="container" style="max-width: 800px;">
 
             <!-- Progress Bar -->
-            <div style="display: flex; gap: 10px; margin-bottom: 40px;">
-                <div id="progress-1"
-                    style="height: 4px; flex: 1; background: var(--accent-primary); border-radius: 2px;"></div>
-                <div id="progress-2"
-                    style="height: 4px; flex: 1; background: rgba(255,255,255,0.1); border-radius: 2px;"></div>
-                <div id="progress-3"
-                    style="height: 4px; flex: 1; background: rgba(255,255,255,0.1); border-radius: 2px;"></div>
+            <div class="progress-bar">
+                <div id="progress-1" class="progress-segment active"></div>
+                <div id="progress-2" class="progress-segment"></div>
+                <div id="progress-3" class="progress-segment"></div>
             </div>
 
             <!-- Step 1: Basic Info -->
             <div id="step-1" class="step-container active card">
                 <h2 style="margin-bottom: 10px;">First, tell us about your restaurant.</h2>
-                <p class="text-secondary" style="margin-bottom: 30px;">We check if your area has enough active creators.
-                </p>
+                <p style="margin-bottom: 30px; color: var(--text-secondary);">We check if your area has enough active
+                    creators.</p>
 
                 <form onsubmit="event.preventDefault(); nextStep(2);">
-                    <div style="margin-bottom: 20px; text-align: left;">
-                        <label class="text-muted"
-                            style="font-size: 0.9rem; display: block; margin-bottom: 8px;">Restaurant Name</label>
+                    <div style="margin-bottom: 20px;">
+                        <label>Restaurant Name</label>
                         <input type="text" required placeholder="e.g. Burger Bar Downtown">
                     </div>
 
-                    <div style="margin-bottom: 20px; text-align: left;">
-                        <label class="text-muted" style="font-size: 0.9rem; display: block; margin-bottom: 8px;">Cuisine
-                            Type</label>
+                    <div style="margin-bottom: 20px;">
+                        <label>Cuisine Type</label>
                         <select required>
                             <option value="">Select Cuisine...</option>
                             <option value="american">American / Burgers</option>
@@ -102,9 +62,8 @@
                         </select>
                     </div>
 
-                    <div style="margin-bottom: 30px; text-align: left;">
-                        <label class="text-muted" style="font-size: 0.9rem; display: block; margin-bottom: 8px;">Zip
-                            Code</label>
+                    <div style="margin-bottom: 30px;">
+                        <label>Zip Code</label>
                         <input type="text" required placeholder="To check creator density..." pattern="[0-9]*">
                     </div>
 
@@ -115,30 +74,32 @@
             <!-- Step 2: ROI Calculator -->
             <div id="step-2" class="step-container card">
                 <h2 style="margin-bottom: 10px;">Your Potential Reach</h2>
-                <p class="text-secondary" style="margin-bottom: 30px;">Adjust the sliders to see what automated
+                <p style="margin-bottom: 30px; color: var(--text-secondary);">Adjust the sliders to see what automated
                     marketing looks like for you.</p>
 
                 <!-- Sliders -->
-                <div style="text-align: left; margin-bottom: 40px;">
+                <div style="margin-bottom: 40px;">
 
                     <div style="margin-bottom: 25px;">
-                        <div style="display: flex; justify-content: space-between;">
-                            <label class="text-primary font-weight-bold">Creator Videos per Month</label>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <label style="font-weight: 600; color: var(--text-primary);">Creator Videos per
+                                Month</label>
                             <span id="video-count-val" class="text-accent">60</span>
                         </div>
                         <input type="range" min="10" max="200" value="60" class="range-slider" id="video-slider">
-                        <p class="text-muted" style="font-size: 0.85rem;">How many micro-influencers visit per month.
-                        </p>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 8px;">How many
+                            micro-influencers visit per month.</p>
                     </div>
 
                     <div style="margin-bottom: 25px;">
-                        <div style="display: flex; justify-content: space-between;">
-                            <label class="text-primary font-weight-bold">Avg. Views per Video</label>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <label style="font-weight: 600; color: var(--text-primary);">Avg. Views per Video</label>
                             <span id="views-val" class="text-accent">1,500</span>
                         </div>
                         <input type="range" min="500" max="5000" step="100" value="1500" class="range-slider"
                             id="views-slider">
-                        <p class="text-muted" style="font-size: 0.85rem;">Conservative estimate for local accounts.</p>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 8px;">Conservative estimate
+                            for local accounts.</p>
                     </div>
 
                 </div>
@@ -146,24 +107,20 @@
                 <!-- Projections Grid -->
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px;">
                     <div class="stat-box">
-                        <div class="text-muted" style="font-size: 0.9rem;">Monthly Impressions</div>
-                        <div id="total-views" class="text-accent" style="font-size: 1.5rem; font-weight: 700;">90,000
-                        </div>
+                        <div class="stat-label">Monthly Impressions</div>
+                        <div id="total-views" class="stat-value text-accent">90,000</div>
                     </div>
                     <div class="stat-box">
-                        <div class="text-muted" style="font-size: 0.9rem;">Est. Media Value</div>
-                        <div id="media-value" class="text-success"
-                            style="font-size: 1.5rem; font-weight: 700; color: var(--success);">$1,800</div>
+                        <div class="stat-label">Est. Media Value</div>
+                        <div id="media-value" class="stat-value text-success">$1,800</div>
                     </div>
                     <div class="stat-box">
-                        <div class="text-muted" style="font-size: 0.9rem;">Content Pieces</div>
-                        <div id="content-pieces" class="text-primary" style="font-size: 1.5rem; font-weight: 700;">60
-                        </div>
+                        <div class="stat-label">Content Pieces</div>
+                        <div id="content-pieces" class="stat-value text-primary">60</div>
                     </div>
                     <div class="stat-box">
-                        <div class="text-muted" style="font-size: 0.9rem;">Google Reviews</div>
-                        <div id="google-reviews" class="text-warning"
-                            style="font-size: 1.5rem; font-weight: 700; color: var(--warning);">~12</div>
+                        <div class="stat-label">Google Reviews</div>
+                        <div id="google-reviews" class="stat-value text-warning">~12</div>
                     </div>
                 </div>
 
@@ -171,8 +128,7 @@
             </div>
 
             <!-- Step 3: Pricing Tiers -->
-            <div id="step-3" class="step-container card"
-                style="text-align: center; max-width: 1000px; margin: 0 auto; background: transparent; border: none; box-shadow: none;">
+            <div id="step-3" class="step-container" style="text-align: center; max-width: 1000px; margin: 0 auto;">
                 <h2 class="text-success" style="margin-bottom: 5px;">You qualify!</h2>
                 <p class="text-secondary" style="margin-bottom: 30px;">Choose a plan to activate your influencer stream.
                 </p>
