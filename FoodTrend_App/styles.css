@@ -4,10 +4,10 @@
 */
 
 :root {
-    /* Brand Colors */
-    --primary: #FF3008;
-    /* Doordash Red */
-    --primary-hover: #D92907;
+    /* Brand Colors (Para System) */
+    --primary: #EB1700;
+    /* DoorDash Red */
+    --primary-hover: #C41300;
     --secondary: #1a1a1a;
 
     /* Backgrounds */
@@ -17,8 +17,12 @@
     /* Glassmorphism Essentials */
     --glass-bg: rgba(26, 26, 26, 0.6);
     --glass-border: rgba(255, 255, 255, 0.08);
+    /* White border by default */
     --glass-highlight: rgba(255, 255, 255, 0.15);
     --blur: 12px;
+
+    /* Para Specifics */
+    --red-trim: rgba(235, 23, 0, 0.3);
 
     /* Typography */
     --font-main: 'Outfit', sans-serif;
@@ -42,6 +46,80 @@ body {
     margin: 0;
     padding-bottom: var(--nav-height);
     overflow-x: hidden;
+}
+
+/* === PARA DESIGN SYSTEM (Diagonal Layouts) === */
+.diagonal-row {
+    display: flex;
+    min-height: 80vh;
+    position: relative;
+    overflow: hidden;
+}
+
+.diag-image {
+    flex: 1;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%);
+    margin-left: -5%;
+    z-index: 1;
+}
+
+.diag-image.reverse {
+    clip-path: polygon(0 0, 85% 0, 100% 100%, 0% 100%);
+    margin-left: 0;
+    margin-right: -5%;
+    order: -1;
+}
+
+.diag-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 60px 40px;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border-right: 1px solid var(--red-trim);
+    z-index: 2;
+    position: relative;
+}
+
+.diag-content.reverse {
+    border-right: none;
+    border-left: 1px solid var(--red-trim);
+}
+
+.rect-break {
+    padding: 80px 20px;
+    background: linear-gradient(to right, #000, #050505);
+    border-top: 1px solid var(--red-trim);
+    border-bottom: 1px solid var(--red-trim);
+    text-align: center;
+}
+
+@media (max-width: 900px) {
+    .diagonal-row {
+        flex-direction: column;
+        min-height: auto;
+    }
+
+    .diag-image,
+    .diag-image.reverse {
+        clip-path: none;
+        height: 300px;
+        margin: 0;
+        order: -1;
+    }
+
+    .diag-content,
+    .diag-content.reverse {
+        border: none;
+        padding: 40px 20px;
+        text-align: center;
+    }
 }
 
 /* === UTILITIES === */

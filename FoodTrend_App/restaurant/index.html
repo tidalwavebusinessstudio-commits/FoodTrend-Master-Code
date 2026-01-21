@@ -4,134 +4,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FoodTrend for Restaurants | Automate Your Growth</title>
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap"
-        rel="stylesheet">
-
-    <!-- Styles -->
+    <title>FoodTrend | Start The Rush</title>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Hero Override */
+        .hero-bg-dark {
+            background: #000;
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+        }
+
+        .hero-video-bg {
+            opacity: 0.4;
+        }
+
+        /* Subtle Text Highlight */
+        .highlight-red {
+            color: var(--brand-primary);
+            position: relative;
+            display: inline-block;
+        }
+
+        .highlight-red::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: var(--brand-primary);
+            box-shadow: 0 0 10px var(--brand-primary);
+        }
+    </style>
 </head>
 
 <body>
 
-    <!-- Navigation -->
-    <nav class="glass-panel" style="position: fixed; top: 0; width: 100%; z-index: 100; padding: 20px 0;">
-        <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
-            <div style="font-family: 'Outfit'; font-size: 1.5rem; font-weight: 800; color: var(--accent-primary);">
-                FoodTrend</div>
-            <div>
-                <!-- <a href="#" class="btn btn-outline" style="margin-right: 15px;">Login</a> -->
-                <a href="qualify.html" class="btn btn-primary">Start Transformation</a>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <header class="landing-hero">
-        <div class="container">
-            <h1
-                style="font-size: 3.5rem; line-height: 1.1; margin-bottom: 24px; max-width: 900px; margin-left: auto; margin-right: auto;">
-                Take Control of Your <span class="text-accent">Digital Footprint</span>
-            </h1>
-            <p class="text-secondary" style="font-size: 1.25rem; max-width: 700px; margin: 0 auto 40px;">
-                Generate 60-180 real videos about your restaurant every month.
-                Get reviews on autopilot. Dominate local search.
-                All from one simple dashboard.
-            </p>
-
-            <div style="display: flex; gap: 20px; justify-content: center;">
-                <a href="qualify.html" class="btn btn-primary" style="font-size: 1.1rem; padding: 16px 32px;">
-                    See Your Potential Impact
-                </a>
-            </div>
-
-            <!-- Social Proof / Stats Ticker -->
-            <div style="margin-top: 60px; display: flex; gap: 40px; justify-content: center; opacity: 0.8;">
-                <div>
-                    <h3 class="text-accent">15k+</h3>
-                    <p class="text-muted">Local Creators</p>
-                </div>
-                <div>
-                    <h3 class="text-accent">3.2M</h3>
-                    <p class="text-muted">Monthly Views</p>
-                </div>
-                <div>
-                    <h3 class="text-accent">100%</h3>
-                    <p class="text-muted">Automated</p>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- Value Props -->
-    <section class="container" style="padding: 80px 0;">
-        <div class="feature-grid">
-            <!-- Card 1 -->
-            <div class="card">
-                <div class="text-accent" style="font-size: 2rem; margin-bottom: 15px;">🚀</div>
-                <h3>Predictable Content</h3>
-                <p class="text-secondary">Stop hoping for viral moments. Create a steady stream of authentic content on
-                    TikTok, Instagram, and Facebook.</p>
-            </div>
-
-            <!-- Card 2 -->
-            <div class="card">
-                <div class="text-accent" style="font-size: 2rem; margin-bottom: 15px;">⭐</div>
-                <h3>Reputation Engine</h3>
-                <p class="text-secondary">Automatically route 4+ star experiences to Google Reviews and capture feedback
-                    privately before it hurts you.</p>
-            </div>
-
-            <!-- Card 3 -->
-            <div class="card">
-                <div class="text-accent" style="font-size: 2rem; margin-bottom: 15px;">📊</div>
-                <h3>Zero-Headache ROI</h3>
-                <p class="text-secondary">Set your "Gig" once. Watch creators book slots. Track views and engagement in
-                    real-time. No coordination needed.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- How It Works Teaser -->
+    <!-- HERO SECTION -->
     <section
-        style="background: var(--bg-card); padding: 80px 0; border-top: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05);">
-        <div class="container" style="text-align: center;">
-            <h2 style="margin-bottom: 50px;">How It works</h2>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; text-align: left;">
-                <div class="glass-panel" style="padding: 30px;">
-                    <h4 class="text-accent">01. Create a Gig</h4>
-                    <p class="text-secondary">Offer a free signature item for creators during your slow hours.</p>
-                </div>
-                <div class="glass-panel" style="padding: 30px;">
-                    <h4 class="text-accent">02. Creators Book</h4>
-                    <p class="text-secondary">Influencers see your offer, check your rules, and book a slot instantly.
-                    </p>
-                </div>
-                <div class="glass-panel" style="padding: 30px;">
-                    <h4 class="text-accent">03. Content Flow</h4>
-                    <p class="text-secondary">They visit, eat, and post. We track the links and show you the impact.</p>
-                </div>
+        style="height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; position: relative;">
+        <div class="hero-bg-dark">
+            <div class="hero-video-bg"
+                style="background: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto=format&fit=crop'); background-size: cover; background-position: center;">
             </div>
+        </div>
+
+        <div class="container" style="z-index: 10;">
+            <h1 style="font-size: clamp(3rem, 7vw, 6rem); margin-bottom: 30px;">
+                Your food is <span class="highlight-red">too good</span><br>to be this quiet.
+            </h1>
+            <p style="font-size: 1.5rem; max-width: 700px; margin: 0 auto 40px; color: #ccc;">
+                You’ve nailed the menu. You’ve mastered the vibe. Let's fix the volume.
+            </p>
+            <a href="#start" class="btn btn-primary" style="font-size: 1.25rem;">Start The Rush</a>
         </div>
     </section>
 
-    <!-- Final CTA -->
-    <section class="container" style="padding: 100px 0; text-align: center;">
-        <h2 style="font-size: 2.5rem; margin-bottom: 20px;">Ready to dominate your city?</h2>
-        <p class="text-muted" style="margin-bottom: 40px; font-size: 1.2rem;">Join hundreds of top-tier restaurants
-            building their legacy.</p>
-        <a href="qualify.html" class="btn btn-primary" style="font-size: 1.2rem; padding: 20px 40px;">
-            Check Eligibility
-        </a>
+    <!-- === RHYTHM: 2 ROWS (THE BLADE SYSTEM) === -->
+
+    <!-- Row 1: The Reality (Glass Left / Image Right) -->
+    <section id="start" class="blade-section">
+        <div class="blade-image"
+            style="background-image: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto=format&fit=crop');">
+        </div>
+
+        <div class="blade-glass">
+            <div class="badge badge-warning" style="margin-bottom: 20px;">The Reality</div>
+            <h2>Google is for gas stations. <br> <span style="color: #FF3008;">Feeds are for food.</span></h2>
+            <p style="max-width: 500px;">40% of diners don't use Maps to decide where to eat. They scroll. They watch.
+                They eat with their eyes first. If you aren't interrupting their doom-scroll with something delicious,
+                you don't exist.</p>
+        </div>
     </section>
 
-    <script src="app.js"></script>
+    <!-- Row 2: The Shift (Glass Right / Image Left) -->
+    <section class="blade-section reverse">
+        <div class="blade-image"
+            style="background-image: url('https://images.unsplash.com/photo-1606787366850-de6330128bfc?q=80&w=2070&auto=format&fit=crop');">
+        </div>
+
+        <div class="blade-glass">
+            <div class="badge badge-success" style="margin-bottom: 20px;">The Shift</div>
+            <h2>Stop yelling at strangers. <br> <span style="color: #FF3008;">Let friends do the talking.</span></h2>
+            <p style="max-width: 500px;">When you say your burger is great, it's an ad. When a local foodie shows their
+                5,000 followers the cheese drip, it's <strong>proof</strong>. 92% of people trust a peer recommendation
+                over a brand ad.</p>
+        </div>
+    </section>
+
+    <!-- === RHYTHM: FANCY BREAK === -->
+    <div class="rect-break"
+        style="padding: 120px 0; background: #010101; border-top: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1);">
+        <div class="container">
+            <h2 style="font-size: 3.5rem; margin-bottom: 20px;">The "Digital Echo"</h2>
+            <p
+                style="font-size: 1.5rem; color: var(--brand-primary); letter-spacing: 2px; text-transform: uppercase; font-weight: 700;">
+                Perpetual Trending. No PR Firm Required.</p>
+            <div
+                style="width: 100px; height: 4px; background: var(--brand-primary); margin: 30px auto; border-radius: 2px; box-shadow: 0 0 20px var(--brand-primary);">
+            </div>
+            <p style="max-width: 600px; margin: 0 auto; font-size: 1.25rem;">We don't do "one-off" posts. We install a
+                steady rhythm of creators to visit, taste, and post. A drip-feed of visibility 365 days a year.</p>
+        </div>
+    </div>
+
+    <!-- === SINGLE HOW IT WORKS SECTION === -->
+
+    <!-- Row 3: How It Works (Condensed) -->
+    <section class="blade-section">
+        <div class="blade-image"
+            style="background-image: url('https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1974&q=80');">
+        </div>
+        <div class="blade-glass">
+            <h2 style="margin-bottom: 30px;">How It Works</h2>
+
+            <div style="text-align: left; max-width: 500px; margin: 0 auto;">
+                <div style="margin-bottom: 24px;">
+                    <div style="color: #FF3008; font-weight: 700; font-size: 0.9rem; margin-bottom: 8px;">STEP 01 • We
+                        Coordinate</div>
+                    <p style="font-size: 1rem; margin: 0;">Our system invites top local creators to your venue. You
+                        treat them to a meal. They create content. No back-and-forth DMs.</p>
+                </div>
+
+                <div style="margin-bottom: 24px;">
+                    <div style="color: #FF3008; font-weight: 700; font-size: 0.9rem; margin-bottom: 8px;">STEP 02 • We
+                        Verify</div>
+                    <p style="font-size: 1rem; margin: 0;">Use our dashboard to track their posts. See the views, likes,
+                        and engagement in real-time. You only pay the platform fee when the system works.</p>
+                </div>
+
+                <div style="margin-bottom: 24px;">
+                    <div style="color: #FF3008; font-weight: 700; font-size: 0.9rem; margin-bottom: 8px;">STEP 03 • You
+                        Grow</div>
+                    <p style="font-size: 1rem; margin: 0;">Empty tables fill up. Google reviews climb. Your brand
+                        becomes the "it" spot in town.</p>
+                </div>
+            </div>
+
+            <a href="qualify.html" class="btn btn-primary" style="margin-top: 30px;">Start The Rush <i
+                    class="ph-bold ph-arrow-right"></i></a>
+        </div>
+    </section>
+
+    <!-- === RHYTHM: BLACK RECTANGLE BREAK === -->
+    <div class="rect-break" style="min-height: 500px; background: #000; border-top: 4px solid var(--brand-primary);">
+        <div class="container">
+            <h2 style="font-size: 4rem; margin-bottom: 40px;">Ready to turn the lights on?</h2>
+
+            <div class="glass-panel"
+                style="max-width: 800px; margin: 0 auto; padding: 40px; border: 1px solid rgba(255,255,255,0.1);">
+                <div style="display: flex; gap: 20px; text-align: left; align-items: center; margin-bottom: 30px;">
+                    <i class="ph-fill ph-check-circle text-accent" style="font-size: 2rem;"></i>
+                    <div>
+                        <h4 style="margin: 0;">Zero Ad Spend Risk</h4>
+                        <p style="margin: 0; font-size: 0.9rem;">You pay in food cost (30% value). We bring the traffic.
+                        </p>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 20px; text-align: left; align-items: center;">
+                    <i class="ph-fill ph-check-circle text-accent" style="font-size: 2rem;"></i>
+                    <div>
+                        <h4 style="margin: 0;">Guaranteed Visits</h4>
+                        <p style="margin: 0; font-size: 0.9rem;">60-180 Creator visits per month, programmed by AI.</p>
+                    </div>
+                </div>
+            </div>
+
+            <a href="qualify.html" class="btn btn-primary"
+                style="margin-top: 50px; font-size: 1.5rem; padding: 20px 60px;">Get Your Plan</a>
+        </div>
+    </div>
+
 </body>
 
 </html>

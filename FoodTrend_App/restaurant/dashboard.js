@@ -20,8 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 datasets: [{
                     label: 'Total Views',
                     data: [5000, 6200, 7500, 8900, 10500, 11200, 12500],
-                    borderColor: '#ffc107', // Amber
-                    backgroundColor: 'rgba(255, 193, 7, 0.1)',
+                    borderColor: '#EB1700', // DoorDash Red
+                    backgroundColor: 'rgba(235, 23, 0, 0.1)',
                     fill: true,
                     tension: 0.4
                 }]
