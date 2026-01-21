@@ -501,41 +501,48 @@ a {
         font-size: 2.5rem !important;
     }
 
-    /* Blade Mobile - Keep Diagonal, Remove Vertical Borders */
+    /* Blade Mobile - Pronounced Parallelogram Design */
     .blade-section,
     .blade-section.reverse {
         flex-direction: column;
         height: auto;
         min-height: auto;
+        overflow: visible;
+        /* Allow overlap */
+        margin-bottom: 0;
     }
 
     .blade-image {
         position: relative;
         width: 100%;
-        height: 50vh;
-        /* Taller on mobile */
+        height: 60vh;
+        /* Taller for impact */
+        z-index: 1;
     }
 
-    /* Keep diagonal cuts, remove ALL borders */
+    /* Standard Blade: Slant Up-Right (Bottom-Left to Top-Right) */
     .blade-glass {
+        position: relative;
+        z-index: 10;
         width: 100%;
         min-height: auto;
-        /* KEEP the diagonal clip */
-        clip-path: polygon(0 0, 100% 0, 100% 95%, 0% 100%);
+        margin-top: -80px;
+        /* Pull up into image */
+        padding: 100px 30px 80px;
+        /* Compensate for cut */
+        background: rgba(3, 7, 18, 0.95);
+        /* Nearly solid for legibility */
         border: none !important;
-        /* Remove all borders */
-        box-shadow: none !important;
-        /* Remove shadows */
-        padding: 60px 20px;
-        background: rgba(0, 0, 0, 0.85);
+        box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.5) !important;
+
+        /* Cut Top and Bottom Parallel */
+        clip-path: polygon(0 50px, 100% 0, 100% calc(100% - 50px), 0 100%);
     }
 
+    /* Reverse Blade: Slant Down-Right (Top-Left to Bottom-Right) */
     .blade-section.reverse .blade-glass {
-        /* KEEP the reverse diagonal clip */
-        clip-path: polygon(0 5%, 100% 0, 100% 100%, 0% 100%);
-        border: none !important;
-        box-shadow: none !important;
-        padding: 60px 20px;
+        margin-top: -80px;
+        clip-path: polygon(0 0, 100% 50px, 100% 100%, 0 calc(100% - 50px));
     }
 }
 
