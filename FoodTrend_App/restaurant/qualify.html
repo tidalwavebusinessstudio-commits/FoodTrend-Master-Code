@@ -28,7 +28,7 @@
     </nav>
 
     <div class="landing-hero">
-        <div class="container" style="max-width: 800px;">
+        <div class="container container-narrow">
 
             <!-- Progress Bar -->
             <div class="progress-bar">
@@ -39,17 +39,16 @@
 
             <!-- Step 1: Basic Info -->
             <div id="step-1" class="step-container active card">
-                <h2 style="margin-bottom: 10px;">First, tell us about your restaurant.</h2>
-                <p style="margin-bottom: 30px; color: var(--text-secondary);">We check if your area has enough active
-                    creators.</p>
+                <h2 class="mb-10">First, tell us about your restaurant.</h2>
+                <p class="mb-30 text-secondary">We check if your area has enough active creators.</p>
 
                 <form onsubmit="event.preventDefault(); nextStep(2);">
-                    <div style="margin-bottom: 20px;">
+                    <div class="mb-20">
                         <label>Restaurant Name</label>
                         <input type="text" required placeholder="e.g. Burger Bar Downtown">
                     </div>
 
-                    <div style="margin-bottom: 20px;">
+                    <div class="mb-20">
                         <label>Cuisine Type</label>
                         <select required>
                             <option value="">Select Cuisine...</option>
@@ -62,25 +61,25 @@
                         </select>
                     </div>
 
-                    <div style="margin-bottom: 30px;">
+                    <div class="mb-30">
                         <label>Zip Code</label>
                         <input type="text" required placeholder="To check creator density..." pattern="[0-9]*">
                     </div>
 
-                    <button type="submit" class="btn btn-primary" style="width: 100%;">Analyze Availability</button>
+                    <button type="submit" class="btn btn-primary w-100">Analyze Availability</button>
                 </form>
             </div>
 
             <!-- Step 2: ROI Calculator -->
             <div id="step-2" class="step-container card">
-                <h2 style="margin-bottom: 10px;">Your Potential Reach</h2>
-                <p style="margin-bottom: 30px; color: var(--text-secondary);">Adjust the sliders to see what automated
-                    marketing looks like for you.</p>
+                <h2 class="mb-10">Your Potential Reach</h2>
+                <p class="mb-30 text-secondary">Adjust the sliders to see what automated marketing looks like for you.
+                </p>
 
                 <!-- Sliders -->
-                <div style="margin-bottom: 40px;">
+                <div class="mb-40">
 
-                    <div style="margin-bottom: 25px;">
+                    <div class="mb-20">
                         <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                             <label style="font-weight: 600; color: var(--text-primary);">Creator Videos per
                                 Month</label>
@@ -91,7 +90,7 @@
                             micro-influencers visit per month.</p>
                     </div>
 
-                    <div style="margin-bottom: 25px;">
+                    <div class="mb-20">
                         <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                             <label style="font-weight: 600; color: var(--text-primary);">Avg. Views per Video</label>
                             <span id="views-val" class="text-accent">1,500</span>
@@ -124,75 +123,60 @@
                     </div>
                 </div>
 
-                <button onclick="nextStep(3)" class="btn btn-primary" style="width: 100%;">See Pricing Plans</button>
+                <button onclick="nextStep(3)" class="btn btn-primary w-100">See Pricing Plans</button>
             </div>
 
             <!-- Step 3: Pricing Tiers -->
-            <div id="step-3" class="step-container" style="text-align: center; max-width: 1000px; margin: 0 auto;">
-                <h2 class="text-success" style="margin-bottom: 5px;">You qualify!</h2>
-                <p class="text-secondary" style="margin-bottom: 30px;">Choose a plan to activate your influencer stream.
-                </p>
+            <div id="step-3" class="step-container text-center" style="max-width: 1000px; margin: 0 auto;">
+                <h2 class="text-success mb-10">You qualify!</h2>
+                <p class="text-secondary mb-30">Choose a plan to activate your influencer stream.</p>
 
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+                <div class="pricing-grid">
 
                     <!-- Momentum -->
-                    <div class="glass-panel" style="padding: 30px; border: 1px solid rgba(255,255,255,0.1);">
-                        <h3 class="text-muted" style="font-size: 1.4rem;">Momentum</h3>
-                        <div style="font-size: 2rem; font-weight: 700; margin: 15px 0;">$799<span
-                                style="font-size: 1rem; color: var(--text-muted);">/mo</span></div>
-                        <p class="text-muted" style="font-size: 0.9rem; margin-bottom: 20px;">For smaller local spots.
-                        </p>
-                        <ul
-                            style="text-align: left; list-style: none; margin-bottom: 20px; font-size: 0.9rem; color: var(--text-secondary);">
-                            <li style="margin-bottom: 8px;">✅ Up to 60 Creator Visits</li>
-                            <li style="margin-bottom: 8px;">✅ Basic Reputation Mgmt</li>
-                            <li style="margin-bottom: 8px;">✅ Email Support</li>
+                    <div class="pricing-card">
+                        <h3 class="pricing-title text-muted">Momentum</h3>
+                        <div class="pricing-price">$799<span>/mo</span></div>
+                        <p class="pricing-desc">For smaller local spots.</p>
+                        <ul class="pricing-features">
+                            <li>✅ Up to 60 Creator Visits</li>
+                            <li>✅ Basic Reputation Mgmt</li>
+                            <li>✅ Email Support</li>
                         </ul>
-                        <a href="onboarding.html?plan=momentum" class="btn btn-outline" style="width: 100%;">Select</a>
+                        <a href="onboarding.html?plan=momentum" class="btn btn-outline w-100">Select</a>
                     </div>
 
                     <!-- Velocity (Featured) -->
-                    <div class="glass-panel"
-                        style="padding: 30px; border: 2px solid var(--accent-primary); transform: scale(1.05); position: relative; z-index: 10;">
-                        <div
-                            style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--accent-primary); color: #000; padding: 4px 12px; border-radius: 12px; font-size: 0.8rem; font-weight: 700;">
-                            MOST POPULAR</div>
-                        <h3 class="text-accent" style="font-size: 1.4rem;">Velocity</h3>
-                        <div style="font-size: 2.2rem; font-weight: 700; margin: 15px 0;">$1,299<span
-                                style="font-size: 1rem; color: var(--text-muted);">/mo</span></div>
-                        <p class="text-muted" style="font-size: 0.9rem; margin-bottom: 20px;">For growing restaurants.
-                        </p>
-                        <ul
-                            style="text-align: left; list-style: none; margin-bottom: 20px; font-size: 0.9rem; color: var(--text-secondary);">
-                            <li style="margin-bottom: 8px;">✅ <b>Up to 150</b> Creator Visits</li>
-                            <li style="margin-bottom: 8px;">✅ <b>Global</b> App Visibility</li>
-                            <li style="margin-bottom: 8px;">✅ Upsell Engine</li>
-                            <li style="margin-bottom: 8px;">✅ Priority Support</li>
+                    <div class="pricing-card featured">
+                        <div class="pricing-badge">MOST POPULAR</div>
+                        <h3 class="pricing-title text-accent">Velocity</h3>
+                        <div class="pricing-price">$1,299<span>/mo</span></div>
+                        <p class="pricing-desc">For growing restaurants.</p>
+                        <ul class="pricing-features">
+                            <li>✅ <b>Up to 150</b> Creator Visits</li>
+                            <li>✅ <b>Global</b> App Visibility</li>
+                            <li>✅ Upsell Engine</li>
+                            <li>✅ Priority Support</li>
                         </ul>
-                        <a href="onboarding.html?plan=velocity" class="btn btn-primary" style="width: 100%;">Select
-                            Velocity</a>
+                        <a href="onboarding.html?plan=velocity" class="btn btn-primary w-100">Select Velocity</a>
                     </div>
 
                     <!-- Dominance -->
-                    <div class="glass-panel" style="padding: 30px; border: 1px solid rgba(255,255,255,0.1);">
-                        <h3 class="text-warning" style="font-size: 1.4rem;">Dominance</h3>
-                        <div style="font-size: 2rem; font-weight: 700; margin: 15px 0;">$2,499<span
-                                style="font-size: 1rem; color: var(--text-muted);">/mo</span></div>
-                        <p class="text-muted" style="font-size: 0.9rem; margin-bottom: 20px;">For hospitality groups.
-                        </p>
-                        <ul
-                            style="text-align: left; list-style: none; margin-bottom: 20px; font-size: 0.9rem; color: var(--text-secondary);">
-                            <li style="margin-bottom: 8px;">✅ <b>Unlimited</b> Creator Visits</li>
-                            <li style="margin-bottom: 8px;">✅ Multi-Location Support</li>
-                            <li style="margin-bottom: 8px;">✅ Dedicated Account Mgr</li>
-                            <li style="margin-bottom: 8px;">✅ AI Content Analysis</li>
+                    <div class="pricing-card">
+                        <h3 class="pricing-title text-warning">Dominance</h3>
+                        <div class="pricing-price">$2,499<span>/mo</span></div>
+                        <p class="pricing-desc">For hospitality groups.</p>
+                        <ul class="pricing-features">
+                            <li>✅ <b>Unlimited</b> Creator Visits</li>
+                            <li>✅ Multi-Location Support</li>
+                            <li>✅ Dedicated Account Mgr</li>
+                            <li>✅ AI Content Analysis</li>
                         </ul>
-                        <a href="onboarding.html?plan=dominance" class="btn btn-outline" style="width: 100%;">Select</a>
+                        <a href="onboarding.html?plan=dominance" class="btn btn-outline w-100">Select</a>
                     </div>
 
                 </div>
             </div>
-
         </div>
     </div>
 
