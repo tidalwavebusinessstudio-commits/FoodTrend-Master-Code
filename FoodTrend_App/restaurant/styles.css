@@ -361,30 +361,49 @@ a {
 
 /* Mobile overrides */
 @media (max-width: 900px) {
-    .blade-section {
+    .container {
+        padding: 0 20px;
+    }
+
+    h1 {
+        font-size: 2.5rem !important;
+    }
+
+    /* Blade Mobile - Keep Diagonal, Remove Vertical Borders */
+    .blade-section,
+    .blade-section.reverse {
         flex-direction: column;
+        height: auto;
         min-height: auto;
     }
 
     .blade-image {
         position: relative;
-        height: 350px;
-        clip-path: none;
+        width: 100%;
+        height: 50vh;
+        /* Taller on mobile */
     }
 
+    /* Keep diagonal cuts, remove ALL borders */
     .blade-glass {
         width: 100%;
         min-height: auto;
-        clip-path: none;
-        background: rgba(3, 7, 18, 0.9);
-        padding: 40px 24px;
-        border: none;
-        border-top: 1px solid var(--brand-primary);
+        /* KEEP the diagonal clip */
+        clip-path: polygon(0 0, 100% 0, 100% 95%, 0% 100%);
+        border: none !important;
+        /* Remove all borders */
+        box-shadow: none !important;
+        /* Remove shadows */
+        padding: 60px 20px;
+        background: rgba(0, 0, 0, 0.85);
     }
 
     .blade-section.reverse .blade-glass {
-        clip-path: none;
-        padding: 40px 24px;
+        /* KEEP the reverse diagonal clip */
+        clip-path: polygon(0 5%, 100% 0, 100% 100%, 0% 100%);
+        border: none !important;
+        box-shadow: none !important;
+        padding: 60px 20px;
     }
 }
 
