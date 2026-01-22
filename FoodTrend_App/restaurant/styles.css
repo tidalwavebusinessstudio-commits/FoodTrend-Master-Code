@@ -450,8 +450,8 @@ a {
 /* Hero Section with Diagonal Split */
 .hero-section {
     position: relative;
-    min-height: 85vh;
-    /* Standard tall hero */
+    min-height: 60vh;
+    /* Reduced height per user request */
     display: flex;
     align-items: center;
     justify-content: center;
