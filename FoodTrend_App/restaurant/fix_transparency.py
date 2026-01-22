@@ -1,32 +1,29 @@
 from PIL import Image
 
 def remove_background():
-    img_path = "assets/logo_source.png"
+    img_path = "assets/logo_black.png"
     out_path = "assets/logo.png"
     
     img = Image.open(img_path).convert("RGBA")
     datas = img.getdata()
     
     new_data = []
-    # Heuristic: The logo is White Text and Red Arrow. Everything else is background.
-    # We will look for pixels that are NOT clearly white or red.
     
     for item in datas:
         # item is (R, G, B, A)
         r, g, b, a = item
         
-        # Check for White (Text) - high brightness
-        is_white = r > 200 and g > 200 and b > 200
+        # Check for Black (Background)
+        # Being very strict: If it's dark, it's background.
+        # But we must be careful not to remove the dark red parts if any.
+        # The prompt said "Solid Black", so we can be strict.
         
-        # Check for Red (Arrow) - high Red, relatively lower G and B
-        is_red = r > 150 and (r > g + 50) and (r > b + 50)
-        
-        if is_white or is_red:
+        if r < 50 and g < 50 and b < 50:
+             # Transparent
+            new_data.append((0, 0, 0, 0))
+        else:
             # Keep original pixel
             new_data.append(item)
-        else:
-            # Make transparent
-            new_data.append((0, 0, 0, 0))
             
     img.putdata(new_data)
     img.save(out_path, "PNG")
