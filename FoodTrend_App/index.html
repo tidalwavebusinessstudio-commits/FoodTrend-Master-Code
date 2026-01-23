@@ -24,6 +24,8 @@
       justify-content: center;
       text-align: center;
       overflow: hidden;
+      padding-top: 80px;
+      /* Account for fixed nav */
     }
 
     .hero-bg {
@@ -83,16 +85,24 @@
 
 <body>
 
-  <!-- Sticky Mobile Nav -->
-  <div class="app-header glass" style="position: fixed; width: 100%;">
-    <div class="logo"><i class="ph-fill ph-fire text-primary"></i> FoodTrend</div>
-    <div style="display: flex; gap: 15px; align-items: center;">
-      <a href="restaurant/index.html" style="font-size: 0.9rem; color: #ccc; text-decoration: none;">Restaurant
-        Partner?</a>
-      <div style="cursor: pointer; font-weight: 700;"
-        onclick="document.getElementById('modal-login').classList.add('active')">Log In</div>
+  <!-- GLASSMORPHIC NAVIGATION -->
+  <nav class="glass-nav">
+    <div class="nav-container">
+      <!-- Logo -->
+      <a href="index.html" class="nav-logo">
+        <img src="restaurant/assets/logo.png" alt="FoodTrend" style="height: 60px; width: auto;">
+      </a>
+
+      <!-- Nav Link & CTA Wrapper (Parallelogram) -->
+      <div class="nav-action-wrapper">
+        <a href="restaurant/index.html" class="btn btn-glass-red-dark">Restaurant Partner?</a>
+        <a href="#" onclick="document.getElementById('modal-signup').classList.add('active'); return false;"
+          class="btn btn-glass-red">Apply for Access</a>
+        <a href="#" onclick="document.getElementById('modal-login').classList.add('active'); return false;"
+          class="nav-link-text">Log In</a>
+      </div>
     </div>
-  </div>
+  </nav>
 
   <!-- HERO -->
   <div class="hero-wrapper">

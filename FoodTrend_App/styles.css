@@ -159,6 +159,140 @@ body {
 }
 
 /* === HEADER & NAVIGATION === */
+
+/* === GLASSMORPHIC NAVIGATION === */
+.glass-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 12px 0;
+}
+
+.nav-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-logo {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: white;
+    letter-spacing: -0.5px;
+    font-family: var(--font-main);
+}
+
+.nav-logo span {
+    color: var(--primary);
+}
+
+/* Nav Parallelogram Wrapper */
+.nav-action-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 8px 30px;
+    margin-right: -20px;
+    /* Offset for skew */
+    background: linear-gradient(135deg, rgba(235, 23, 0, 0.15), rgba(20, 25, 35, 0.55));
+    border-left: 1px solid rgba(255, 255, 255, 0.15);
+    transform: skewX(-20deg);
+    position: relative;
+    /* Aesthetic touch */
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.nav-action-wrapper>* {
+    transform: skewX(20deg);
+    /* Un-skew content */
+}
+
+.nav-link-text {
+    color: white !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    font-family: var(--font-main);
+}
+
+/* Button Styles */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px 32px;
+    border-radius: 0;
+    font-weight: 600;
+    font-size: 1.1rem;
+    letter-spacing: 0.01em;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: 1px solid transparent;
+    font-family: var(--font-main);
+}
+
+/* Glass-Red Dark Button (For Restaurant Partner?) */
+.btn-glass-red-dark {
+    background: rgba(200, 40, 8, 0.6);
+    border: 1px solid rgba(200, 40, 8, 0.5);
+    color: white;
+    box-shadow: 0 4px 14px 0 rgba(200, 40, 8, 0.35);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    clip-path: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
+}
+
+.btn-glass-red-dark:hover {
+    background: rgba(200, 40, 8, 0.8);
+    border-color: rgba(200, 40, 8, 0.7);
+    box-shadow: 0 6px 20px rgba(200, 40, 8, 0.4);
+    transform: translateY(-1px);
+}
+
+/* Glass-Red Button (For CTAs) */
+.btn-glass-red {
+    background: var(--primary);
+    border: 1px solid rgba(255, 48, 8, 0.4);
+    color: white;
+    box-shadow: 0 4px 14px 0 rgba(235, 23, 0, 0.39);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    clip-path: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
+}
+
+.btn-glass-red:hover {
+    background: var(--primary-hover);
+    border-color: rgba(255, 48, 8, 0.6);
+    box-shadow: 0 6px 20px rgba(235, 23, 0, 0.23);
+    transform: translateY(-1px);
+}
+
+/* Mobile Nav */
+@media (max-width: 768px) {
+    .nav-container {
+        padding: 0 20px;
+    }
+
+    .nav-logo {
+        font-size: 1.2rem;
+    }
+
+    .nav-action-wrapper {
+        gap: 12px;
+    }
+}
+
 .app-header {
     position: sticky;
     top: 0;
