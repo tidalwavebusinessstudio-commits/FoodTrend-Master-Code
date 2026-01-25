@@ -64,56 +64,8 @@
 
     <div class="dashboard-layout">
 
-        <!-- Sidebar -->
-        <aside class="sidebar-container">
-            <div
-                style="font-family: 'Outfit'; font-size: 1.5rem; font-weight: 800; color: white; margin-bottom: 40px; padding-left: 12px;">
-                FoodTrend<span class="text-accent">.</span>
-            </div>
-
-            <nav style="flex: 1;">
-                <a href="dashboard.html" class="nav-link active">
-                    <i class="ph-bold ph-squares-four"></i> Overview
-                </a>
-                <a href="gigs.html" class="nav-link">
-                    <i class="ph-bold ph-fire"></i> Gigs & Manager
-                </a>
-                <a href="calendar.html" class="nav-link">
-                    <i class="ph-bold ph-calendar-blank"></i> Calendar
-                </a>
-                <a href="announcements.html" class="nav-link">
-                    <i class="ph-bold ph-megaphone"></i> Announcements
-                </a>
-                <a href="feedback.html" class="nav-link">
-                    <i class="ph-bold ph-star"></i> Reputation
-                </a>
-                <a href="trends.html" class="nav-link">
-                    <i class="ph-bold ph-trend-up"></i> Intel Feed
-                </a>
-
-                <div style="margin: 20px 0; border-top: 1px solid rgba(255,255,255,0.05);"></div>
-
-                <a href="integrations.html" class="nav-link">
-                    <i class="ph-bold ph-plugs-connected"></i> Integrations
-                </a>
-                <a href="#" class="nav-link">
-                    <i class="ph-bold ph-gear"></i> Settings
-                </a>
-            </nav>
-
-            <!-- AI Consultant -->
-            <div id="ai-consultant-box"
-                style="margin-top: auto; padding: 20px; background: rgba(255,255,255,0.03); border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.05);">
-                <div
-                    style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;">
-                    <i class="ph-fill ph-sparkle text-accent"></i> AI Insight
-                </div>
-                <p style="font-size: 0.85rem; margin-bottom: 12px; line-height: 1.4;">"Tuesday night bookings are down
-                    15%. Activate a 'Late Night' gig?"</p>
-                <button class="btn btn-primary" style="width: 100%; font-size: 0.8rem; height: 32px;">Review
-                    Strategy</button>
-            </div>
-        </aside>
+        <!-- Sidebar (Component Injected) -->
+        <div id="sidebar-container"></div>
 
         <!-- Main Content -->
         <main style="padding: 40px; overflow-y: auto;">
@@ -141,7 +93,8 @@
                 <!-- Active Offers -->
                 <div class="glass-panel metric-card grad-card-1">
                     <div class="text-secondary font-weight-500">Active Offers</div>
-                    <div class="text-white" style="font-size: 2.5rem; font-weight: 700;">2</div>
+                    <div class="text-white" style="font-size: 2.5rem; font-weight: 700;" id="stat-active-offers">--
+                    </div>
                     <div class="badge badge-success">
                         <span class="badge-dot"></span> Live Now
                     </div>
@@ -150,10 +103,11 @@
 
                 <!-- Views -->
                 <div class="glass-panel metric-card grad-card-2">
-                    <div class="text-secondary font-weight-500">Views (Feb)</div>
-                    <div class="text-white" style="font-size: 2.5rem; font-weight: 700;">12.5k</div>
+                    <div class="text-secondary font-weight-500">Views (This Month)</div>
+                    <div class="text-white" style="font-size: 2.5rem; font-weight: 700;" id="stat-total-views">--</div>
                     <div class="badge badge-success">
-                        <i class="ph-bold ph-trend-up" style="margin-right: 4px;"></i> 15% vs Jan
+                        <i class="ph-bold ph-trend-up" style="margin-right: 4px;"></i> <span
+                            id="stat-views-change">--</span>% vs last month
                     </div>
                     <i class="ph-fill ph-eye metric-icon"></i>
                 </div>
@@ -161,7 +115,7 @@
                 <!-- Walk-ins -->
                 <div class="glass-panel metric-card grad-card-3">
                     <div class="text-secondary font-weight-500">Est. Walk-ins</div>
-                    <div class="text-white" style="font-size: 2.5rem; font-weight: 700;">~45</div>
+                    <div class="text-white" style="font-size: 2.5rem; font-weight: 700;" id="stat-walk-ins">--</div>
                     <div class="text-muted" style="font-size: 0.85rem;">Based on 1.2% Conv.</div>
                     <i class="ph-fill ph-users metric-icon"></i>
                 </div>
@@ -169,7 +123,7 @@
                 <!-- Rating -->
                 <div class="glass-panel metric-card grad-card-4">
                     <div class="text-secondary font-weight-500">Avg. Rating</div>
-                    <div class="text-white" style="font-size: 2.5rem; font-weight: 700;">4.8</div>
+                    <div class="text-white" style="font-size: 2.5rem; font-weight: 700;" id="stat-avg-rating">--</div>
                     <div class="badge badge-warning">
                         <i class="ph-fill ph-star" style="margin-right: 4px;"></i> Top Rated
                     </div>
@@ -244,25 +198,96 @@
 
             </div>
 
+            <!-- Influencer Stats Section (NEW - GHL Integration) -->
+            <div style="margin-top: 32px;">
+                <div class="flex-between" style="margin-bottom: 16px;">
+                    <h3>🎯 Influencer Network</h3>
+                    <a href="#" class="text-accent" style="font-size: 0.9rem;">Manage</a>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;">
+
+                    <!-- Total Influencers -->
+                    <div class="glass-panel metric-card grad-card-1">
+                        <div class="text-secondary font-weight-500">Active Influencers</div>
+                        <div class="text-white" style="font-size: 2.5rem; font-weight: 700;"
+                            id="stat-total-influencers">--</div>
+                        <div class="text-muted" style="font-size: 0.85rem;">Working with you</div>
+                        <i class="ph-fill ph-users-three metric-icon"></i>
+                    </div>
+
+                    <!-- Total Reach -->
+                    <div class="glass-panel metric-card grad-card-2">
+                        <div class="text-secondary font-weight-500">Total Reach</div>
+                        <div class="text-white" style="font-size: 2.5rem; font-weight: 700;" id="stat-total-reach">--
+                        </div>
+                        <div class="text-muted" style="font-size: 0.85rem;">Combined followers</div>
+                        <i class="ph-fill ph-broadcast metric-icon"></i>
+                    </div>
+
+                    <!-- Avg Engagement -->
+                    <div class="glass-panel metric-card grad-card-3">
+                        <div class="text-secondary font-weight-500">Avg. Engagement</div>
+                        <div class="text-white" style="font-size: 2.5rem; font-weight: 700;" id="stat-avg-engagement">
+                            --%</div>
+                        <div class="badge badge-success">
+                            <i class="ph-bold ph-trend-up" style="margin-right: 4px;"></i> Above avg
+                        </div>
+                        <i class="ph-fill ph-chart-line-up metric-icon"></i>
+                    </div>
+
+                    <!-- Tier Breakdown -->
+                    <div class="glass-panel metric-card grad-card-4">
+                        <div class="text-secondary font-weight-500">Network Quality</div>
+                        <div style="display: flex; gap: 8px; margin-top: 8px;">
+                            <span class="badge badge-primary" id="tier-macro">0 Macro</span>
+                            <span class="badge badge-info" id="tier-mid">0 Mid</span>
+                            <span class="badge badge-secondary" id="tier-micro">0 Micro</span>
+                        </div>
+                        <div class="text-muted" style="font-size: 0.85rem; margin-top: 4px;">By follower tier</div>
+                        <i class="ph-fill ph-ranking metric-icon"></i>
+                    </div>
+                </div>
+
+                <!-- Top Performers Table -->
+                <div class="glass-panel" style="padding: 24px; margin-top: 24px;">
+                    <div class="flex-between" style="margin-bottom: 16px;">
+                        <h4>Top Performers</h4>
+                        <a href="#" class="text-accent" style="font-size: 0.9rem;">View All</a>
+                    </div>
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                                <th style="text-align: left; padding: 12px 0; color: #888;">Influencer</th>
+                                <th style="text-align: left; padding: 12px 0; color: #888;">Handle</th>
+                                <th style="text-align: right; padding: 12px 0; color: #888;">Followers</th>
+                                <th style="text-align: right; padding: 12px 0; color: #888;">Engagement</th>
+                            </tr>
+                        </thead>
+                        <tbody id="top-performers-body">
+                            <tr>
+                                <td colspan="4" style="text-align: center; padding: 24px; color: #666;">Loading...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </main>
     </div>
 
+    <!-- Component Loader (Fib 8 Architecture) -->
+    <script src="js/dashboard-loader.js"></script>
+
     <!-- Scripts -->
-    <script src="dashboard.js"></script>
+    <script src="js/dashboard-api.js"></script>
     <script src="automations.js"></script>
     <script src="ai_consultant.js"></script>
+    <script src="js/influencer-stats.js"></script>
 
-    <!-- Updated Chart Config for Gradient -->
-    <script>
-        // Overriding the chart config from dashboard.js to use new colors
-        document.addEventListener('DOMContentLoaded', () => {
-            const ctx = document.getElementById('momentumChart');
-            // Note: We're reusing the logic in dashboard.js but styling is handled by CSS vars largely
-            // However, Chart.js canvas colors need JS.
-            // We'll let dashboard.js run, but if we wanted to refine it, we'd update dashboard.js.
-            // For now, let's update dashboard.js in the next step to match the red theme.
-        });
-    </script>
+    <!-- Prime Directive: Self-Healing Utilities (Fib 8) -->
+    <script src="../js/logger.js"></script>
+    <script src="../js/dom-utils.js"></script>
 </body>
 
 </html>
