@@ -86,12 +86,21 @@ function createWebhookRouter(db, queue) {
             const sig = req.headers['stripe-signature'];
             const secret = process.env.STRIPE_WEBHOOK_SECRET;
 
-            if (!verifyStripeSignature(req.body.toString(), sig, secret)) {
+            // Check if signature header exists
+            if (!sig) {
+                console.error('Missing Stripe signature header');
+                return res.status(400).json({ error: 'Missing signature' });
+            }
+
+            // Get body as string (handle both Buffer and string)
+            const bodyStr = Buffer.isBuffer(req.body) ? req.body.toString() : JSON.stringify(req.body);
+
+            if (!verifyStripeSignature(bodyStr, sig, secret)) {
                 console.error('Invalid Stripe signature');
                 return res.status(400).json({ error: 'Invalid signature' });
             }
 
-            const event = JSON.parse(req.body.toString());
+            const event = JSON.parse(bodyStr);
 
             // Idempotency check
             if (await alreadyProcessed(db, event.id)) {
@@ -118,7 +127,16 @@ function createWebhookRouter(db, queue) {
     router.post('/highlevel', async (req, res) => {
         try {
             const secret = process.env.GHL_WEBHOOK_SECRET;
-            const payload = JSON.parse(req.body.toString());
+
+            // Handle both Buffer and already-parsed Object
+            let payload;
+            if (Buffer.isBuffer(req.body)) {
+                payload = JSON.parse(req.body.toString());
+            } else if (typeof req.body === 'object') {
+                payload = req.body;
+            } else {
+                payload = JSON.parse(req.body);
+            }
 
             if (secret && !verifyGHLSignature(req.headers, payload, secret)) {
                 console.error('Invalid GHL signature');
