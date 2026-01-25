@@ -88,12 +88,12 @@
             </header>
 
             <!-- KPI Grid -->
-            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-bottom: 32px;">
+            <div class="kpi-grid">
 
                 <!-- Active Offers -->
                 <div class="glass-panel metric-card grad-card-1">
                     <div class="text-secondary font-weight-500">Active Offers</div>
-                    <div class="text-white" style="font-size: 2.5rem; font-weight: 700;" id="stat-active-offers">--
+                    <div class="stat-value" id="stat-active-offers">--
                     </div>
                     <div class="badge badge-success">
                         <span class="badge-dot"></span> Live Now
@@ -104,7 +104,7 @@
                 <!-- Views -->
                 <div class="glass-panel metric-card grad-card-2">
                     <div class="text-secondary font-weight-500">Views (This Month)</div>
-                    <div class="text-white" style="font-size: 2.5rem; font-weight: 700;" id="stat-total-views">--</div>
+                    <div class="stat-value" id="stat-total-views">--</div>
                     <div class="badge badge-success">
                         <i class="ph-bold ph-trend-up" style="margin-right: 4px;"></i> <span
                             id="stat-views-change">--</span>% vs last month
@@ -115,7 +115,7 @@
                 <!-- Walk-ins -->
                 <div class="glass-panel metric-card grad-card-3">
                     <div class="text-secondary font-weight-500">Est. Walk-ins</div>
-                    <div class="text-white" style="font-size: 2.5rem; font-weight: 700;" id="stat-walk-ins">--</div>
+                    <div class="stat-value" id="stat-walk-ins">--</div>
                     <div class="text-muted" style="font-size: 0.85rem;">Based on 1.2% Conv.</div>
                     <i class="ph-fill ph-users metric-icon"></i>
                 </div>
@@ -123,7 +123,7 @@
                 <!-- Rating -->
                 <div class="glass-panel metric-card grad-card-4">
                     <div class="text-secondary font-weight-500">Avg. Rating</div>
-                    <div class="text-white" style="font-size: 2.5rem; font-weight: 700;" id="stat-avg-rating">--</div>
+                    <div class="stat-value" id="stat-avg-rating">--</div>
                     <div class="badge badge-warning">
                         <i class="ph-fill ph-star" style="margin-right: 4px;"></i> Top Rated
                     </div>
@@ -132,11 +132,10 @@
             </div>
 
             <!-- Detail Grid -->
-            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px;">
+            <div class="detail-grid">
 
-                <!-- Stats Chart -->
-                <div class="glass-panel" style="padding: 24px;">
-                    <div class="flex-between" style="margin-bottom: 24px;">
+                <div class="glass-panel panel-padded">
+                    <div class="flex-between mb-24">
                         <h3>Engagement Momentum</h3>
                         <select style="background: rgba(255,255,255,0.05); border: none;">
                             <option>Last 30 Days</option>

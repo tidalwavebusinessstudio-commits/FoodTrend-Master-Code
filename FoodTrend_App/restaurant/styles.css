@@ -687,6 +687,7 @@ a {
     border-right: var(--glass-border);
     background: rgba(3, 7, 18, 0.85);
     backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     display: flex;
     flex-direction: column;
     z-index: 50;
@@ -1088,4 +1089,81 @@ label {
 
 .pricing-features li {
     margin-bottom: 8px;
+}
+
+/* === DASHBOARD UTILITIES (CSS Cleanup Phase) === */
+
+/* KPI Grid */
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+@media (max-width: 1200px) {
+    .kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .kpi-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* KPI Stat Value (Big Numbers) */
+.stat-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+/* Detail Grid (2:1 ratio) */
+.detail-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+}
+
+@media (max-width: 900px) {
+    .detail-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Panel with padding */
+.panel-padded {
+    padding: 24px;
+}
+
+/* Margin utilities */
+.mb-24 {
+    margin-bottom: 24px;
+}
+
+.mr-4 {
+    margin-right: 4px;
+}
+
+/* Text utilities */
+.text-white {
+    color: #fff;
+}
+
+.text-muted {
+    color: var(--text-muted);
+}
+
+.text-secondary {
+    color: var(--text-secondary);
+}
+
+.font-weight-500 {
+    font-weight: 500;
+}
+
+.font-sm {
+    font-size: 0.85rem;
 }
