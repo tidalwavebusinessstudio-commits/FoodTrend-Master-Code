@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Content | FoodTrend Creators</title>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        .submission-container {
+            max-width: 800px;
+            margin: 120px auto 40px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+        }
+
+        .visit-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .visit-card.flagged {
+            border-color: #EF4444;
+        }
+
+        .visit-card.warning {
+            border-color: #F59E0B;
+            animation: pulse-warning 2s infinite;
+        }
+
+        @keyframes pulse-warning {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4);
+            }
+
+            50% {
+                box-shadow: 0 0 0 10px rgba(245, 158, 11, 0);
+            }
+        }
+
+        .deadline-timer {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background: rgba(239, 68, 68, 0.1);
+            border-radius: 8px;
+            color: #EF4444;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .deadline-timer.warning {
+            background: rgba(245, 158, 11, 0.1);
+            color: #F59E0B;
+        }
+
+        .deadline-timer.OK {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10B981;
+        }
+
+        .url-input-group {
+            margin-bottom: 24px;
+        }
+
+        .url-input-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            color: #E2E8F0;
+            font-weight: 500;
+        }
+
+        .url-input {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        .url-input:focus {
+            outline: none;
+            border-color: var(--brand-primary);
+            box-shadow: 0 0 0 3px rgba(255, 48, 8, 0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: var(--brand-primary);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background: #E62D07;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 48, 8, 0.3);
+        }
+
+        .submit-btn:disabled {
+            background: #64748B;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .visit-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .visit-info h3 {
+            margin-bottom: 5px;
+        }
+
+        .visit-info p {
+            color: #94A3B8;
+            font-size: 0.9rem;
+        }
+
+        .success-message {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid #10B981;
+            color: #10B981;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="glass-nav">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">
+                <img src="https://storage.googleapis.com/msgsndr/94dt2MB1WHxUt3L0lur8/media/6976c136c1fa0cdde0a69f84.png"
+                    alt="FoodTrend" style="height: 60px; width: auto;">
+            </a>
+            <div class="nav-action-wrapper">
+                <a href="dashboard.html" class="btn btn-glass-red">Dashboard</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="submission-container">
+        <h1 style="margin-bottom: 10px;">Submit Your Content</h1>
+        <p style="color: #94A3B8; margin-bottom: 40px;">Upload links to your TikTok and Instagram posts</p>
+
+        <!-- Pending Visits -->
+        <div id="pendingVisits">
+            <p style="text-align: center; color: #64748B;">Loading your pending visits...</p>
+        </div>
+    </div>
+
+    <script>
+        async function loadPendingVisits() {
+            const influencerId = localStorage.getItem('influencer_id');
+
+            if (!influencerId) {
+                alert('Please sign in first');
+                window.location.href = 'signup.html';
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/influencer/${influencerId}/pending-visits`);
+                const visits = await response.json();
+
+                const container = document.getElementById('pendingVisits');
+
+                if (visits.length === 0) {
+                    container.innerHTML = '<p style="text-align: center; color: #64748B;">No pending content submissions. Great job staying compliant!</p>';
+                    return;
+                }
+
+                container.innerHTML = '';
+
+                visits.forEach(visit => {
+                    const isFlagged = visit.status === 'flagged' || visit.status === 'warning_sent';
+                    const deadlineTime = new Date(visit.posting_deadline).getTime();
+                    const now = Date.now();
+                    const timeRemaining = deadlineTime - now;
+                    const hoursRemaining = Math.floor(timeRemaining / 3600000);
+
+                    let timerClass = 'OK';
+                    let timerText = '';
+
+                    if (isFlagged) {
+                        timerClass = 'warning';
+                        timerText = '⚠️ URGENT: Submit within 24 hours to avoid strike!';
+                    } else if (timeRemaining > 0) {
+                        if (hoursRemaining < 12) {
+                            timerClass = 'warning';
+                            timerText = `⏰ ${hoursRemaining} hours ${Math.floor((timeRemaining % 3600000) / 60000)} minutes remaining`;
+                        } else {
+                            timerClass = 'OK';
+                            timerText = `✅ ${hoursRemaining} hours remaining`;
+                        }
+                    } else {
+                        timerClass = 'flagged';
+                        timerText = '🚫 OVERDUE - Submit NOW!';
+                    }
+
+                    const visitCard = `
+                        <div class="visit-card ${isFlagged ? 'warning' : ''}">
+                            <div class="visit-header">
+                                <div class="visit-info">
+                                    <h3>${visit.restaurant_name}</h3>
+                                    <p>Visit Date: ${new Date(visit.visit_date).toLocaleDateString()}</p>
+                                </div>
+                            </div>
+
+                            ${!visit.tiktok_posted || !visit.instagram_posted ? `
+                                <div class="deadline-timer ${timerClass}">
+                                    <i class="ph ph-clock"></i>
+                                    <span>${timerText}</span>
+                                </div>
+
+                                <form onsubmit="submitContent(event, '${visit.id}', '${visit.restaurant_id}')">
+                                    <div class="url-input-group">
+                                        <label>
+                                            <i class="ph ph-tiktok-logo"></i>
+                                            TikTok Video URL *
+                                        </label>
+                                        <input
+                                            type="url"
+                                            class="url-input"
+                                            id="tiktok-url-${visit.id}"
+                                            placeholder="https://tiktok.com/@username/video/..."
+                                            required
+                                            ${visit.tiktok_posted ? 'disabled value="Already submitted"' : ''}
+                                        >
+                                    </div>
+
+                                    <div class="url-input-group">
+                                        <label>
+                                            <i class="ph ph-instagram-logo"></i>
+                                            Instagram Post/Reel URL *
+                                        </label>
+                                        <input
+                                            type="url"
+                                            class="url-input"
+                                            id="instagram-url-${visit.id}"
+                                            placeholder="https://instagram.com/p/..."
+                                            required
+                                            ${visit.instagram_posted ? 'disabled value="Already submitted"' : ''}
+                                        >
+                                    </div>
+
+                                    <button type="submit" class="submit-btn" id="submit-${visit.id}">
+                                        Submit Content
+                                    </button>
+                                </form>
+                            ` : `
+                                <div class="success-message">
+                                    ✅ Content submitted successfully! Your compliance is recorded.
+                                </div>
+                            `}
+                        </div>
+                    `;
+
+                    container.innerHTML += visitCard;
+                });
+            } catch (error) {
+                console.error('Error loading visits:', error);
+                document.getElementById('pendingVisits').innerHTML =
+                    '<p style="text-align: center; color: #EF4444;">Error loading visits. Please refresh the page.</p>';
+            }
+        }
+
+        async function submitContent(event, visitId, restaurantId) {
+            event.preventDefault();
+
+            const tiktokUrl = document.getElementById(`tiktok-url-${visitId}`).value;
+            const instagramUrl = document.getElementById(`instagram-url-${visitId}`).value;
+            const influencerId = localStorage.getItem('influencer_id');
+
+            const submitBtn = document.getElementById(`submit-${visitId}`);
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+
+            try {
+                const response = await fetch('/api/influencer/submit-content', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        influencerId,
+                        restaurantId,
+                        creatorVisitId: visitId,
+                        tiktokUrl,
+                        instagramUrl
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('✅ Content submitted successfully! Metrics will be updated automatically.');
+                    location.reload();
+                } else {
+                    alert('Error: ' + (result.message || 'Invalid URLs. Please check the format and try again.'));
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Submit Content';
+                }
+            } catch (error) {
+                console.error('Submission error:', error);
+                alert('Network error. Please try again.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Content';
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', loadPendingVisits);
+    </script>
+
+    <!-- Prime Directive: Self-Healing Utilities (Fib 8) -->
+    <script src="../js/logger.js"></script>
+    <script src="../js/dom-utils.js"></script>
+</body>
+
+</html>

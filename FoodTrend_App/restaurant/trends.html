@@ -49,20 +49,10 @@
 </head>
 
 <body>
+
     <div class="dashboard-container">
-        <aside class="sidebar" id="sidebar">
-            <div class="logo">FoodTrend</div>
-            <nav>
-                <a href="dashboard.html" class="nav-item"><span class="nav-icon">📊</span> Overview</a>
-                <a href="gigs.html" class="nav-item"><span class="nav-icon">🔥</span> Gigs</a>
-                <a href="calendar.html" class="nav-item"><span class="nav-icon">📅</span> Calendar</a>
-                <a href="announcements.html" class="nav-item"><span class="nav-icon">📢</span> Announcements</a>
-                <a href="feedback.html" class="nav-item"><span class="nav-icon">⭐</span> Reputation</a>
-                <a href="trends.html" class="nav-item active"><span class="nav-icon">📈</span> Intel Feed</a>
-                <div style="margin: 20px 0; border-top: 1px solid rgba(255,255,255,0.1);"></div>
-                <a href="integrations.html" class="nav-item"><span class="nav-icon">🔌</span> Integrations</a>
-            </nav>
-        </aside>
+        <!-- Sidebar (Component Injected) -->
+        <div id="sidebar-container"></div>
 
         <main class="main-content">
             <header style="margin-bottom: 30px; display: flex; justify-content: space-between;">
@@ -126,6 +116,11 @@
             </div>
         </main>
     </div>
+    <script src="js/dashboard-loader.js"></script>
+
+    <!-- Prime Directive: Self-Healing Utilities (Fib 8) -->
+    <script src="../js/logger.js"></script>
+    <script src="../js/dom-utils.js"></script>
 </body>
 
 </html>

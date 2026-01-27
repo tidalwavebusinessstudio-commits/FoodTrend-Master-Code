@@ -7,6 +7,14 @@ const cron = require('node-cron');
 const PerformanceMonitor = require('../services/performance-monitor');
 const ContentSubmission = require('../services/content-submission');
 const InfluencerEnrichment = require('../services/influencer-enrichment');
+const GHLWorkflowTriggers = require('../services/ghl-workflow-triggers');
+const { createClient } = require('@supabase/supabase-js');
+
+// Initialize Supabase client for GHL workflow triggers
+const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE_KEY
+);
 
 console.log('[Cron] Initializing accountability system scheduled jobs...');
 
@@ -97,6 +105,20 @@ cron.schedule('0 6 * * *', async () => {
         console.log(`[Cron] Suspension check complete: ${result.reinstated} accounts reinstated`);
     } catch (error) {
         console.error('[Cron Error] Suspension expiration check failed:', error);
+    }
+});
+
+// ============================================
+// HOURLY: GHL Content Deadline Reminders
+// Triggers 48hr and 6hr reminder workflows in GoHighLevel
+// ============================================
+cron.schedule('0 * * * *', async () => {
+    console.log('\n[Cron] Checking GHL content deadlines...');
+    try {
+        await GHLWorkflowTriggers.checkContentDeadlines(supabase);
+        console.log('[Cron] GHL content deadline check complete');
+    } catch (error) {
+        console.error('[Cron Error] GHL content deadline check failed:', error);
     }
 });
 

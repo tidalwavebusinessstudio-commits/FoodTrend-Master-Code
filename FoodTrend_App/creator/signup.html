@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>FoodTrend Creator Program | Earn Residual Income</title>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        .creator-hero {
+            background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+            padding: 120px 20px 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .creator-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 48, 8, 0.1) 0%, transparent 70%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+
+            50% {
+                transform: scale(1.1);
+                opacity: 0.8;
+            }
+        }
+
+        .creator-hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .creator-hero .highlight {
+            color: var(--brand-primary);
+            text-shadow: 0 0 20px rgba(255, 48, 8, 0.5);
+        }
+
+        .creator-hero p {
+            font-size: 1.3rem;
+            color: #94A3B8;
+            max-width: 600px;
+            margin: 0 auto 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .earnings-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 1000px;
+            margin: 0 auto 60px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .earnings-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .earnings-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--brand-primary);
+            box-shadow: 0 10px 40px rgba(255, 48, 8, 0.3);
+        }
+
+        .earnings-card .amount {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--brand-primary);
+            margin-bottom: 10px;
+        }
+
+        .earnings-card .label {
+            color: #94A3B8;
+            font-size: 0.95rem;
+        }
+
+        .signup-container {
+            max-width: 600px;
+            margin: 80px auto;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+        }
+
+        .signup-container h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #E2E8F0;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--brand-primary);
+            box-shadow: 0 0 0 3px rgba(255, 48, 8, 0.1);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #64748B;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: var(--brand-primary);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background: #E62D07;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 48, 8, 0.3);
+        }
+
+        .submit-btn:disabled {
+            background: #64748B;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 60px auto;
+        }
+
+        .benefit-item {
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+        }
+
+        .benefit-item i {
+            font-size: 2.5rem;
+            color: var(--brand-primary);
+            margin-bottom: 15px;
+        }
+
+        .benefit-item h3 {
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .benefit-item p {
+            color: #94A3B8;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- GLASSMORPHIC NAVIGATION -->
+    <nav class="glass-nav">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">
+                <img src="https://storage.googleapis.com/msgsndr/94dt2MB1WHxUt3L0lur8/media/6976c136c1fa0cdde0a69f84.png"
+                    alt="FoodTrend" style="height: 60px; width: auto;">
+            </a>
+            <div class="nav-action-wrapper">
+                <a href="../restaurant/index.html" class="btn btn-glass-red-dark">For Restaurants</a>
+                <a href="dashboard.html" class="nav-link-text">Sign In</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="creator-hero">
+        <h1>Turn Your Influence Into <span class="highlight">Passive Income</span></h1>
+        <p>Refer restaurants to FoodTrend and earn <strong>$250/month for 6 months</strong>, then <strong>$100/month
+                ongoing</strong> — for every restaurant that signs up.</p>
+
+        <div class="earnings-showcase">
+            <div class="earnings-card">
+                <div class="amount">$250</div>
+                <div class="label">Per referral</div>
+                <div class="label">Months 1-6</div>
+            </div>
+            <div class="earnings-card">
+                <div class="amount">$100</div>
+                <div class="label">Per referral</div>
+                <div class="label">Month 7+ (ongoing)</div>
+            </div>
+            <div class="earnings-card">
+                <div class="amount">$2,700</div>
+                <div class="label">Potential per restaurant</div>
+                <div class="label">18+ months</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BENEFITS SECTION -->
+    <section class="container" style="padding: 80px 20px;">
+        <h2 class="text-center" style="font-size: 2.5rem; margin-bottom: 50px;">Why Join FoodTrend Creators?</h2>
+
+        <div class="benefits-grid">
+            <div class="benefit-item">
+                <i class="ph ph-chart-line-up"></i>
+                <h3>Residual Income</h3>
+                <p>Earn every single month as long as your referred restaurants stay active. Build true passive income.
+                </p>
+            </div>
+            <div class="benefit-item">
+                <i class="ph ph-hand-coins"></i>
+                <h3>High Payouts</h3>
+                <p>$250/month for the first 6 months, then $100/month ongoing. One referral = $2,700+ potential.</p>
+            </div>
+            <div class="benefit-item">
+                <i class="ph ph-qr-code"></i>
+                <h3>Easy Sharing</h3>
+                <p>Get your unique referral link + QR code. Share on TikTok, Instagram, or in-person at restaurants.</p>
+            </div>
+            <div class="benefit-item">
+                <i class="ph ph-currency-circle-dollar"></i>
+                <h3>Automatic Payouts</h3>
+                <p>Get paid via Stripe Connect every week. No chasing invoices, no paperwork.</p>
+            </div>
+            <div class="benefit-item">
+                <i class="ph ph-graph"></i>
+                <h3>Real-Time Dashboard</h3>
+                <p>Track clicks, conversions, earnings, and referrals all in one beautiful dashboard.</p>
+            </div>
+            <div class="benefit-item">
+                <i class="ph ph-rocket-launch"></i>
+                <h3>No Limits</h3>
+                <p>Unlimited referrals. Refer 10 restaurants, earn $27,000+. Refer 100, earn $270,000+.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SIGNUP FORM -->
+    <section class="container">
+        <div class="signup-container">
+            <h2>Join as a Creator</h2>
+            <form id="creatorSignupForm">
+                <div class="form-group">
+                    <label for="fullName">Full Name *</label>
+                    <input type="text" id="fullName" name="fullName" required placeholder="Alex Smith">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" required placeholder="alex@example.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number *</label>
+                    <input type="tel" id="phone" name="phone" required placeholder="+1 (234) 567-8900">
+                </div>
+
+                <div class="form-group">
+                    <label for="instagram">Instagram Handle</label>
+                    <input type="text" id="instagram" name="instagram" placeholder="@yourhandle">
+                </div>
+
+                <div class="form-group">
+                    <label for="tiktok">TikTok Handle</label>
+                    <input type="text" id="tiktok" name="tiktok" placeholder="@yourhandle">
+                </div>
+
+                <div class="form-group">
+                    <label for="bio">Why do you want to become a FoodTrend Creator?</label>
+                    <textarea id="bio" name="bio" rows="4"
+                        placeholder="Tell us about yourself and why you're interested..."></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">Get My Referral Link</button>
+            </form>
+        </div>
+    </section>
+
+    <script>
+        document.getElementById('creatorSignupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Creating Your Account...';
+
+            const formData = {
+                fullName: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                socialProfiles: {
+                    instagram: document.getElementById('instagram').value,
+                    tiktok: document.getElementById('tiktok').value
+                },
+                bio: document.getElementById('bio').value
+            };
+
+            try {
+                const response = await fetch('/api/influencer/signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Store influencer ID for dashboard
+                    localStorage.setItem('influencer_id', data.influencer.id);
+                    localStorage.setItem('referral_code', data.influencer.referral_code);
+
+                    // Redirect to dashboard
+                    window.location.href = 'dashboard.html';
+                } else {
+                    alert('Error: ' + (data.error || 'Something went wrong'));
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Get My Referral Link';
+                }
+            } catch (error) {
+                console.error('Signup error:', error);
+                alert('Network error. Please try again.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Get My Referral Link';
+            }
+        });
+    </script>
+
+    <!-- Prime Directive: Self-Healing Utilities (Fib 8) -->
+    <script src="../js/logger.js"></script>
+    <script src="../js/dom-utils.js"></script>
+</body>
+
+</html>

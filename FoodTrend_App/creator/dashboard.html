@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Creator Dashboard | FoodTrend</title>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        body {
+            background: #0A0A0A;
+            color: #E2E8F0;
+        }
+
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 100px auto 40px;
+            padding: 0 20px;
+        }
+
+        .dashboard-header {
+            margin-bottom: 40px;
+        }
+
+        .dashboard-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .dashboard-header p {
+            color: #94A3B8;
+            font-size: 1.1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            border-color: var(--brand-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 48, 8, 0.2);
+        }
+
+        .stat-card .label {
+            color: #94A3B8;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stat-card .value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--brand-primary);
+        }
+
+        .stat-card.secondary .value {
+            color: #60A5FA;
+        }
+
+        .referral-tools {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 40px;
+        }
+
+        .referral-tools h2 {
+            font-size: 1.8rem;
+            margin-bottom: 24px;
+        }
+
+        .referral-link-container {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .referral-link-input {
+            flex: 1;
+            padding: 14px 18px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: #fff;
+            font-family: 'Courier New', monospace;
+        }
+
+        .copy-btn {
+            padding: 14px 28px;
+            background: var(--brand-primary);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .copy-btn:hover {
+            background: #E62D07;
+            transform: translateY(-2px);
+        }
+
+        .copy-btn.copied {
+            background: #10B981;
+        }
+
+        .qr-code-section {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            padding: 24px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+        }
+
+        .qr-code-canvas {
+            background: #fff;
+            padding: 16px;
+            border-radius: 12px;
+        }
+
+        .qr-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .chart-container {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 40px;
+        }
+
+        .chart-container h2 {
+            font-size: 1.8rem;
+            margin-bottom: 24px;
+        }
+
+        .restaurants-table {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 32px;
+            overflow-x: auto;
+        }
+
+        .restaurants-table h2 {
+            font-size: 1.8rem;
+            margin-bottom: 24px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        th {
+            color: #94A3B8;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        td {
+            color: #E2E8F0;
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10B981;
+        }
+
+        .status-cancelled {
+            background: rgba(239, 68, 68, 0.2);
+            color: #EF4444;
+        }
+
+        @media (max-width: 768px) {
+            .qr-code-section {
+                flex-direction: column;
+            }
+
+            .referral-link-container {
+                flex-direction: column;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVIGATION -->
+    <nav class="glass-nav">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">
+                <img src="https://storage.googleapis.com/msgsndr/94dt2MB1WHxUt3L0lur8/media/6976c136c1fa0cdde0a69f84.png"
+                    alt="FoodTrend" style="height: 60px; width: auto;">
+            </a>
+            <div class="nav-action-wrapper">
+                <a href="signup.html" class="nav-link-text">Creator Program</a>
+                <a href="#" onclick="logout()" class="btn btn-glass-red-dark">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- DASHBOARD CONTAINER -->
+    <div class="dashboard-container">
+
+        <!-- Header -->
+        <div class="dashboard-header">
+            <h1>Welcome back, <span id="creatorName">Creator</span>! 👋</h1>
+            <p>Your referral code: <strong id="referralCode">LOADING...</strong></p>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="label">
+                    <i class="ph ph-currency-circle-dollar"></i>
+                    Total Earnings
+                </div>
+                <div class="value" id="totalEarnings">$0</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="label">
+                    <i class="ph ph-hand-coins"></i>
+                    Pending Payout
+                </div>
+                <div class="value" id="pendingEarnings">$0</div>
+            </div>
+
+            <div class="stat-card secondary">
+                <div class="label">
+                    <i class="ph ph-storefront"></i>
+                    Active Restaurants
+                </div>
+                <div class="value" id="activeReferrals">0</div>
+            </div>
+
+            <div class="stat-card secondary">
+                <div class="label">
+                    <i class="ph ph-chart-line-up"></i>
+                    Total Referrals
+                </div>
+                <div class="value" id="totalReferrals">0</div>
+            </div>
+
+            <div class="stat-card secondary">
+                <div class="label">
+                    <i class="ph ph-cursor-click"></i>
+                    Total Clicks
+                </div>
+                <div class="value" id="totalClicks">0</div>
+            </div>
+
+            <div class="stat-card secondary">
+                <div class="label">
+                    <i class="ph ph-percent"></i>
+                    Conversion Rate
+                </div>
+                <div class="value" id="conversionRate">0%</div>
+            </div>
+        </div>
+
+        <!-- Referral Tools -->
+        <div class="referral-tools">
+            <h2><i class="ph ph-share-network"></i> Your Referral Tools</h2>
+
+            <div class="referral-link-container">
+                <input type="text" id="referralLinkInput" class="referral-link-input" readonly value="Loading...">
+                <button class="copy-btn" id="copyBtn" onclick="copyReferralLink()">
+                    <i class="ph ph-copy"></i>
+                    Copy Link
+                </button>
+            </div>
+
+            <div class="qr-code-section">
+                <div>
+                    <canvas id="qrCanvas" class="qr-code-canvas"></canvas>
+                </div>
+                <div class="qr-actions">
+                    <p style="margin-bottom: 8px; color: #94A3B8;">Share this QR code in-person at restaurants, on
+                        flyers, or on social media.</p>
+                    <button class="copy-btn" onclick="downloadQR()">
+                        <i class="ph ph-download"></i>
+                        Download QR Code
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Income Projection Chart -->
+        <div class="chart-container">
+            <h2><i class="ph ph-trend-up"></i> 12-Month Income Projection</h2>
+            <canvas id="incomeChart"></canvas>
+        </div>
+
+        <!-- Restaurants Table -->
+        <div class="restaurants-table">
+            <h2><i class="ph ph-list-bullets"></i> Your Referred Restaurants</h2>
+            <table id="restaurantsTable">
+                <thead>
+                    <tr>
+                        <th>Restaurant</th>
+                        <th>Plan</th>
+                        <th>Signup Date</th>
+                        <th>Status</th>
+                        <th>Earnings</th>
+                        <th>Pending</th>
+                    </tr>
+                </thead>
+                <tbody id="restaurantsBody">
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 40px; color: #64748B;">
+                            Loading your referrals...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <script>
+        let dashboardData = null;
+        let incomeChart = null;
+
+        // Load dashboard data
+        async function loadDashboard() {
+            const influencerId = localStorage.getItem('influencer_id');
+
+            if (!influencerId) {
+                window.location.href = 'signup.html';
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/influencer/${influencerId}/dashboard`);
+                const data = await response.json();
+                dashboardData = data;
+
+                // Update stats
+                document.getElementById('creatorName').textContent = data.influencer.full_name.split(' ')[0];
+                document.getElementById('referralCode').textContent = data.influencer.referral_code;
+                document.getElementById('totalEarnings').textContent = `$${data.influencer.total_earnings.toLocaleString()}`;
+                document.getElementById('pendingEarnings').textContent = `$${data.influencer.pending_earnings.toLocaleString()}`;
+                document.getElementById('activeReferrals').textContent = data.influencer.active_referrals;
+                document.getElementById('totalReferrals').textContent = data.influencer.total_referrals;
+                document.getElementById('totalClicks').textContent = data.influencer.total_clicks;
+
+                const conversionRate = data.influencer.total_clicks > 0
+                    ? ((data.influencer.total_referrals / data.influencer.total_clicks) * 100).toFixed(1)
+                    : '0.0';
+                document.getElementById('conversionRate').textContent = `${conversionRate}%`;
+
+                // Set referral link
+                const baseUrl = window.location.origin;
+                const referralLink = `${baseUrl}/restaurant?ref=${data.influencer.referral_code}`;
+                document.getElementById('referralLinkInput').value = referralLink;
+
+                // Generate QR code
+                generateQRCode(referralLink);
+
+                // Render income chart
+                renderIncomeChart(data.incomeProjection);
+
+                // Populate restaurants table
+                populateRestaurantsTable(data.restaurants);
+
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+                alert('Error loading dashboard data');
+            }
+        }
+
+        // Generate QR Code
+        function generateQRCode(url) {
+            const canvas = document.getElementById('qrCanvas');
+            QRCode.toCanvas(canvas, url, {
+                width: 220,
+                margin: 2,
+                color: {
+                    dark: '#FF3008',
+                    light: '#FFFFFF'
+                }
+            });
+        }
+
+        // Copy referral link
+        function copyReferralLink() {
+            const input = document.getElementById('referralLinkInput');
+            input.select();
+            document.execCommand('copy');
+
+            const btn = document.getElementById('copyBtn');
+            btn.classList.add('copied');
+            btn.innerHTML = '<i class="ph ph-check"></i> Copied!';
+
+            setTimeout(() => {
+                btn.classList.remove('copied');
+                btn.innerHTML = '<i class="ph ph-copy"></i> Copy Link';
+            }, 2000);
+        }
+
+        // Download QR code
+        function downloadQR() {
+            const canvas = document.getElementById('qrCanvas');
+            const url = canvas.toDataURL('image/png');
+            const link = document.createElement('a');
+            link.download = `foodtrend-referral-${dashboardData.influencer.referral_code}.png`;
+            link.href = url;
+            link.click();
+        }
+
+        // Render income projection chart
+        function renderIncomeChart(projectionData) {
+            const ctx = document.getElementById('incomeChart').getContext('2d');
+
+            // Destroy existing chart if it exists
+            if (incomeChart) {
+                incomeChart.destroy();
+            }
+
+            const labels = projectionData.map(item => {
+                const date = new Date(item.month);
+                return date.toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
+            });
+
+            const data = projectionData.map(item => parseFloat(item.projected_income));
+
+            incomeChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Projected Monthly Income',
+                        data: data,
+                        borderColor: '#FF3008',
+                        backgroundColor: 'rgba(255, 48, 8, 0.1)',
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: '#FF3008',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            padding: 12,
+                            titleFont: { size: 14 },
+                            bodyFont: { size: 16, weight: 'bold' },
+                            callbacks: {
+                                label: function (context) {
+                                    return '$' + context.parsed.y.toLocaleString();
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.05)'
+                            },
+                            ticks: {
+                                color: '#94A3B8',
+                                callback: function (value) {
+                                    return '$' + value.toLocaleString();
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.05)'
+                            },
+                            ticks: {
+                                color: '#94A3B8'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Populate restaurants table
+        function populateRestaurantsTable(restaurants) {
+            const tbody = document.getElementById('restaurantsBody');
+
+            if (restaurants.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 40px; color: #64748B;">
+                            No referrals yet. Start sharing your referral link!
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = restaurants.map(r => `
+                <tr>
+                    <td><strong>${r.restaurant_name}</strong></td>
+                    <td>${capitalizeFirst(r.tier)}</td>
+                    <td>${new Date(r.signup_date).toLocaleDateString()}</td>
+                    <td>
+                        <span class="status-badge status-${r.status}">
+                            ${capitalizeFirst(r.status)}
+                        </span>
+                    </td>
+                    <td>$${parseFloat(r.paid_amount || 0).toLocaleString()}</td>
+                    <td>$${parseFloat(r.pending_amount || 0).toLocaleString()}</td>
+                </tr>
+            `).join('');
+        }
+
+        function capitalizeFirst(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+
+        function logout() {
+            localStorage.removeItem('influencer_id');
+            localStorage.removeItem('referral_code');
+            window.location.href = 'signup.html';
+        }
+
+        // Load dashboard on page load
+        window.addEventListener('DOMContentLoaded', loadDashboard);
+    </script>
+
+    <!-- Prime Directive: Self-Healing Utilities (Fib 8) -->
+    <script src="../js/logger.js"></script>
+    <script src="../js/dom-utils.js"></script>
+</body>
+
+</html>

@@ -34,6 +34,28 @@
     --nav-height: 80px;
 }
 
+/* ========================================
+   LIGHT THEME
+   ======================================== */
+[data-theme="light"] {
+    /* Backgrounds - Clean White */
+    --bg-dark: #F5F5F7;
+    --bg-overlay: rgba(255, 255, 255, 0.85);
+    --secondary: #f0f0f0;
+
+    /* Glassmorphism Essentials */
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(0, 0, 0, 0.08);
+    --glass-highlight: rgba(0, 0, 0, 0.05);
+
+    /* Typography */
+    --text-white: #1a1a1a;
+    --text-gray: #6b6b6b;
+
+    /* Para Specifics */
+    --red-trim: rgba(235, 23, 0, 0.2);
+}
+
 * {
     box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
@@ -506,6 +528,7 @@ body {
     right: 12px;
     background: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     border: 1px solid var(--primary);
     padding: 6px 12px;
     border-radius: 20px;
@@ -603,6 +626,7 @@ body {
     inset: 0;
     background: rgba(0, 0, 0, 0.8);
     backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     z-index: 9999;
     opacity: 0;
     pointer-events: none;
@@ -623,6 +647,7 @@ body {
     place-items: center;
     background: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 }
 
 .modal-overlay.active {

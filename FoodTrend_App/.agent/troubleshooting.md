@@ -113,6 +113,59 @@ In `restaurant/styles.css`, we fixed the "Start The Rush" floating button that w
 
 ---
 
+### 3. Content Hidden Behind Fixed Sidebar
+
+**Encountered:** 2026-01-25
+**Last Updated:** 2026-01-25
+
+#### Problem Description
+Main content on dashboard pages was cut off on the left side, hidden behind the fixed sidebar menu. The sidebar had `position: fixed` but the main content area had no left margin to account for it.
+
+#### Symptoms
+- Page titles appearing cut off (e.g., "uencer Updates" instead of "Influencer Updates")
+- Left edges of content cards hidden behind sidebar
+- Content appears to "slide under" the menu
+
+#### Root Cause
+1. Sidebar component has `position: fixed; width: Xpx` (inline style)
+2. Main content area uses `.main-content` class but that class had NO CSS rule
+3. Without `margin-left`, content starts at x=0 and goes under the fixed sidebar
+
+#### Solution
+
+**Add margin-left to match sidebar width:**
+```css
+/* In restaurant/styles.css */
+.main-content {
+    margin-left: 60px; /* Match actual sidebar width */
+    padding: 32px 40px;
+    min-height: 100vh;
+}
+```
+
+**Key insight:** Check the ACTUAL rendered sidebar width, not what's in the inline style. The sidebar may be collapsed to icons (~60px) even if the inline style says 250px.
+
+#### Verification Method
+1. Refresh any dashboard page
+2. Verify content titles are fully visible
+3. Check that content starts right after sidebar (no large gap)
+
+#### Prevention Tips
+- Use CSS variables to sync sidebar and content margin:
+  ```css
+  :root { --sidebar-width: 60px; }
+  .sidebar { width: var(--sidebar-width); }
+  .main-content { margin-left: var(--sidebar-width); }
+  ```
+- When creating fixed sidebars, ALWAYS add corresponding margin rule for content
+
+**Related Files:**
+- [restaurant/styles.css](file:///c:/Users/Owner/OneDrive/Documents/GitHub/FoodTrend-Master-Code/FoodTrend_App/restaurant/styles.css)
+- [restaurant/components/sidebar.html](file:///c:/Users/Owner/OneDrive/Documents/GitHub/FoodTrend-Master-Code/FoodTrend_App/restaurant/components/sidebar.html)
+- [Error log](file:///c:/Users/Owner/OneDrive/Documents/GitHub/FoodTrend-Master-Code/FoodTrend_App/.agent/errors/css-layout/2026-01-25_sidebar-content-overlap.md)
+
+---
+
 ### 2. Hover Transform Causing Horizontal Shift
 
 **Last Updated:** 2026-01-23
@@ -459,6 +512,7 @@ Follow this proven workflow for CSS and layout issues:
 | Design looks "weird" | Experimental borders/effects | Remove experimental features, keep it clean | [Design #2](#2-red-border-problem-experimental-design-failure) |
 | Hero too tall | `min-height: 100vh` | Reduce to `60vh` for content-heavy pages | [Design #3](#3-hero-section-height-and-spacing) |
 | Logo has black background | PNG without transparency | Use Python script or re-export with alpha | [Image #1](#1-png-logo-transparency-problems) |
+| Content hidden behind sidebar | Fixed sidebar, no content margin | Add `margin-left` matching sidebar width | [CSS #3](#3-content-hidden-behind-fixed-sidebar) |
 
 ---
 

@@ -13,6 +13,13 @@
 ☐ Ask yourself: "What am I building today?"
 ```
 
+### When Starting AI Conversation
+```
+☐ Tell AI: "Read .agent/CONTEXT_LOADER.md first"
+☐ This ensures AI has verified URLs and rules
+☐ Prevents hallucinations about production config
+```
+
 **That's it.** Your brain now has context.
 
 ---

@@ -1,47 +1,174 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Check In - FoodTrend</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root { --primary: #ff4b1f; --bg: #f8f9fa; }
-  body { background: var(--bg); font-family: 'Poppins', sans-serif; margin: 0; padding-bottom: 90px; }
-  a { text-decoration: none; color: inherit; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Check In - FoodTrend</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #ff4b1f;
+      --bg: #f8f9fa;
+    }
 
-  /* HEADER & MENU */
-  .header { background: white; padding: 15px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 50; }
-  .menu-btn { font-size: 24px; cursor: pointer; }
-  .logo { height: 35px; }
-  
-  /* SIDE MENU */
-  .side-menu { position: fixed; top: 0; left: -280px; width: 280px; height: 100%; background: white; z-index: 200; transition: 0.3s; box-shadow: 4px 0 15px rgba(0,0,0,0.1); padding-top: 20px; }
-  .side-menu.open { left: 0; }
-  .menu-link { display: block; padding: 15px 20px; font-weight: 500; border-bottom: 1px solid #eee; }
-  .overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:150; }
-  .overlay.open { display:block; }
+    body {
+      background: var(--bg);
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding-bottom: 90px;
+    }
 
-  /* TICKET CARD */
-  .container { padding: 40px 20px; display: flex; flex-direction: column; align-items: center; }
-  .ticket { background: white; border-radius: 20px; padding: 30px; text-align: center; width: 100%; max-width: 320px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); border-top: 10px solid var(--primary); }
-  .qr-box { margin: 20px 0; border: 2px dashed #eee; padding: 10px; display: inline-block; border-radius: 12px; }
-  .qr-img { width: 180px; height: 180px; }
-  .active-pill { background: #e0fbf4; color: #00b894; padding: 8px 20px; border-radius: 50px; font-weight: 700; font-size: 14px; display: inline-block; }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
 
-  /* BOTTOM NAV */
-  .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: white; padding: 12px 0; border-top: 1px solid #eee; display: flex; justify-content: space-around; z-index: 100; }
-  .nav-item { text-align: center; color: #b2bec3; font-size: 10px; font-weight: 500; width: 25%; }
-  .nav-item.active { color: var(--primary); }
-  .nav-icon { font-size: 22px; display: block; margin-bottom: 4px; }
-</style>
+    /* HEADER & MENU */
+    .header {
+      background: white;
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .menu-btn {
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .logo {
+      height: 35px;
+    }
+
+    /* SIDE MENU */
+    .side-menu {
+      position: fixed;
+      top: 0;
+      left: -280px;
+      width: 280px;
+      height: 100%;
+      background: white;
+      z-index: 200;
+      transition: 0.3s;
+      box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+      padding-top: 20px;
+    }
+
+    .side-menu.open {
+      left: 0;
+    }
+
+    .menu-link {
+      display: block;
+      padding: 15px 20px;
+      font-weight: 500;
+      border-bottom: 1px solid #eee;
+    }
+
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 150;
+    }
+
+    .overlay.open {
+      display: block;
+    }
+
+    /* TICKET CARD */
+    .container {
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .ticket {
+      background: white;
+      border-radius: 20px;
+      padding: 30px;
+      text-align: center;
+      width: 100%;
+      max-width: 320px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      border-top: 10px solid var(--primary);
+    }
+
+    .qr-box {
+      margin: 20px 0;
+      border: 2px dashed #eee;
+      padding: 10px;
+      display: inline-block;
+      border-radius: 12px;
+    }
+
+    .qr-img {
+      width: 180px;
+      height: 180px;
+    }
+
+    .active-pill {
+      background: #e0fbf4;
+      color: #00b894;
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 14px;
+      display: inline-block;
+    }
+
+    /* BOTTOM NAV */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: white;
+      padding: 12px 0;
+      border-top: 1px solid #eee;
+      display: flex;
+      justify-content: space-around;
+      z-index: 100;
+    }
+
+    .nav-item {
+      text-align: center;
+      color: #b2bec3;
+      font-size: 10px;
+      font-weight: 500;
+      width: 25%;
+    }
+
+    .nav-item.active {
+      color: var(--primary);
+    }
+
+    .nav-icon {
+      font-size: 22px;
+      display: block;
+      margin-bottom: 4px;
+    }
+  </style>
 </head>
+
 <body>
 
   <div class="header">
     <div class="menu-btn" onclick="toggleMenu()">☰</div>
-    <img src="https://via.placeholder.com/150x50?text=FoodTrend" class="logo">
+    <img src="https://storage.googleapis.com/msgsndr/94dt2MB1WHxUt3L0lur8/media/6976c136c1fa0cdde0a69f84.png"
+      class="logo">
     <div style="width:24px;"></div>
   </div>
 
@@ -52,6 +179,17 @@
     <a href="referrals.html" class="menu-link">💸 Refer & Earn</a>
     <a href="academy.html" class="menu-link">🎓 Academy</a>
     <a href="shop.html" class="menu-link">🛍️ Shop</a>
+    <!-- Theme Toggle Switch -->
+    <div class="theme-toggle-row">
+      <span class="theme-toggle-label">Dark Mode</span>
+      <label class="theme-switch" title="Toggle Light/Dark Mode">
+        <input type="checkbox" class="theme-switch-input">
+        <span class="theme-switch-slider">
+          <span class="theme-switch-icon sun">☀️</span>
+          <span class="theme-switch-icon moon">🌙</span>
+        </span>
+      </label>
+    </div>
     <a onclick="logout()" class="menu-link" style="color:red;">🚪 Log Out</a>
   </div>
 
@@ -63,7 +201,8 @@
         <img id="qr-img" src="" class="qr-img">
       </div>
       <div class="active-pill">● Active Session</div>
-      <p style="color:#999; font-size:13px; margin-top:20px;">Show this to your server <b>before ordering</b> to verify your gig.</p>
+      <p style="color:#999; font-size:13px; margin-top:20px;">Show this to your server <b>before ordering</b> to verify
+        your gig.</p>
     </div>
   </div>
 
@@ -76,13 +215,13 @@
 
   <script>
     const db = supabase.createClient('https://vsgljspzmynbqfyuvyyl.supabase.co', 'sb_publishable_eH52Wo-WDJ7WkasY4GejOw_b0xUYZ-_');
-    
+
     function toggleMenu() { document.getElementById('side-menu').classList.toggle('open'); document.getElementById('overlay').classList.toggle('open'); }
-    async function logout() { await db.auth.signOut(); window.location.href='index.html'; }
+    async function logout() { await db.auth.signOut(); window.location.href = 'index.html'; }
 
     async function loadQR() {
       const { data: { session } } = await db.auth.getSession();
-      if(session) {
+      if (session) {
         const name = session.user.user_metadata.full_name || "Foodie";
         document.getElementById('u-name').innerText = name;
         const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=FOODTREND_USER:${session.user.email}`;
@@ -93,5 +232,11 @@
     }
     loadQR();
   </script>
+
+  <!-- Prime Directive: Self-Healing Utilities (Fib 8) -->
+  <script src="js/logger.js"></script>
+  <script src="js/dom-utils.js"></script>
+  <script src="js/theme-toggle.js"></script>
 </body>
+
 </html>

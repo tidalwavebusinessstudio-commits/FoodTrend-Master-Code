@@ -12,6 +12,9 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap"
         rel="stylesheet">
 
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <link rel="stylesheet" href="styles.css">
     <style>
         /* Status Badges */
@@ -113,40 +116,13 @@
 
     <div class="dashboard-container">
 
-        <!-- Sidebar (Ideally modular, but copied for MVP speed) -->
-        <aside class="sidebar" id="sidebar">
-            <div class="logo">FoodTrend</div>
-            <nav>
-                <a href="dashboard.html" class="nav-item">
-                    <span class="nav-icon">📊</span> Overview
-                </a>
-                <a href="gigs.html" class="nav-item active">
-                    <span class="nav-icon">🔥</span> Gigs & Manager
-                </a>
-                <a href="calendar.html" class="nav-item">
-                    <span class="nav-icon">📅</span> Calendar
-                </a>
-                <a href="announcements.html" class="nav-item">
-                    <span class="nav-icon">📢</span> Announcements
-                </a>
-                <a href="feedback.html" class="nav-item">
-                    <span class="nav-icon">⭐</span> Reputation
-                </a>
-                <a href="trends.html" class="nav-item">
-                    <span class="nav-icon">📈</span> Intel Feed
-                </a>
-                <div style="margin: 20px 0; border-top: 1px solid rgba(255,255,255,0.1);"></div>
-                <a href="integrations.html" class="nav-item">
-                    <span class="nav-icon">🔌</span> Integrations
-                </a>
-            </nav>
-        </aside>
+        <!-- Sidebar (Component Injected) -->
+        <div id="sidebar-container"></div>
 
         <main class="main-content">
             <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
                 <h2>Gig Management</h2>
-                <button class="btn btn-primary" onclick="alert('Feature coming in Phase 2: Multi-Gig support')">+ Create
-                    New Offer</button>
+                <button class="btn btn-primary" onclick="openCreateGigModal()">+ Create New Offer</button>
             </header>
 
             <!-- Gig List -->
@@ -158,12 +134,11 @@
 
                         <div style="flex: 1; min-width: 300px;">
                             <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
-                                <h3 style="margin: 0;">Free Signature Burger</h3>
+                                <h3 style="margin: 0;" class="gig-title">Free Signature Burger</h3>
                                 <span class="status-badge status-active">Live</span>
                             </div>
-                            <p class="text-secondary" style="margin-bottom: 15px;">
-                                Offer: 1x Classic Cheeseburger + Fountain Drink.<br>
-                                Rules: Must post within 24h. Tag @BurgerBar.
+                            <p class="text-secondary gig-description" style="margin-bottom: 15px;">
+                                1x Classic Cheeseburger + Fountain Drink. Must post within 24h. Tag @BurgerBar.
                             </p>
                             <div style="display: flex; gap: 10px;">
                                 <div class="text-muted" style="font-size: 0.9rem;">📍 2/2 slots booked today</div>
@@ -182,11 +157,47 @@
 
                             <div style="display: flex; gap: 10px;">
                                 <button class="btn btn-outline" onclick="openUpsellModal()">Manage Upsells</button>
-                                <button class="btn btn-outline">Edit Gig</button>
+                                <button class="btn btn-outline" onclick="openEditGigModal(this)">Edit Gig</button>
                             </div>
                         </div>
 
                     </div>
+                </div>
+            </div>
+
+            <!-- Create Gig Modal -->
+            <div id="createGigModal" class="modal">
+                <div class="modal-content">
+                    <span onclick="closeCreateGigModal()"
+                        style="position: absolute; right: 20px; top: 20px; cursor: pointer; font-size: 1.5rem;">&times;</span>
+                    <h2 style="margin-bottom: 20px;">🎁 Create New Gig Offer</h2>
+
+                    <form id="createGigForm">
+                        <div style="margin-bottom: 20px;">
+                            <label class="form-label">Offer Title *</label>
+                            <input type="text" id="gigTitle" placeholder="e.g., Free Signature Burger" required
+                                style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: #fff;">
+                        </div>
+
+                        <div style="margin-bottom: 20px;">
+                            <label class="form-label">What's Included *</label>
+                            <textarea id="gigDescription" rows="3"
+                                placeholder="e.g., 1x Classic Cheeseburger + Fountain Drink" required
+                                style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: #fff; resize: vertical;"></textarea>
+                        </div>
+
+                        <div style="margin-bottom: 20px;">
+                            <label class="form-label">Daily Slots</label>
+                            <input type="number" id="gigSlots" value="2" min="1" max="10"
+                                style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: #fff;">
+                        </div>
+
+                        <div style="display: flex; gap: 15px;">
+                            <button type="button" class="btn btn-outline" style="flex: 1;"
+                                onclick="closeCreateGigModal()">Cancel</button>
+                            <button type="submit" class="btn btn-primary" style="flex: 1;">Create Gig</button>
+                        </div>
+                    </form>
                 </div>
             </div>
 
@@ -231,11 +242,43 @@
                 </div>
             </div>
 
+            <!-- Edit Gig Modal -->
+            <div id="editGigModal" class="modal">
+                <div class="modal-content">
+                    <span onclick="closeEditGigModal()"
+                        style="position: absolute; right: 20px; top: 20px; cursor: pointer; font-size: 1.5rem;">&times;</span>
+                    <h2 style="margin-bottom: 20px;">✏️ Edit Gig</h2>
+
+                    <div style="margin-bottom: 20px;">
+                        <label class="form-label">Offer Title</label>
+                        <input type="text" id="editGigTitle"
+                            style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: #fff;">
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <label class="form-label">What's Included</label>
+                        <textarea id="editGigDescription" rows="4"
+                            style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: #fff; resize: vertical;"></textarea>
+                    </div>
+
+                    <div style="display: flex; gap: 15px;">
+                        <button type="button" class="btn btn-outline" style="flex: 1;"
+                            onclick="closeEditGigModal()">Cancel</button>
+                        <button type="button" class="btn btn-primary" style="flex: 1;" onclick="saveGigEdit()">Save
+                            Changes</button>
+                    </div>
+                </div>
+            </div>
+
         </main>
     </div>
 
+    <script src="js/dashboard-loader.js"></script>
     <script src="gigs.js"></script>
-    <script src="upsell_engine.js"></script>
+
+    <!-- Prime Directive: Self-Healing Utilities (Fib 8) -->
+    <script src="../js/logger.js"></script>
+    <script src="../js/dom-utils.js"></script>
 </body>
 
 </html>

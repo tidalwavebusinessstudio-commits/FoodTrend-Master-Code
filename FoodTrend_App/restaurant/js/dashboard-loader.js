@@ -17,7 +17,7 @@ const SIDEBAR_HTML = `
     <!-- Logo (Original) -->
     <div class="logo" style="padding: 0px 16px 24px 16px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); transition: padding 0.3s;">
         <a href="dashboard.html">
-            <img src="../assets/logo.png" alt="FoodTrend" class="logo-img" style="height: 40px; width: auto; filter: drop-shadow(0 2px 8px rgba(255,70,90,0.3)); transition: height 0.3s;">
+            <img src="https://storage.googleapis.com/msgsndr/94dt2MB1WHxUt3L0lur8/media/6976c136c1fa0cdde0a69f84.png" alt="FoodTrend" class="logo-img" style="height: 40px; width: auto; filter: drop-shadow(0 2px 8px rgba(255,70,90,0.3)); transition: height 0.3s;">
         </a>
     </div>
     
@@ -58,6 +58,18 @@ const SIDEBAR_HTML = `
             <span class="nav-text" style="font-weight: 600; opacity: 1; transition: opacity 0.3s;">Integrations</span>
         </a>
     </nav>
+
+    <!-- Theme Toggle Switch -->
+    <div class="theme-toggle-row" style="margin: 20px 20px 0 20px;">
+        <span class="theme-toggle-label nav-text">Dark Mode</span>
+        <label class="theme-switch" title="Toggle Light/Dark Mode">
+            <input type="checkbox" class="theme-switch-input">
+            <span class="theme-switch-slider">
+                <span class="theme-switch-icon sun">☀️</span>
+                <span class="theme-switch-icon moon">🌙</span>
+            </span>
+        </label>
+    </div>
 
     <!-- Footer (Original) -->
     <div style="position: absolute; bottom: 20px; left: 20px; right: 20px; transition: opacity 0.3s;" class="sidebar-footer">
@@ -100,11 +112,15 @@ const SIDEBAR_HTML = `
     }
 
     .sidebar[data-collapsed="true"] .logo {
-        padding: 0px 10px 20px 10px !important;
+        padding: 10px 5px 20px 5px !important;
+        overflow: hidden !important;
     }
 
     .sidebar[data-collapsed="true"] .logo-img {
-        height: 32px !important;
+        height: 28px !important;
+        max-width: 55px !important;
+        object-fit: contain !important;
+        object-position: left center !important;
     }
 
     .sidebar[data-collapsed="true"] .nav-icon {
@@ -142,10 +158,27 @@ function loadSidebar() {
         container.innerHTML = SIDEBAR_HTML;
         setActiveLink();
         restoreCollapseState();
+        loadThemeToggleScript();
         console.log("✅ Sidebar loaded");
     } catch (error) {
         console.error("❌ Sidebar load failed:", error);
     }
+}
+
+// Load theme toggle script dynamically
+function loadThemeToggleScript() {
+    if (window.FoodTrendTheme) return; // Already loaded
+
+    const script = document.createElement('script');
+    script.src = '../js/theme-toggle.js';
+    script.onload = function () {
+        console.log("✅ Theme toggle loaded");
+        // Re-apply theme after script loads
+        if (window.FoodTrendTheme) {
+            window.FoodTrendTheme.apply(window.FoodTrendTheme.get());
+        }
+    };
+    document.head.appendChild(script);
 }
 
 function setActiveLink() {

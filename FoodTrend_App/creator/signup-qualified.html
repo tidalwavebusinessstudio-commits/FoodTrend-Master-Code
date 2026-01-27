@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Join FoodTrend Creators | Multi-Step Application</title>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        /* Previous styles preserved... */
+        .creator-hero {
+            background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+            padding: 120px 20px 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .creator-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 48, 8, 0.1) 0%, transparent 70%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+
+            50% {
+                transform: scale(1.1);
+                opacity: 0.8;
+            }
+        }
+
+        .creator-hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .creator-hero .highlight {
+            color: var(--brand-primary);
+            text-shadow: 0 0 20px rgba(255, 48, 8, 0.5);
+        }
+
+        /* Multi-step wizard */
+        .wizard-container {
+            max-width: 700px;
+            margin: 80px auto 40px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+        }
+
+        .progress-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .progress-bar::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 30px;
+            right: 30px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: 0;
+        }
+
+        .progress-step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .progress-step-circle {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            transition: all 0.3s ease;
+        }
+
+        .progress-step.active .progress-step-circle {
+            background: var(--brand-primary);
+            border-color: var(--brand-primary);
+            box-shadow: 0 0 20px rgba(255, 48, 8, 0.5);
+        }
+
+        .progress-step.completed .progress-step-circle {
+            background: #10B981;
+            border-color: #10B981;
+        }
+
+        .progress-step-label {
+            font-size: 0.85rem;
+            color: #64748B;
+        }
+
+        .progress-step.active .progress-step-label {
+            color: var(--brand-primary);
+            font-weight: 600;
+        }
+
+        .wizard-step {
+            display: none;
+        }
+
+        .wizard-step.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #E2E8F0;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--brand-primary);
+            box-shadow: 0 0 0 3px rgba(255, 48, 8, 0.1);
+        }
+
+        .rating-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .rating-option {
+            flex: 1;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .rating-option:hover {
+            border-color: var(--brand-primary);
+        }
+
+        .rating-option input[type="radio"] {
+            display: none;
+        }
+
+        .rating-option input[type="radio"]:checked+label {
+            color: var(--brand-primary);
+        }
+
+        .rating-option.selected {
+            background: rgba(255, 48, 8, 0.1);
+            border-color: var(--brand-primary);
+        }
+
+        .wizard-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn-wizard {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-prev {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .btn-prev:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-next,
+        .btn-submit {
+            background: var(--brand-primary);
+            color: #fff;
+        }
+
+        .btn-next:hover,
+        .btn-submit:hover {
+            background: #E62D07;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 48, 8, 0.3);
+        }
+
+        .btn-wizard:disabled {
+            background: #64748B;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .performance-agreement {
+            background: rgba(255, 48, 8, 0.05);
+            border: 2px solid rgba(255, 48, 8, 0.3);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .requirement-box,
+        .consequence-box,
+        .submission-box {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .requirement-box h3,
+        .consequence-box h3,
+        .submission-box h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .consequence-box.warning {
+            border-left: 4px solid #F59E0B;
+        }
+
+        .consequence-box ul {
+            margin-left: 20px;
+        }
+
+        .consequence-box li {
+            margin-bottom: 8px;
+        }
+
+        .checkbox-agreement {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .checkbox-agreement input[type="checkbox"] {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+        }
+
+        .checkbox-agreement span {
+            line-height: 1.6;
+        }
+
+        .score-display {
+            text-align: center;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            margin-bottom: 30px;
+        }
+
+        .score-number {
+            font-size: 4rem;
+            font-weight: 800;
+            color: var(--brand-primary);
+            margin-bottom: 10px;
+        }
+
+        .score-label {
+            color: #94A3B8;
+            font-size: 1.1rem;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+
+        .status-badge.approved {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10B981;
+        }
+
+        .status-badge.review {
+            background: rgba(245, 158, 11, 0.2);
+            color: #F59E0B;
+        }
+
+        .status-badge.rejected {
+            background: rgba(239, 68, 68, 0.2);
+            color: #EF4444;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVIGATION -->
+    <nav class="glass-nav">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">
+                <img src="https://storage.googleapis.com/msgsndr/94dt2MB1WHxUt3L0lur8/media/6976c136c1fa0cdde0a69f84.png"
+                    alt="FoodTrend" style="height: 60px; width: auto;">
+            </a>
+            <div class="nav-action-wrapper">
+                <a href="../restaurant/index.html" class="btn btn-glass-red-dark">For Restaurants</a>
+                <a href="dashboard.html" class="nav-link-text">Sign In</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="creator-hero">
+        <h1>Join FoodTrend <span class="highlight">Creators</span></h1>
+        <p>Multi-step application with qualification review</p>
+    </section>
+
+    <!-- WIZARD CONTAINER -->
+    <div class="wizard-container">
+
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-step active" id="progress-1">
+                <div class="progress-step-circle">1</div>
+                <div class="progress-step-label">Basic Info</div>
+            </div>
+            <div class="progress-step" id="progress-2">
+                <div class="progress-step-circle">2</div>
+                <div class="progress-step-label">Experience</div>
+            </div>
+            <div class="progress-step" id="progress-3">
+                <div class="progress-step-circle">3</div>
+                <div class="progress-step-label">Samples</div>
+            </div>
+            <div class="progress-step" id="progress-4">
+                <div class="progress-step-circle">4</div>
+                <div class="progress-step-label">Agreement</div>
+            </div>
+            <div class="progress-step" id="progress-5">
+                <div class="progress-step-circle">5</div>
+                <div class="progress-step-label">Review</div>
+            </div>
+        </div>
+
+        <!-- Application Form -->
+        <form id="creatorApplicationForm">
+
+            <!-- STEP 1: Basic Information -->
+            <div class="wizard-step active" id="step-1">
+                <h2 style="margin-bottom: 30px;">Basic Information</h2>
+
+                <div class="form-group">
+                    <label for="fullName">Full Name *</label>
+                    <input type="text" id="fullName" name="fullName" required placeholder="Alex Smith">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" required placeholder="alex@example.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number *</label>
+                    <input type="tel" id="phone" name="phone" required placeholder="+1 (234) 567-8900">
+                </div>
+
+                <div class="form-group">
+                    <label for="instagram">Instagram Handle *</label>
+                    <input type="text" id="instagram" name="instagram" required placeholder="@yourhandle">
+                </div>
+
+                <div class="form-group">
+                    <label for="instagramFollowers">Instagram Followers *</label>
+                    <input type="number" id="instagramFollowers" name="instagramFollowers" required min="0"
+                        placeholder="5000">
+                </div>
+
+                <div class="form-group">
+                    <label for="tiktok">TikTok Handle *</label>
+                    <input type="text" id="tiktok" name="tiktok" required placeholder="@yourhandle">
+                </div>
+
+                <div class="form-group">
+                    <label for="tiktokFollowers">TikTok Followers *</label>
+                    <input type="number" id="tiktokFollowers" name="tiktokFollowers" required min="0"
+                        placeholder="10000">
+                </div>
+
+                <div class="wizard-buttons">
+                    <button type="button" class="btn-wizard btn-next" onclick="nextStep(1)">Next Step</button>
+                </div>
+            </div>
+
+            <!-- STEP 2: Experience & Skills -->
+            <div class="wizard-step" id="step-2">
+                <h2 style="margin-bottom: 30px;">Your Experience</h2>
+
+                <div class="form-group">
+                    <label>Video Production Experience (1-5) *</label>
+                    <p style="color: #94A3B8; font-size: 0.9rem; margin-bottom: 15px;">How skilled are you at creating
+                        videos?</p>
+                    <div class="rating-group" id="videoProductionRating">
+                        <div class="rating-option" onclick="selectRating('videoProduction', 1)">
+                            <input type="radio" name="videoProduction" value="1" id="video-1">
+                            <label for="video-1">
+                                <div style="font-size: 2rem;">1</div>
+                                <div style="font-size: 0.8rem;">Beginner</div>
+                            </label>
+                        </div>
+                        <div class="rating-option" onclick="selectRating('videoProduction', 2)">
+                            <input type="radio" name="videoProduction" value="2" id="video-2">
+                            <label for="video-2">
+                                <div style="font-size: 2rem;">2</div>
+                                <div style="font-size: 0.8rem;">Basic</div>
+                            </label>
+                        </div>
+                        <div class="rating-option" onclick="selectRating('videoProduction', 3)">
+                            <input type="radio" name="videoProduction" value="3" id="video-3">
+                            <label for="video-3">
+                                <div style="font-size: 2rem;">3</div>
+                                <div style="font-size: 0.8rem;">Intermediate</div>
+                            </label>
+                        </div>
+                        <div class="rating-option" onclick="selectRating('videoProduction', 4)">
+                            <input type="radio" name="videoProduction" value="4" id="video-4">
+                            <label for="video-4">
+                                <div style="font-size: 2rem;">4</div>
+                                <div style="font-size: 0.8rem;">Advanced</div>
+                            </label>
+                        </div>
+                        <div class="rating-option" onclick="selectRating('videoProduction', 5)">
+                            <input type="radio" name="videoProduction" value="5" id="video-5">
+                            <label for="video-5">
+                                <div style="font-size: 2rem;">5</div>
+                                <div style="font-size: 0.8rem;">Professional</div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-top: 40px;">
+                    <label>Food Review Experience (1-5) *</label>
+                    <p style="color: #94A3B8; font-size: 0.9rem; margin-bottom: 15px;">How experienced are you with food
+                        content?</p>
+                    <div class="rating-group" id="foodReviewRating">
+                        <div class="rating-option" onclick="selectRating('foodReview', 1)">
+                            <input type="radio" name="foodReview" value="1" id="food-1">
+                            <label for="food-1">
+                                <div style="font-size: 2rem;">1</div>
+                                <div style="font-size: 0.8rem;">Never</div>
+                            </label>
+                        </div>
+                        <div class="rating-option" onclick="selectRating('foodReview', 2)">
+                            <input type="radio" name="foodReview" value="2" id="food-2">
+                            <label for="food-2">
+                                <div style="font-size: 2rem;">2</div>
+                                <div style="font-size: 0.8rem;">Occasional</div>
+                            </label>
+                        </div>
+                        <div class="rating-option" onclick="selectRating('foodReview', 3)">
+                            <input type="radio" name="foodReview" value="3" id="food-3">
+                            <label for="food-3">
+                                <div style="font-size: 2rem;">3</div>
+                                <div style="font-size: 0.8rem;">Regular</div>
+                            </label>
+                        </div>
+                        <div class="rating-option" onclick="selectRating('foodReview', 4)">
+                            <input type="radio" name="foodReview" value="4" id="food-4">
+                            <label for="food-4">
+                                <div style="font-size: 2rem;">4</div>
+                                <div style="font-size: 0.8rem;">Main Niche</div>
+                            </label>
+                        </div>
+                        <div class="rating-option" onclick="selectRating('foodReview', 5)">
+                            <input type="radio" name="foodReview" value="5" id="food-5">
+                            <label for="food-5">
+                                <div style="font-size: 2rem;">5</div>
+                                <div style="font-size: 0.8rem;">Expert</div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-top: 40px;">
+                    <label for="contentFrequency">How often do you post content? *</label>
+                    <select id="contentFrequency" name="contentFrequency" required>
+                        <option value="">Select frequency...</option>
+                        <option value="daily">Daily (5-7 posts/week)</option>
+                        <option value="3-4_weekly">3-4 times per week</option>
+                        <option value="weekly">Weekly (1-2 posts/week)</option>
+                        <option value="monthly">Monthly or less</option>
+                    </select>
+                </div>
+
+                <div class="wizard-buttons">
+                    <button type="button" class="btn-wizard btn-prev" onclick="prevStep(2)">Previous</button>
+                    <button type="button" class="btn-wizard btn-next" onclick="nextStep(2)">Next Step</button>
+                </div>
+            </div>
+
+            <!-- STEP 3: Sample Videos -->
+            <div class="wizard-step" id="step-3">
+                <h2 style="margin-bottom: 30px;">Your Best Work</h2>
+
+                <div class="form-group">
+                    <label for="sampleVideos">Paste 2-3 links to your best food-related videos *</label>
+                    <p style="color: #94A3B8; font-size: 0.9rem; margin-bottom: 10px;">Enter one URL per line (TikTok or
+                        Instagram)</p>
+                    <textarea id="sampleVideos" name="sampleVideos" rows="5" required
+                        placeholder="https://tiktok.com/@user/video/...&#10;https://instagram.com/reel/...&#10;https://tiktok.com/@user/video/..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="nicheFocus">What's your content niche?</label>
+                    <select id="nicheFocus" name="nicheFocus">
+                        <option value="food">Food & Dining</option>
+                        <option value="lifestyle">Lifestyle</option>
+                        <option value="travel">Travel</option>
+                        <option value="entertainment">Entertainment</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="wizard-buttons">
+                    <button type="button" class="btn-wizard btn-prev" onclick="prevStep(3)">Previous</button>
+                    <button type="button" class="btn-wizard btn-next" onclick="nextStep(3)">Next Step</button>
+                </div>
+            </div>
+
+            <!-- STEP 4: Performance Agreement -->
+            <div class="wizard-step" id="step-4">
+                <h2 style="margin-bottom: 30px;">Performance Requirements</h2>
+
+                <div class="performance-agreement">
+                    <div class="requirement-box">
+                        <h3><i class="ph ph-clock"></i> 48-Hour Posting Rule</h3>
+                        <p>After visiting a restaurant, you <strong>MUST</strong> post content within <strong>48
+                                hours</strong>.</p>
+                        <p style="margin-top: 10px;">You must post on <strong>BOTH</strong> TikTok and Instagram.</p>
+                    </div>
+
+                    <div class="consequence-box warning">
+                        <h3><i class="ph ph-warning"></i> What Happens If You Miss the Deadline?</h3>
+                        <ul style="margin-top: 15px;">
+                            <li><strong>Automatic Flagging:</strong> You'll be marked as non-compliant</li>
+                            <li><strong>24-Hour Warning:</strong> You have 24 hours to submit both videos + links</li>
+                            <li><strong>Strike System:</strong>
+                                <ul style="margin-left: 20px; margin-top: 8px;">
+                                    <li>1st strike = Official Warning</li>
+                                    <li>2nd strike = 7-day account suspension</li>
+                                    <li>3rd strike = <strong>Permanent removal from platform</strong></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="submission-box">
+                        <h3><i class="ph ph-upload"></i> How to Submit Content</h3>
+                        <ol style="margin-top: 15px; margin-left: 20px;">
+                            <li>Post your TikTok and Instagram content</li>
+                            <li>Go to your dashboard → Submit Content</li>
+                            <li>Paste the links to both posts</li>
+                            <li>We'll automatically track views and engagement</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <label class="checkbox-agreement">
+                    <input type="checkbox" id="agreementCheckbox" required>
+                    <span>
+                        <strong>I understand and agree to the 48-hour posting requirement.</strong><br>
+                        I acknowledge that failure to comply will result in strikes and potential removal from the
+                        platform.
+                    </span>
+                </label>
+
+                <div class="wizard-buttons">
+                    <button type="button" class="btn-wizard btn-prev" onclick="prevStep(4)">Previous</button>
+                    <button type="button" class="btn-wizard btn-next" id="agreeButton" disabled onclick="nextStep(4)">I
+                        Agree - Continue</button>
+                </div>
+            </div>
+
+            <!-- STEP 5: Review & Submit -->
+            <div class="wizard-step" id="step-5">
+                <h2 style="margin-bottom: 30px;">Application Review</h2>
+
+                <div class="score-display" id="scoreDisplay">
+                    <div class="score-number" id="qualificationScore">0</div>
+                    <div class="score-label">Qualification Score (out of 110)</div>
+                    <div id="statusBadge"></div>
+                </div>
+
+                <div id="applicationSummary"
+                    style="background: rgba(255, 255, 255, 0.03); padding: 30px; border-radius: 16px; margin-bottom: 30px;">
+                    <!-- Populated by JavaScript -->
+                </div>
+
+                <div class="wizard-buttons">
+                    <button type="button" class="btn-wizard btn-prev" onclick="prevStep(5)">Previous</button>
+                    <button type="submit" class="btn-wizard btn-submit" id="submitBtn">Submit Application</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <script>
+        let currentStep = 1;
+
+        // Step navigation
+        function nextStep(step) {
+            // Validate current step
+            if (!validateStep(step)) {
+                return;
+            }
+
+            // Hide current step
+            document.getElementById(`step-${step}`).classList.remove('active');
+            document.getElementById(`progress-${step}`).classList.add('completed');
+            document.getElementById(`progress-${step}`).classList.remove('active');
+
+            // Show next step
+            currentStep = step + 1;
+            document.getElementById(`step-${currentStep}`).classList.add('active');
+            document.getElementById(`progress-${currentStep}`).classList.add('active');
+
+            // If moving to review step, calculate score
+            if (currentStep === 5) {
+                calculateAndDisplayScore();
+            }
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function prevStep(step) {
+            // Hide current step
+            document.getElementById(`step-${step}`).classList.remove('active');
+            document.getElementById(`progress-${step}`).classList.remove('active');
+
+            // Show previous step
+            currentStep = step - 1;
+            document.getElementById(`step-${currentStep}`).classList.add('active');
+            document.getElementById(`progress-${currentStep}`).classList.remove('completed');
+            document.getElementById(`progress-${currentStep}`).classList.add('active');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Validation
+        function validateStep(step) {
+            const stepElement = document.getElementById(`step-${step}`);
+            const inputs = stepElement.querySelectorAll('input[required], select[required], textarea[required]');
+
+            for (let input of inputs) {
+                if (!input.value || (input.type === 'checkbox' && !input.checked) || (input.type === 'radio' && !document.querySelector(`input[name="${input.name}"]:checked`))) {
+                    alert('Please fill in all required fields');
+                    input.focus();
+                    return false;
+                }
+            }
+
+            // Step 3 specific validation
+            if (step === 3) {
+                const videoLinks = document.getElementById('sampleVideos').value.split('\n').filter(l => l.trim());
+                if (videoLinks.length < 2) {
+                    alert('Please provide at least 2 video links');
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        // Rating selection
+        function selectRating(category, value) {
+            // Deselect all in category
+            document.querySelectorAll(`#${category}Rating .rating-option`).forEach(opt => {
+                opt.classList.remove('selected');
+            });
+
+            // Select clicked option
+            const option = document.querySelector(`#${category}-${value}`).parentElement;
+            option.classList.add('selected');
+            document.getElementById(`${category}-${value}`).checked = true;
+        }
+
+        // Agreement checkbox
+        document.getElementById('agreementCheckbox').addEventListener('change', (e) => {
+            document.getElementById('agreeButton').disabled = !e.target.checked;
+        });
+
+        // Calculate qualification score
+        function calculateAndDisplayScore() {
+            const instagramFollowers = parseInt(document.getElementById('instagramFollowers').value) || 0;
+            const tiktokFollowers = parseInt(document.getElementById('tiktokFollowers').value) || 0;
+            const totalFollowers = instagramFollowers + tiktokFollowers;
+
+            const videoProduction = parseInt(document.querySelector('input[name="videoProduction"]:checked')?.value) || 0;
+            const foodReview = parseInt(document.querySelector('input[name="foodReview"]:checked')?.value) || 0;
+            const contentFrequency = document.getElementById('contentFrequency').value;
+
+            // Calculate score
+            let score = 0;
+
+            // Follower count (max 40 points)
+            if (totalFollowers >= 10000) score += 40;
+            else if (totalFollowers >= 5000) score += 30;
+            else if (totalFollowers >= 1000) score += 20;
+            else score += 10;
+
+            // Video production (max 30 points)
+            score += videoProduction * 6;
+
+            // Food review experience (max 30 points)
+            score += foodReview * 6;
+
+            // Content frequency (max 10 points)
+            const frequencyBonus = {
+                'daily': 10,
+                '3-4_weekly': 7,
+                'weekly': 4,
+                'monthly': 0
+            };
+            score += frequencyBonus[contentFrequency] || 0;
+
+            // Display score
+            document.getElementById('qualificationScore').textContent = score;
+
+            // Determine status
+            let status, statusClass, statusText;
+            if (score >= 70) {
+                status = 'approved';
+                statusClass = 'approved';
+                statusText = '✅ Auto-Approved - Welcome to FoodTrend!';
+            } else if (score >= 50) {
+                status = 'review';
+                statusClass = 'review';
+                statusText = '⏳ Manual Review Required (24-48 hours)';
+            } else {
+                status = 'rejected';
+                statusClass = 'rejected';
+                statusText = '❌ Application Does Not Meet Requirements';
+            }
+
+            document.getElementById('statusBadge').innerHTML = `<div class="status-badge ${statusClass}">${statusText}</div>`;
+
+            // Display summary
+            const summary = `
+                <h3 style="margin-bottom: 20px;">Your Application</h3>
+                <p><strong>Name:</strong> ${document.getElementById('fullName').value}</p>
+                <p><strong>Email:</strong> ${document.getElementById('email').value}</p>
+                <p><strong>Total Followers:</strong> ${totalFollowers.toLocaleString()}</p>
+                <p><strong>Video Production:</strong> ${videoProduction}/5</p>
+                <p><strong>Food Experience:</strong> ${foodReview}/5</p>
+                <p><strong>Content Frequency:</strong> ${contentFrequency.replace('_', ' ')}</p>
+                <p style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                    <strong>Final Score:</strong> ${score}/110
+                </p>
+            `;
+            document.getElementById('applicationSummary').innerHTML = summary;
+        }
+
+        // Form submission
+        document.getElementById('creatorApplicationForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting Application...';
+
+            const formData = {
+                fullName: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                instagram: document.getElementById('instagram').value,
+                instagramFollowers: parseInt(document.getElementById('instagramFollowers').value),
+                tiktok: document.getElementById('tiktok').value,
+                tiktokFollowers: parseInt(document.getElementById('tiktokFollowers').value),
+                videoProductionExperience: parseInt(document.querySelector('input[name="videoProduction"]:checked').value),
+                foodReviewExperience: parseInt(document.querySelector('input[name="foodReview"]:checked').value),
+                contentFrequency: document.getElementById('contentFrequency').value,
+                sampleVideoUrls: document.getElementById('sampleVideos').value.split('\n').filter(l => l.trim()),
+                nicheFocus: document.getElementById('nicheFocus').value,
+                agreementAccepted: document.getElementById('agreementCheckbox').checked
+            };
+
+            try {
+                const response = await fetch('/api/influencer/signup-qualified', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Store influencer ID
+                    localStorage.setItem('influencer_id', data.influencer.id);
+                    localStorage.setItem('referral_code', data.influencer.referral_code);
+
+                    if (data.approved) {
+                        // Auto-approved - redirect to dashboard
+                        alert('🎉 Congratulations! Your application has been approved!');
+                        window.location.href = 'dashboard.html?welcome=true';
+                    } else if (data.status === 'review') {
+                        // Manual review required
+                        alert('✅ Application submitted! We will review it within 24-48 hours and email you with our decision.');
+                        window.location.href = '../index.html';
+                    } else {
+                        // Rejected
+                        alert('Unfortunately, your application does not meet our current requirements. Please gain more experience and reapply in 90 days.');
+                        window.location.href = '../index.html';
+                    }
+                } else {
+                    alert('Error: ' + (data.error || 'Something went wrong'));
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Submit Application';
+                }
+            } catch (error) {
+                console.error('Signup error:', error);
+                alert('Network error. Please try again.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Application';
+            }
+        });
+    </script>
+
+    <!-- Prime Directive: Self-Healing Utilities (Fib 8) -->
+    <script src="../js/logger.js"></script>
+    <script src="../js/dom-utils.js"></script>
+</body>
+
+</html>

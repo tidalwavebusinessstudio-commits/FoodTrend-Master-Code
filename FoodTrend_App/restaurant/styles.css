@@ -53,6 +53,29 @@
     --font-display: 'Outfit', system-ui, sans-serif;
 }
 
+/* ========================================
+   LIGHT THEME
+   ======================================== */
+[data-theme="light"] {
+    /* Backgrounds - Clean White */
+    --bg-page: #F8FAFC;
+    --bg-subtle: #E2E8F0;
+
+    /* Text */
+    --text-primary: #1E293B;
+    --text-secondary: #475569;
+    --text-muted: #94A3B8;
+
+    /* Glassmorphism System */
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: 1px solid rgba(0, 0, 0, 0.08);
+    --glass-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    --glass-highlight: inset 0 1px 0 0 rgba(255, 255, 255, 0.5);
+
+    /* Semantic Gradients */
+    --grad-dark: linear-gradient(180deg, rgba(248, 250, 252, 0) 0%, rgba(248, 250, 252, 1) 100%);
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -66,6 +89,26 @@ body {
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     /* background-image removed to allow specific section backgrounds */
+}
+
+/* Dashboard Layout - Account for fixed sidebar */
+.dashboard-container {
+    min-height: 100vh;
+}
+
+.main-content {
+    margin-left: 60px;
+    /* Match collapsed sidebar icon width */
+    padding: 32px 40px;
+    min-height: 100vh;
+}
+
+/* Responsive - collapse sidebar on small screens */
+@media (max-width: 768px) {
+    .main-content {
+        margin-left: 0;
+        padding: 20px;
+    }
 }
 
 /* Typography */

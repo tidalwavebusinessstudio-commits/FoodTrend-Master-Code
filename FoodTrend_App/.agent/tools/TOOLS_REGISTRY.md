@@ -1,8 +1,8 @@
 # Tools Registry (Complete List)
 
-**Last Updated:** 2026-01-23  
-**Total Tools:** 15  
-**Free Tools:** 13  
+**Last Updated:** 2026-01-25  
+**Total Tools:** 16  
+**Free Tools:** 14  
 **Paid Tools:** 2 (optional)
 
 ---
@@ -255,6 +255,43 @@ Auto-refreshes browser when you save code changes.
 
 **Fallback:**
 Use Python's built-in server: `python -m http.server` (if Python installed)
+
+---
+
+### OpenCode
+
+**Category:** AI Coding Assistant  
+**Cost:** FREE (with own API keys) / Zen subscription optional  
+**Setup Time:** 5 min  
+**Status:** ⚠️ NEEDS SETUP (CLI + VS Code extension)
+
+**What it does:**
+Open source AI agent for coding in terminal, IDE, or desktop. Supports 75+ LLM providers including Claude, GPT, Gemini, and local models.
+
+**When to use it:**
+- AI-assisted coding directly in terminal
+- Multi-session parallel agents on same project
+- Need alternative to Antigravity for specific tasks
+
+**Setup steps:**
+1. Install CLI: `npm i -g opencode-ai`
+2. Install VS Code extension (search "opencode" → sst-dev.opencode)
+3. Configure your preferred model/API keys
+
+**VS Code Shortcuts (Windows):**
+| Action | Shortcut |
+|--------|----------|
+| Quick Launch | `Ctrl+Esc` |
+| New Session | `Ctrl+Shift+Esc` |
+| File Reference | `Alt+Ctrl+K` |
+
+**Safety notes:**
+✅ Open source (87K+ GitHub stars, 600+ contributors)  
+✅ Privacy-first: does not store code or context data  
+ℹ️ Can use existing GitHub Copilot or ChatGPT Plus/Pro accounts
+
+**Fallback:**
+Use Antigravity (Gemini), GitHub Copilot, or Cursor
 
 ---
 
@@ -527,13 +564,47 @@ Only upgrade if you hit the limit.
 
 ---
 
+## 🤖 GHL AUTOMATION (Internal Scripts)
+
+### Create GHL Custom Fields
+
+**Category:** Automation  
+**Cost:** FREE  
+**Setup Time:** 0 min (keys already configured)  
+**Status:** ✅ READY NOW
+
+**What it does:**
+Bulk-creates all FoodTrend custom fields in GoHighLevel via API.
+
+**When to use it:**
+- Setting up a new GHL location
+- Adding new custom fields to an existing setup
+- Rebuilding fields after a GHL account reset
+
+**How to use:**
+```powershell
+cd backend
+node scripts/create-ghl-fields.js
+```
+
+**Prerequisites:**
+- `GHL_API_KEY` in `.env`
+- `GHL_LOCATION_ID` in `.env`
+
+**Fallback:**
+Create fields manually in GHL → Settings → Custom Fields
+
+**Related workflow:** `/ghl-automation`
+
+---
+
 ## 📋 Summary Stats
 
-**READY NOW (no setup):** 7 tools
-- Squoosh, Remove.bg, DevTools, Lighthouse, Imgbb, PowerShell, GitHub
+**READY NOW (no setup):** 8 tools
+- Squoosh, Remove.bg, DevTools, Lighthouse, Imgbb, PowerShell, GitHub, GHL Scripts
 
-**NEEDS SETUP (free, 5-15 min):** 6 tools
-- Canva, Responsively, Prettier, Live Server, GitHub Pages, Netlify
+**NEEDS SETUP (free, 5-15 min):** 7 tools
+- Canva, Responsively, Prettier, Live Server, OpenCode, GitHub Pages, Netlify
 
 **OPTIONAL (use later):** 2 tools
 - Google Analytics, Node.js (check if you have it first)

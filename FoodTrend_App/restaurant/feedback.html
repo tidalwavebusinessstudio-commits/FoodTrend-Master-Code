@@ -8,75 +8,198 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Feedback Page Specific Styles */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+
+        .feedback-item {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: border-color 0.2s;
+        }
+
+        .feedback-item:hover {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .feedback-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .feedback-meta {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .rating-emoji {
+            font-size: 1.4rem;
+        }
+
+        .feedback-comment {
+            margin: 15px 0;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .feedback-actions {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 15px;
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-sm {
+            font-size: 0.8rem;
+            padding: 6px 12px;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+        }
+
+        .gating-explainer {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(33, 150, 243, 0.1));
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(76, 175, 80, 0.2);
+        }
+
+        .gating-explainer h4 {
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .gating-rule {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 8px 0;
+            font-size: 0.9rem;
+        }
+    </style>
 </head>
 
 <body>
     <div class="dashboard-container">
-        <aside class="sidebar" id="sidebar">
-            <div class="logo">FoodTrend</div>
-            <nav>
-                <a href="dashboard.html" class="nav-item"><span class="nav-icon">📊</span> Overview</a>
-                <a href="gigs.html" class="nav-item"><span class="nav-icon">🔥</span> Gigs</a>
-                <a href="calendar.html" class="nav-item"><span class="nav-icon">📅</span> Calendar</a>
-                <a href="announcements.html" class="nav-item"><span class="nav-icon">📢</span> Announcements</a>
-                <a href="feedback.html" class="nav-item active"><span class="nav-icon">⭐</span> Reputation</a>
-                <a href="trends.html" class="nav-item"><span class="nav-icon">📈</span> Intel Feed</a>
-                <div style="margin: 20px 0; border-top: 1px solid rgba(255,255,255,0.1);"></div>
-                <a href="integrations.html" class="nav-item"><span class="nav-icon">🔌</span> Integrations</a>
-            </nav>
-        </aside>
+        <!-- Sidebar (Component Injected) -->
+        <div id="sidebar-container"></div>
 
         <main class="main-content">
             <header style="margin-bottom: 30px;">
                 <h2>Reputation Inbox</h2>
-                <p class="text-secondary">Internal feedback from creators. Only 4+ star ratings are sent to Google.</p>
+                <p class="text-secondary">Smart review gating protects your reputation while amplifying your wins.</p>
             </header>
 
+            <!-- Gating Explainer -->
+            <div class="gating-explainer">
+                <h4>🛡️ How Review Gating Works</h4>
+                <div class="gating-rule">
+                    <span style="font-size: 1.2rem;">😡</span>
+                    <span><strong>1-3 Stars:</strong> Private feedback only. You see it here, not on Google.</span>
+                </div>
+                <div class="gating-rule">
+                    <span style="font-size: 1.2rem;">😊</span>
+                    <span><strong>4 Stars:</strong> Stored privately. Good but not promoted.</span>
+                </div>
+                <div class="gating-rule">
+                    <span style="font-size: 1.2rem;">🤩</span>
+                    <span><strong>5 Stars:</strong> Auto-prompted to post on Google. Builds your reputation!</span>
+                </div>
+            </div>
+
+            <!-- Stats Dashboard -->
+            <div id="stats-container" class="stats-grid">
+                <!-- Stats loaded dynamically -->
+            </div>
+
+            <!-- Feedback List -->
             <div class="card">
-                <h3 style="margin-bottom: 20px;">Recent Feedback</h3>
-
-                <!-- Feedback Item -->
-                <div
-                    style="padding: 20px; background: rgba(255,255,255,0.03); border-radius: 8px; margin-bottom: 15px;">
-                    <div style="display: flex; justify-content: space-between;">
-                        <div style="display: flex; gap: 10px; align-items: center;">
-                            <span style="font-size: 1.2rem;">😡</span>
-                            <span class="text-danger" style="font-weight: 700;">2/5 Stars</span>
-                            <span class="text-muted">@AngryEater • 2 days ago</span>
-                        </div>
-                        <span class="status-badge"
-                            style="background: rgba(244, 67, 54, 0.1); color: var(--danger);">Private</span>
-                    </div>
-                    <p style="margin: 10px 0; color: var(--text-primary);">
-                        "The food was cold and the server was rude when I asked for water. Not posting this on TikTok."
-                    </p>
-                    <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px; margin-top: 10px;">
-                        <button class="btn btn-outline" style="font-size: 0.8rem; padding: 6px 12px;">Reply
-                            Privately</button>
-                        <button class="btn btn-outline"
-                            style="font-size: 0.8rem; padding: 6px 12px; margin-left: 10px;">Mark Resolved</button>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3>Recent Feedback</h3>
+                    <div class="filter-tabs">
+                        <button class="filter-btn active" onclick="filterFeedback('all')">All</button>
+                        <button class="filter-btn" onclick="filterFeedback('internal')">Private</button>
+                        <button class="filter-btn" onclick="filterFeedback('google_posted')">Google</button>
                     </div>
                 </div>
 
-                <!-- Feedback Item -->
-                <div
-                    style="padding: 20px; background: rgba(255,255,255,0.03); border-radius: 8px; margin-bottom: 15px;">
-                    <div style="display: flex; justify-content: space-between;">
-                        <div style="display: flex; gap: 10px; align-items: center;">
-                            <span style="font-size: 1.2rem;">🤩</span>
-                            <span class="text-success" style="font-weight: 700;">5/5 Stars</span>
-                            <span class="text-muted">@HappyChef • 5 hours ago</span>
-                        </div>
-                        <span class="status-badge status-active">Redirected to Google</span>
-                    </div>
-                    <p style="margin: 10px 0; color: var(--text-primary);">
-                        "Amazing vibes! The burger was juicy. Posted a reel already."
-                    </p>
+                <div id="feedback-list">
+                    <!-- Feedback items loaded dynamically -->
+                    <div class="loading">Loading feedback...</div>
                 </div>
-
             </div>
         </main>
     </div>
+
+    <script src="js/dashboard-loader.js"></script>
+    <script src="js/feedback.js"></script>
+
+    <!-- Prime Directive: Self-Healing Utilities (Fib 8) -->
+    <script src="../js/logger.js"></script>
+    <script src="../js/dom-utils.js"></script>
 </body>
 
 </html>

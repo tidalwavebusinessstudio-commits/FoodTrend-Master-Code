@@ -13,17 +13,53 @@ const GHL_API_BASE = 'https://rest.gohighlevel.com/v1';
 const GHL_API_KEY = process.env.GHL_API_KEY;
 const GHL_LOCATION_ID = process.env.GHL_LOCATION_ID;
 
-// Workflow IDs (configure these in .env after creating workflows in GHL)
-const WORKFLOW_IDS = {
-    restaurantOnboarding: process.env.GHL_WORKFLOW_RESTAURANT_ONBOARDING,
-    contentReminder48hr: process.env.GHL_WORKFLOW_48HR_REMINDER,
-    contentReminderUrgent: process.env.GHL_WORKFLOW_URGENT_REMINDER,
-    reviewRequest: process.env.GHL_WORKFLOW_REVIEW_REQUEST,
-    milestoneAchieved: process.env.GHL_WORKFLOW_MILESTONE
+// Tags that trigger GHL workflows (workflows are configured to trigger on tag addition)
+const WORKFLOW_TAGS = {
+    restaurantOnboarding: 'restaurant-new',
+    influencerOnboarding: 'influencer-new',
+    contentPending: 'content-pending',
+    contentDelivered: 'content-delivered',
+    urgentReminder: 'content-urgent'
 };
 
 /**
- * Add a contact to a GHL workflow
+ * Add a tag to a GHL contact (triggers workflow if configured)
+ * @param {string} contactId - GHL contact ID
+ * @param {string} tag - Tag to add
+ */
+async function addTagToContact(contactId, tag) {
+    if (!GHL_API_KEY) {
+        console.warn('GHL API key not configured');
+        return null;
+    }
+
+    try {
+        const response = await fetch(`${GHL_API_BASE}/contacts/${contactId}`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${GHL_API_KEY}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                tags: [tag]
+            })
+        });
+
+        if (!response.ok) {
+            const error = await response.text();
+            throw new Error(`GHL API error: ${response.status} - ${error}`);
+        }
+
+        console.log(`✅ Tag "${tag}" added to contact ${contactId}`);
+        return await response.json();
+    } catch (error) {
+        console.error('Failed to add tag to contact:', error);
+        return null;
+    }
+}
+
+/**
+ * Add a contact to a GHL workflow by ID (legacy method)
  * @param {string} contactId - GHL contact ID
  * @param {string} workflowId - GHL workflow ID
  */
@@ -69,7 +105,7 @@ async function triggerRestaurantOnboarding(ghlContactId, restaurantData) {
         'onboarding_started': new Date().toISOString()
     });
 
-    return addToWorkflow(ghlContactId, WORKFLOW_IDS.restaurantOnboarding);
+    return addTagToContact(ghlContactId, WORKFLOW_TAGS.restaurantOnboarding);
 }
 
 /**
@@ -85,7 +121,7 @@ async function trigger48HourReminder(ghlContactId, visitData) {
         'visit_date': visitData.visitDate
     });
 
-    return addToWorkflow(ghlContactId, WORKFLOW_IDS.contentReminder48hr);
+    return addTagToContact(ghlContactId, WORKFLOW_TAGS.contentPending);
 }
 
 /**
@@ -99,7 +135,7 @@ async function triggerUrgentReminder(ghlContactId, visitData) {
         'hours_remaining': visitData.hoursRemaining
     });
 
-    return addToWorkflow(ghlContactId, WORKFLOW_IDS.contentReminderUrgent);
+    return addTagToContact(ghlContactId, WORKFLOW_TAGS.urgentReminder);
 }
 
 /**
@@ -115,7 +151,7 @@ async function triggerReviewRequest(ghlContactId, contentData) {
         'content_instagram_url': contentData.instagramUrl
     });
 
-    return addToWorkflow(ghlContactId, WORKFLOW_IDS.reviewRequest);
+    return addTagToContact(ghlContactId, WORKFLOW_TAGS.contentDelivered);
 }
 
 /**
@@ -131,7 +167,7 @@ async function triggerMilestone(ghlContactId, milestone, data = {}) {
         ...data
     });
 
-    return addToWorkflow(ghlContactId, WORKFLOW_IDS.milestoneAchieved);
+    return addTagToContact(ghlContactId, `milestone-${milestone}`);
 }
 
 /**
@@ -228,14 +264,34 @@ async function checkContentDeadlines(supabase) {
     console.log(`✅ Deadline check complete. Processed ${pendingVisits?.length || 0} visits.`);
 }
 
+/**
+ * Trigger influencer onboarding sequence
+ * Called when a new influencer signs up
+ */
+async function triggerInfluencerOnboarding(ghlContactId, influencerData) {
+    console.log(`🎥 Triggering influencer onboarding for: ${influencerData.full_name || influencerData.name}`);
+
+    // Update contact with custom fields first
+    await updateContactFields(ghlContactId, {
+        'influencer_name': influencerData.full_name || influencerData.name,
+        'tiktok_handle': influencerData.tiktok_handle || '',
+        'instagram_handle': influencerData.instagram_handle || '',
+        'onboarding_started': new Date().toISOString()
+    });
+
+    return addTagToContact(ghlContactId, WORKFLOW_TAGS.influencerOnboarding);
+}
+
 module.exports = {
     triggerRestaurantOnboarding,
+    triggerInfluencerOnboarding,
     trigger48HourReminder,
     triggerUrgentReminder,
     triggerReviewRequest,
     triggerMilestone,
     updateContactFields,
     checkContentDeadlines,
+    addTagToContact,
     addToWorkflow,
-    WORKFLOW_IDS
+    WORKFLOW_TAGS
 };
