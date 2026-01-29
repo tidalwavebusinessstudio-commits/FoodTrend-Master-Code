@@ -260,13 +260,20 @@ p {
 .hero {
     min-height: 100vh;
     padding-top: 100px;
-    padding-bottom: 120px;
-    /* Room for chips ABOVE where wave overlaps */
+    padding-bottom: 80px;
+    /* Reduced to move chips up, away from wave */
     display: flex;
     align-items: center;
     position: relative;
     overflow: visible;
     background: linear-gradient(135deg, var(--cream) 0%, #EDE5DD 100%);
+}
+
+/* Hero content must sit above wave */
+.hero .container {
+    position: relative;
+    z-index: 25;
+    /* Above wave (z-index: 20) but below phone overlay effects */
 }
 
 /* Scroll Animation Container */
@@ -340,6 +347,9 @@ p {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-xs);
+    position: relative;
+    z-index: 30;
+    /* Ensure chips sit above wave */
 }
 
 .chip {
@@ -353,6 +363,9 @@ p {
     font-weight: 500;
     color: var(--cocoa);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+    position: relative;
+    z-index: 30;
+    /* Above wave (z-index: 20) */
 }
 
 .chip-icon {
@@ -484,11 +497,17 @@ p {
     bottom: -1px;
     /* Overlap to eliminate gaps between sections */
     height: 120px;
-    /* Standard wave height */
+    /* Standard wave height for sections */
     pointer-events: none;
     line-height: 0;
     transform: translateZ(0);
     z-index: 20;
+}
+
+/* Hero-specific taller wave to reach phone mockup */
+.hero .ft-wave {
+    height: 220px;
+    /* Tall enough to eliminate gap under phone */
 }
 
 .ft-wave svg {
