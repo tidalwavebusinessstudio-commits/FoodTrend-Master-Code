@@ -1,0 +1,13 @@
+<svg viewBox="0 0 1440 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+  <defs>
+    <mask id="wave-bottom-mask">
+      <!-- White reveals, black hides -->
+      <!-- Fill everything above the wave with white (visible) -->
+      <rect width="1440" height="120" fill="white"/>
+      <!-- Cut out the wave shape with black (hidden) -->
+      <path d="M0,64 C120,96 240,96 360,64 C480,32 600,32 720,64 C840,96 960,96 1080,64 C1200,32 1320,32 1440,64 L1440,120 L0,120 Z" fill="black"/>
+    </mask>
+  </defs>
+  <!-- Apply the mask to a white rectangle -->
+  <rect width="1440" height="120" fill="white" mask="url(#wave-bottom-mask)"/>
+</svg>

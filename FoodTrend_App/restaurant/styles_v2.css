@@ -1,3 +1,4 @@
+/* CANARY-2026-01-29-GAP-FIX */
 /*
  * FoodTrend Restaurant V2 - Banza/Waffinity Hybrid Design
  * Scroll-driven animation + Modern luxury food aesthetic
@@ -75,6 +76,14 @@ h4 {
     font-weight: 700;
     line-height: 1.1;
     color: var(--cocoa);
+    margin: 0;
+    /* Neutralize default margins to prevent collapsing */
+}
+
+/* Neutralize paragraph margins */
+p {
+    margin: 0;
+    /* Neutralize default margins */
 }
 
 h1 {
@@ -104,8 +113,70 @@ p {
 }
 
 .section {
-    padding: var(--space-xl) 0;
+    padding: 150px 0 150px 0;
     position: relative;
+    display: flow-root;
+    /* Prevents margin collapsing from child elements */
+}
+
+/* Device Story sections with phone/tablet mockups */
+/* THE DEFINITIVE FIX: Flexbox centering with wave compensation */
+.device-story {
+    /* Use min-height for the content area, excluding wave */
+    min-height: 80vh;
+    padding: 0;
+    position: relative;
+    background: var(--orange-red);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    /* This centers the container vertically */
+    padding-bottom: 120px;
+    /* Space for the wave */
+}
+
+.device-story--orange {
+    background: var(--orange-red);
+}
+
+.device-story--cream {
+    background: var(--cream);
+    color: var(--cocoa);
+}
+
+.device-story h3 {
+    color: var(--white);
+}
+
+.device-story--cream h3 {
+    color: var(--cocoa);
+}
+
+/* Container inside device-story should fill and center */
+.device-story>.container {
+    width: 100%;
+    padding-top: var(--space-lg);
+    padding-bottom: var(--space-lg);
+}
+
+.device-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-xl);
+    align-items: center;
+    margin: 0 auto;
+}
+
+.device-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.device-mockup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .section--cream {
@@ -1130,8 +1201,8 @@ p {
 }
 
 .flow-step-icon {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     background: var(--white);
     border-radius: 50%;
     display: flex;
@@ -1141,7 +1212,7 @@ p {
 }
 
 .flow-step-icon i {
-    font-size: 32px;
+    font-size: 40px;
     color: var(--orange-red);
 }
 
