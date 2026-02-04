@@ -5,12 +5,15 @@ This directory contains the **foundational meta-rules** that govern all developm
 ## 📜 The Hierarchy
 
 ```
-1. PRIME_DIRECTIVE.md     ← HIGHEST AUTHORITY (this supersedes everything)
-2. troubleshooting.md     ← All solutions documented here
-3. workflows/             ← Automated processes
-4. errors/                ← All errors logged here
-5. scripts/               ← Automation tools
-6. iterations/            ← Fibonacci-based version history
+0.  CONSTITUTION.md           ← SUPREME AUTHORITY (execution contract)
+1.  PRIME_DIRECTIVE.md        ← Development principles
+1.5 GROUND_TRUTH_GATE.md      ← Procedural lock (echo before acting)
+1.6 RESPONSE_REJECTION_CRITERIA.md ← User enforcement filter
+2.  troubleshooting.md        ← All solutions documented here
+3.  workflows/                ← Automated processes
+4.  errors/                   ← All errors logged here
+5.  scripts/                  ← Automation tools
+6.  iterations/               ← Fibonacci-based version history
 ```
 
 ## 🎯 The Four Pillars

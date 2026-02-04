@@ -1,20 +1,22 @@
-# FoodTrend REAL Business Model (SSOT v2 - With Referral Engine)
+# FoodTrend REAL Business Model (SSOT v3 - With Referral Engine)
+
+> **CANONICAL REFERENCE:** See [FoodTrend_HQ/BUSINESS_DNA.md](../FoodTrend_HQ/BUSINESS_DNA.md) for locked business identity.
 
 **CRITICAL:** This supersedes previous pricing assumptions. The referral program is THE growth engine.
 
 ---
 
-## 💰 ACTUAL Pricing Model (High-Tier Necessary)
+## 💰 ACTUAL Pricing Model (LOCKED - Per Business DNA v3)
 
 ### Restaurant Pricing Tiers
-* **Momentum:** $799/month (60 creator visits)
-* **Velocity:** $1,299/month (150 creator visits) ← MOST POPULAR
-* **Dominance:** $2,499/month (Unlimited visits, multi-location)
+* **Starter:** $799/month (20 verified creator visits)
+* **Growth:** $1,299/month (30 verified creator visits) ← MOST POPULAR
+* **Reputation:** $1,599/month (30 verified visits + every visit includes Google review)
 
-**Why high pricing is REQUIRED:**
-- Must support $250/mo referral commissions for 6 months
+**Why this pricing structure:**
+- Supports $250/mo referral commissions for 6 months
 - Then $100/mo ongoing commissions
-- Still maintain margins for operations + creator meals
+- Maintains margins for operations + creator meals
 
 ---
 

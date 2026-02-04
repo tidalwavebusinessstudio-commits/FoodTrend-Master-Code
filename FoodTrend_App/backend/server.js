@@ -17,6 +17,9 @@ const { createReviewRouter } = require('./api/reviews');
 const { apiLimiter, webhookLimiter } = require('./middleware/rate-limit');
 const { notifyError } = require('./services/error-notifier');
 
+// Load cron jobs for automated accountability checks (48-hour rule, etc.)
+require('./cron/accountability-jobs');
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 

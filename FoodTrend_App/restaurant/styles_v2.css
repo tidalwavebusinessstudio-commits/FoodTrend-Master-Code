@@ -1,4 +1,5 @@
 /* CANARY-2026-01-29-GAP-FIX */
+/* CANARY-VERIFY-FOODTREND-99117 */
 /*
  * FoodTrend Restaurant V2 - Banza/Waffinity Hybrid Design
  * Scroll-driven animation + Modern luxury food aesthetic
@@ -213,8 +214,8 @@ p {
     right: 0;
     z-index: 1000;
     background: rgba(246, 239, 232, 0.85);
-    backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(43, 27, 20, 0.1);
     padding: var(--space-sm) 0;
 }
@@ -542,59 +543,152 @@ p {
 }
 
 /* ============================================
-   WAVY SECTION DIVIDERS (Pattern A - Wave Inside Section)
-   Wave is INSIDE the section, not a sibling. No seams.
+   SVG WAVE DIVIDER SYSTEM - BANZA-STYLE ORGANIC WAVES
+   Using actual SVG paths for dramatic, organic curves
    ============================================ */
 
-/* Sections that contain a wave need these properties */
+/* Base section styling - overflow visible to show waves */
 .ft-section,
 .hero,
 .device-story,
 .section {
     position: relative;
-    overflow: hidden;
+    overflow: visible;
 }
 
-/* Add padding when section has a wave at bottom */
-.has-wave-bottom {
-    padding-bottom: 120px;
+/* ============================================
+   HERO SECTION - Extra padding for wave overlap
+   ============================================ */
+.hero {
+    position: relative;
+    z-index: 10;
+    padding-bottom: 180px;
+    overflow: visible;
 }
 
-/* The wave component - positioned at section bottom */
+/* ============================================
+   SVG WAVE ELEMENTS - Positioned at BOTTOM of sections
+   Wave creates curved transition into the next section
+   ============================================ */
+
+/* Base wave styling - positioned at BOTTOM of section */
 .ft-wave {
     position: absolute;
     left: 0;
     right: 0;
     bottom: -1px;
-    /* Overlap to eliminate gaps between sections */
     height: 120px;
-    /* Standard wave height for sections */
     pointer-events: none;
-    line-height: 0;
-    transform: translateZ(0);
-    z-index: 20;
-}
-
-/* Hero-specific taller wave to reach phone mockup */
-.hero .ft-wave {
-    height: 220px;
-    /* Tall enough to eliminate gap under phone */
+    z-index: 5;
 }
 
 .ft-wave svg {
     width: 100%;
     height: 100%;
     display: block;
-    /* Key: no inline spacing */
 }
 
-/* Wave fill colors - matches the NEXT section's background */
+/* Orange wave (at top of orange sections) */
 .ft-wave--orange path {
     fill: var(--orange-red);
 }
 
+/* Cream wave (at top of cream sections) */
 .ft-wave--cream path {
     fill: var(--cream);
+}
+
+/* Cocoa wave (at top of footer) */
+.ft-wave--cocoa path {
+    fill: var(--cocoa);
+}
+
+/* ============================================
+   DEVICE STORY SECTIONS
+   ============================================ */
+.device-story--orange {
+    background: var(--orange-red);
+    position: relative;
+    padding-top: 60px;
+    padding-bottom: 160px;
+    z-index: 5;
+}
+
+.device-story--cream {
+    background: var(--cream);
+    color: var(--cocoa);
+    position: relative;
+    padding-top: 60px;
+    padding-bottom: 160px;
+    z-index: 5;
+}
+
+/* ============================================
+   CONTENT SECTIONS
+   ============================================ */
+.section--problem {
+    background: var(--cream);
+    position: relative;
+    padding-top: 80px;
+    padding-bottom: 160px;
+    z-index: 4;
+}
+
+.section--orange {
+    background: var(--orange-red);
+    color: var(--white);
+    position: relative;
+    padding-top: 80px;
+    padding-bottom: 160px;
+    z-index: 3;
+}
+
+.section--orange h2,
+.section--orange h3 {
+    color: var(--white);
+}
+
+.section--orange p {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.section--cream {
+    background: var(--cream);
+    position: relative;
+    padding-top: 80px;
+    padding-bottom: 160px;
+    z-index: 3;
+}
+
+/* Explicit curved modifiers (same as above) */
+.section--orange-curved {
+    background: var(--orange-red);
+    color: var(--white);
+    position: relative;
+    padding-top: 80px;
+    padding-bottom: 160px;
+}
+
+.section--cream-curved {
+    background: var(--cream);
+    position: relative;
+    padding-top: 80px;
+    padding-bottom: 160px;
+}
+
+/* Final CTA section */
+.final-cta {
+    position: relative;
+    padding-top: 100px !important;
+    padding-bottom: 160px;
+    z-index: 2;
+}
+
+/* Footer section */
+.footer {
+    position: relative;
+    padding-top: 60px;
+    z-index: 1;
 }
 
 /* ============================================
@@ -1780,4 +1874,44 @@ p {
     .device-content h3 {
         font-size: 1.5rem;
     }
+}
+
+/* ============================================
+   HOTFIX: LOCK THE SVG WAVE SYSTEM 
+   (placed at bottom to override everything above)
+   ============================================ */
+
+/* Never clip wave dividers - force overflow visible on parent sections */
+.hero,
+.section,
+.device-story,
+.ft-section {
+    overflow: visible !important;
+    position: relative;
+}
+
+/* Force SVG wave to always render - override any display:none or height:0 */
+.ft-wave {
+    display: block !important;
+    position: absolute !important;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 120px;
+    pointer-events: none;
+    z-index: 50;
+}
+
+.ft-wave svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* Scope the CSS-heart system to device overlays ONLY 
+   so it doesn't break hero SVG icons */
+.device-overlay .float-icon {
+    width: 24px;
+    height: 24px;
+    opacity: 0;
 }
